@@ -11,6 +11,11 @@ public class ZiziDeck : MonoBehaviour
         return cards;
     }
 
+    public int GetZizi()
+    {
+        return zizi;
+    }
+
     public void Shuffle()
     {
         if (cards == null)

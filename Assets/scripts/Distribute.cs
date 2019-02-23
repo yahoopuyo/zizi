@@ -17,7 +17,7 @@ public class Distribute : MonoBehaviour
         int cardCount = 0;
         foreach(int i in hands.Gethand0())
         {
-            GameObject cardCopy = (GameObject)Instantiate(cardPrefab);
+            GameObject cardCopy = Instantiate(cardPrefab);
             CardModel cardModel = cardCopy.GetComponent<CardModel>();
             Vector3 temp;
             float co = cardOffset * cardCount;

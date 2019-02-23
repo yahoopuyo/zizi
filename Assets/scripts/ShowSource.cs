@@ -5,6 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Hands))]
 public class ShowSource : MonoBehaviour
 {
+    GameObject hand;
     Hands hands;
     public List<int> grave;
     private List<GameObject> sources;
@@ -64,7 +65,6 @@ public class ShowSource : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        hands = GetComponent<Hands>();
 
     }
 
@@ -73,6 +73,8 @@ public class ShowSource : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            hand = GameObject.Find("Hand");
+            hands = hand.GetComponent<Hands>();
             Display();
             //grave = hands.GetGrave();
         }
