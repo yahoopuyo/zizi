@@ -30,7 +30,7 @@ public class Hands : MonoBehaviour
     {
         return grave;
     }
-    public void DeletePair(int num,int player)
+    public void DeletePair(int num,int player)  //num is 1~13
     {
         int count=0;
         int removed=0;
@@ -51,6 +51,7 @@ public class Hands : MonoBehaviour
             }
         }
     }
+
     private void FirstDelete()
     {
         for(int players =0; players < 4; players++)
@@ -92,6 +93,6 @@ public class Hands : MonoBehaviour
     }
 
     // Update is called once per frame
-    
+
 }
 
