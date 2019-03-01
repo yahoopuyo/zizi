@@ -7,6 +7,7 @@ public class TurnManager : MonoBehaviour
     public int turn;
     public int turnPlayer;
     public int drawnPlayer;
+    private List<int> Wins = new List<int>();
     private GameObject hand;
     private Hands hands;
 
@@ -84,6 +85,22 @@ public class TurnManager : MonoBehaviour
         drawnPlayer = nextD;
     }
 
+    public void turnNext()
+    {
+        turn++;
+        if(CountWinners() > Wins.Count)
+        {
+            for (int pl = 0; pl < 4; pl++)
+            {
+                if (hands.hands[pl].Count == 0 && !Wins.Contains(pl))
+                {
+                    Debug.Log("player" + pl + "..." + CountWinners());
+                    Wins.Add(pl);
+                }
+            }
+        }
+        if (turnPlayer == drawnPlayer) Debug.Log("player" + turnPlayer + " losed");
+    }
     void Start()
     {
         turn = 0;
