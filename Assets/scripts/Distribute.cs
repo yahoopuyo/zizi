@@ -9,9 +9,9 @@ public class Distribute : MonoBehaviour
     public float cardOffset;
     public GameObject cardPrefab;
     private Vector3 start0 = new Vector3(-4f, -3.5f);
-    private Vector3 start1 = new Vector3(8, -3.5f);
+    private Vector3 start1 = new Vector3(6f, -3.5f);
     private Vector3 start2 = new Vector3(4f, 3.5f);
-    private Vector3 start3 = new Vector3(-8f, 3.5f);
+    private Vector3 start3 = new Vector3(-6f, 3.5f);
     void distribute()
     {
         int cardCount = 0;
@@ -34,7 +34,7 @@ public class Distribute : MonoBehaviour
         cardCount = 0;
         foreach (int i in hands.Gethand1())
         {
-            GameObject cardCopy = (GameObject)Instantiate(cardPrefab);
+            GameObject cardCopy = Instantiate(cardPrefab);
             CardModel cardModel = cardCopy.GetComponent<CardModel>();
             Vector3 temp;
             float co = cardOffset * cardCount;
@@ -45,24 +45,24 @@ public class Distribute : MonoBehaviour
 
             cardCopy.transform.position = temp;
             cardCopy.transform.Rotate(new Vector3(0f, 0f, 90f));
-            cardModel.ToggleFace(true);
+            cardModel.ToggleFace(false);
 
             cardCount++;
         }
         cardCount = 0;
         foreach (int i in hands.Gethand2())
         {
-            GameObject cardCopy = (GameObject)Instantiate(cardPrefab);
-            CardModel cardModel = cardCopy.GetComponent<CardModel>();
             Vector3 temp;
             float co = cardOffset * cardCount;
 
             temp = start2 - new Vector3(co, 0f);
+            GameObject cardCopy = PhotonNetwork.Instantiate("Card",temp,Quaternion.identity,0);
+            CardModel cardModel = cardCopy.GetComponent<CardModel>();
             cardModel.backIndex = 2;
             cardModel.cardIndex = i;
 
             cardCopy.transform.position = temp;
-            cardModel.ToggleFace(true);
+            cardModel.ToggleFace(false);
 
             cardCount++;
         }
@@ -80,7 +80,7 @@ public class Distribute : MonoBehaviour
 
             cardCopy.transform.position = temp;
             cardCopy.transform.Rotate(new Vector3(0f, 0f, 270f));
-            cardModel.ToggleFace(true);
+            cardModel.ToggleFace(false);
 
             cardCount++;
         }

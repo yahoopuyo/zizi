@@ -43,7 +43,7 @@ public class ZiziDeck : MonoBehaviour
         }
         zizi = cards[51];
         cards.RemoveAt(51);
-        
+
     }
     void Awake()
     {

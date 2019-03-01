@@ -30,16 +30,17 @@ public class Hands : MonoBehaviour
     {
         return grave;
     }
-    public void DeletePair(int num,int player)  //num is 1~13
+
+    public void DeletePair(int num, int player)  //num is 1~13
     {
-        int count=0;
-        int removed=0;
+        int count = 0;
+        int removed = 0;
         int[] numbers = { num - 1, num + 12, num + 25, num + 38 };
         foreach (int card in hands[player])
         {
             if (card % 13 == num - 1) count++;
         }
-        foreach(int i in numbers)
+        foreach (int i in numbers)
         {
             if (removed < 2 && count > 1)
             {
@@ -54,7 +55,7 @@ public class Hands : MonoBehaviour
 
     private void FirstDelete()
     {
-        for(int players =0; players < 4; players++)
+        for (int players = 0; players < 4; players++)
         {
             for (int a = 1; a < 14; a++) DeletePair(a, players);
             for (int a = 1; a < 14; a++) DeletePair(a, players);
@@ -95,4 +96,3 @@ public class Hands : MonoBehaviour
     // Update is called once per frame
 
 }
-
