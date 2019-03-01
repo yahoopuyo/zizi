@@ -9,9 +9,13 @@ public class Distribute : MonoBehaviour
     public float cardOffset;
     public GameObject cardPrefab;
     private Vector3 start0 = new Vector3(-4f, -3.5f);
-    private Vector3 start1 = new Vector3(6, -3.5f);
+    private Vector3 start3 = new Vector3(6, -3.5f);
     private Vector3 start2 = new Vector3(4f, 3.5f);
-    private Vector3 start3 = new Vector3(-6f, 3.5f);
+    private Vector3 start1 = new Vector3(-6f, 3.5f);
+    private Vector3 d_start0 = new Vector3(-4f, -2.5f);
+    private Vector3 d_start3 = new Vector3(5, -3.5f);
+    private Vector3 d_start2 = new Vector3(4f, 2.5f);
+    private Vector3 d_start1 = new Vector3(-5f, 3.5f);
     private List<GameObject> sources;
     void distribute()
     {
@@ -46,8 +50,8 @@ public class Distribute : MonoBehaviour
             Vector3 temp;
             float co = cardOffset * cardCount;
 
-            temp = start1 + new Vector3(0f, co);
-            cardModel.backIndex = 1;
+            temp = start3 + new Vector3(0f, co);
+            cardModel.backIndex = 3;
             cardModel.cardIndex = i;
 
             sources.Add(cardCopy);
@@ -91,8 +95,8 @@ public class Distribute : MonoBehaviour
             Vector3 temp;
             float co = cardOffset * cardCount;
 
-            temp = start3 - new Vector3(0f, co);
-            cardModel.backIndex = 3;
+            temp = start1 - new Vector3(0f, co);
+            cardModel.backIndex = 1;
             cardModel.cardIndex = i;
 
             sources.Add(cardCopy);
@@ -105,6 +109,102 @@ public class Distribute : MonoBehaviour
 
             cardCount++;
         }
+
+        //player0のdrawnsを表示
+        cardCount = 0;
+        foreach (int i in hands.drawns[0])
+        {
+            GameObject cardCopy = Instantiate(cardPrefab);
+            CardModel cardModel = cardCopy.GetComponent<CardModel>();
+            SpriteRenderer spriteRenderer = cardCopy.GetComponent<SpriteRenderer>();
+            Vector3 temp;
+            float co = cardOffset * cardCount;
+
+            temp = d_start0 + new Vector3(co, 0f)*2;
+            cardModel.backIndex = 0;
+            cardModel.cardIndex = i;
+
+            sources.Add(cardCopy);
+
+            cardCopy.transform.position = temp;
+            cardModel.ToggleFace(true);
+
+            spriteRenderer.sortingOrder = cardCount;
+
+            cardCount++;
+        }
+        //player3のdrawnsを表示
+        cardCount = 0;
+        foreach (int i in hands.drawns[3])
+        {
+            GameObject cardCopy = (GameObject)Instantiate(cardPrefab);
+            CardModel cardModel = cardCopy.GetComponent<CardModel>();
+            SpriteRenderer spriteRenderer = cardCopy.GetComponent<SpriteRenderer>();
+            Vector3 temp;
+            float co = cardOffset * cardCount;
+
+            temp = d_start3 + new Vector3(0f, co)*2;
+            cardModel.backIndex = 3;
+            cardModel.cardIndex = i;
+
+            sources.Add(cardCopy);
+
+            cardCopy.transform.position = temp;
+            cardCopy.transform.Rotate(new Vector3(0f, 0f, 90f));
+            cardModel.ToggleFace(false);
+
+            spriteRenderer.sortingOrder = cardCount;
+
+            cardCount++;
+        }
+        //player2のdrawnsを表示
+        cardCount = 0;
+        foreach (int i in hands.drawns[2])
+        {
+            GameObject cardCopy = (GameObject)Instantiate(cardPrefab);
+            CardModel cardModel = cardCopy.GetComponent<CardModel>();
+            SpriteRenderer spriteRenderer = cardCopy.GetComponent<SpriteRenderer>();
+            Vector3 temp;
+            float co = cardOffset * cardCount;
+
+            temp = d_start2 - new Vector3(co, 0f)*2;
+            cardModel.backIndex = 2;
+            cardModel.cardIndex = i;
+
+            sources.Add(cardCopy);
+
+            cardCopy.transform.position = temp;
+            cardModel.ToggleFace(false);
+
+            spriteRenderer.sortingOrder = cardCount;
+
+            cardCount++;
+        }
+        //player1のdrawnsを表示
+        cardCount = 0;
+        foreach (int i in hands.drawns[1])
+        {
+            GameObject cardCopy = (GameObject)Instantiate(cardPrefab);
+            CardModel cardModel = cardCopy.GetComponent<CardModel>();
+            SpriteRenderer spriteRenderer = cardCopy.GetComponent<SpriteRenderer>();
+            Vector3 temp;
+            float co = cardOffset * cardCount;
+
+            temp = d_start1 - new Vector3(0f, co)*2;
+            cardModel.backIndex = 1;
+            cardModel.cardIndex = i;
+
+            sources.Add(cardCopy);
+
+            cardCopy.transform.position = temp;
+            cardCopy.transform.Rotate(new Vector3(0f, 0f, 270f));
+            cardModel.ToggleFace(true);
+
+            spriteRenderer.sortingOrder = cardCount;
+
+            cardCount++;
+        }
+
     }
 
     private void initSources()
