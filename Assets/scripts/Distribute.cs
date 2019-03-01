@@ -9,9 +9,9 @@ public class Distribute : MonoBehaviour
     public float cardOffset;
     public GameObject cardPrefab;
     private Vector3 start0 = new Vector3(-4f, -3.5f);
-    private Vector3 start1 = new Vector3(8, -3.5f);
+    private Vector3 start1 = new Vector3(6, -3.5f);
     private Vector3 start2 = new Vector3(4f, 3.5f);
-    private Vector3 start3 = new Vector3(-8f, 3.5f);
+    private Vector3 start3 = new Vector3(-6f, 3.5f);
     private List<GameObject> sources;
     void distribute()
     {
@@ -38,7 +38,7 @@ public class Distribute : MonoBehaviour
             cardCount++;
         }
         cardCount = 0;
-        foreach (int i in hands.Gethand1())
+        foreach (int i in hands.Gethand3())
         {
             GameObject cardCopy = (GameObject)Instantiate(cardPrefab);
             CardModel cardModel = cardCopy.GetComponent<CardModel>();
@@ -83,7 +83,7 @@ public class Distribute : MonoBehaviour
             cardCount++;
         }
         cardCount = 0;
-        foreach (int i in hands.Gethand3())
+        foreach (int i in hands.Gethand1())
         {
             GameObject cardCopy = (GameObject)Instantiate(cardPrefab);
             CardModel cardModel = cardCopy.GetComponent<CardModel>();
