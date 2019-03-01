@@ -31,8 +31,10 @@ public class click : MonoBehaviour , IPointerClickHandler
 
             hands.hands[nowowner].Remove(cardIndex); //引かれる人の手札配列からカードを削除
             hands.hands[turnplayer].Add(cardIndex); //引いた人の手札配列にカードを追加
-
             hands.Delete();
+            hands.ClickUpdate();
+
+
             distribute = hand.GetComponent<Distribute>();
             distribute.updateField();
         }
