@@ -12,6 +12,7 @@ public class Distribute : MonoBehaviour
     private Vector3 start1 = new Vector3(8, -3.5f);
     private Vector3 start2 = new Vector3(4f, 3.5f);
     private Vector3 start3 = new Vector3(-8f, 3.5f);
+    private List<GameObject> sources;
     void distribute()
     {
         int cardCount = 0;
@@ -19,6 +20,7 @@ public class Distribute : MonoBehaviour
         {
             GameObject cardCopy = Instantiate(cardPrefab);
             CardModel cardModel = cardCopy.GetComponent<CardModel>();
+            SpriteRenderer spriteRenderer = cardCopy.GetComponent<SpriteRenderer>();
             Vector3 temp;
             float co = cardOffset * cardCount;
 
@@ -26,8 +28,12 @@ public class Distribute : MonoBehaviour
             cardModel.backIndex = 0;
             cardModel.cardIndex = i;
 
+            sources.Add(cardCopy);
+
             cardCopy.transform.position = temp;
             cardModel.ToggleFace(true);
+
+            spriteRenderer.sortingOrder = cardCount;
 
             cardCount++;
         }
@@ -36,6 +42,7 @@ public class Distribute : MonoBehaviour
         {
             GameObject cardCopy = (GameObject)Instantiate(cardPrefab);
             CardModel cardModel = cardCopy.GetComponent<CardModel>();
+            SpriteRenderer spriteRenderer = cardCopy.GetComponent<SpriteRenderer>();
             Vector3 temp;
             float co = cardOffset * cardCount;
 
@@ -43,9 +50,13 @@ public class Distribute : MonoBehaviour
             cardModel.backIndex = 1;
             cardModel.cardIndex = i;
 
+            sources.Add(cardCopy);
+
             cardCopy.transform.position = temp;
             cardCopy.transform.Rotate(new Vector3(0f, 0f, 90f));
-            cardModel.ToggleFace(true);
+            cardModel.ToggleFace(false);
+
+            spriteRenderer.sortingOrder = cardCount;
 
             cardCount++;
         }
@@ -54,6 +65,7 @@ public class Distribute : MonoBehaviour
         {
             GameObject cardCopy = (GameObject)Instantiate(cardPrefab);
             CardModel cardModel = cardCopy.GetComponent<CardModel>();
+            SpriteRenderer spriteRenderer = cardCopy.GetComponent<SpriteRenderer>();
             Vector3 temp;
             float co = cardOffset * cardCount;
 
@@ -61,8 +73,12 @@ public class Distribute : MonoBehaviour
             cardModel.backIndex = 2;
             cardModel.cardIndex = i;
 
+            sources.Add(cardCopy);
+
             cardCopy.transform.position = temp;
-            cardModel.ToggleFace(true);
+            cardModel.ToggleFace(false);
+
+            spriteRenderer.sortingOrder = cardCount;
 
             cardCount++;
         }
@@ -71,6 +87,7 @@ public class Distribute : MonoBehaviour
         {
             GameObject cardCopy = (GameObject)Instantiate(cardPrefab);
             CardModel cardModel = cardCopy.GetComponent<CardModel>();
+            SpriteRenderer spriteRenderer = cardCopy.GetComponent<SpriteRenderer>();
             Vector3 temp;
             float co = cardOffset * cardCount;
 
@@ -78,11 +95,29 @@ public class Distribute : MonoBehaviour
             cardModel.backIndex = 3;
             cardModel.cardIndex = i;
 
+            sources.Add(cardCopy);
+
             cardCopy.transform.position = temp;
             cardCopy.transform.Rotate(new Vector3(0f, 0f, 270f));
             cardModel.ToggleFace(true);
 
+            spriteRenderer.sortingOrder = cardCount;
+
             cardCount++;
+        }
+    }
+
+    private void initSources()
+    {
+        if (sources == null) sources = new List<GameObject>();
+        else
+        {
+            foreach (GameObject source in sources)
+            {
+                Destroy(source); //今表示しているgameobjectのを消す。
+            }
+            sources.Clear();
+
         }
     }
 
@@ -90,6 +125,7 @@ public class Distribute : MonoBehaviour
     {
         if (GUI.Button(new Rect(120, 10, 100, 20), "distribute"))
         {
+            initSources();
             hands = GetComponent<Hands>();
             distribute();
         }
@@ -104,6 +140,6 @@ public class Distribute : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }
