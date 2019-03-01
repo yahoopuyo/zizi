@@ -7,29 +7,32 @@ public class Hands : MonoBehaviour
 {
     ZiziDeck deck;
     public List<int>[] hands;
+    public List<int>[] originals;
+    public List<int>[] drawns;
     private List<int> grave;
     private int k = 0;
     public List<int> Gethand0()
     {
-        return hands[0];
+        return originals[0];
     }
     public List<int> Gethand1()
     {
-        return hands[1];
+        return originals[1];
     }
     public List<int> Gethand2()
     {
-        return hands[2];
+        return originals[2];
     }
     public List<int> Gethand3()
     {
-        return hands[3];
+        return originals[3];
     }
 
     public List<int> GetGrave()
     {
         return grave;
     }
+
     public void DeletePair(int num,int player)  //num is 1~13
     {
         int count=0;
@@ -51,6 +54,8 @@ public class Hands : MonoBehaviour
             }
         }
     }
+
+
 
 
     public int Cardownerreturn(int index) //カードの持ち主を返す関数
@@ -94,22 +99,100 @@ public class Hands : MonoBehaviour
         }
     }
 
+    void makeoriginals()
+    {
+        for(int i = 0; i < 4; i++) //player0~3
+        {
+            if (originals[i] == null) originals[i] = new List<int>();
+            else originals[i].Clear();
+            foreach (int card in hands[i])
+            {
+                originals[i].Add(card);
+            }
+        }
+    }
+
 
     // Start is called before the first frame update
     void Start()
     {
         deck = GetComponent<ZiziDeck>();
         hands = new List<int>[4];
+        originals = new List<int>[4];
+        drawns = new List<int>[4];
+        for(int i = 0; i < 4; i++)
+        {
+            if (drawns[i] == null) drawns[i] = new List<int>();
+            else drawns[i].Clear();
+        }
         grave = new List<int>();
         CardList();
         Delete();
         Delete();
+        makeoriginals(); //originals配列を作成
     }
-
-    // Update is called once per frame
-    private void Update()
+    
+    public void ClickUpdate()
     {
+        for(int i = 0; i < 4; i++)
+        {
+            //drawnsへの追加
+            foreach (int card in hands[i])
+            {
+                int local = 0;
+                if (originals[i] != null)
+                {
+                    foreach (int o_card in originals[i])
+                    {
+                        if (card == o_card) local++;
+                    }
+                }
+                if (drawns[i] != null)
+                {
+                    foreach (int d_card in drawns[i])
+                    {
+                        if (card == d_card) local++;
+                    }
+                }
+                if (local == 0)
+                {
+                    drawns[i].Add(card);
+                }
+            }
 
+            //drawnsからの削除
+            int del_num = 100;
+            foreach (int d_card in drawns[i])
+            {
+                int local = 0;
+                foreach (int card in hands[i])
+                {
+                    if (d_card == card) local++;
+                }
+
+                if (local == 0) del_num = d_card;
+                
+            }
+            if (del_num != 100) drawns[i].Remove(del_num);
+
+
+            del_num = 100;
+            //originalsからの削除
+            foreach (int o_card in originals[i])
+            {
+                int local = 0;
+                foreach (int card in hands[i])
+                {
+                    if (o_card == card)
+                    {
+                        local++;
+                    }
+                }
+
+                if (local == 0) del_num = o_card;
+            }
+            if(del_num!=100) originals[i].Remove(del_num);
+        }
     }
 
 

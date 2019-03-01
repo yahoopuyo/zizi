@@ -35,6 +35,7 @@ public class Click : MonoBehaviour , IPointerClickHandler
                 hands.hands[turnPlayer].Add(cardIndex); //引いた人の手札配列にカードを追加
 
                 hands.Delete();
+                hands.ClickUpdate();
                 distribute = hand.GetComponent<Distribute>();
                 distribute.updateField();
                 turnManager.NextTurnPlayer();
@@ -42,6 +43,7 @@ public class Click : MonoBehaviour , IPointerClickHandler
                 turnManager.turn++;
             }
        }
+
 
     }
     // Start is called before the first frame update
