@@ -20,7 +20,7 @@ public class ShowSource : MonoBehaviour
         {
             foreach (GameObject source in sources)
             {
-                Destroy(source);
+                Destroy(source); //今表示しているgameobjectのを消す。
             }
             sources.Clear();
 

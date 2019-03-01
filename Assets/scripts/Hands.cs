@@ -52,6 +52,20 @@ public class Hands : MonoBehaviour
         }
     }
 
+
+    public int Cardownerreturn(int index) //カードの持ち主を返す関数
+    {
+        int ans=5;
+        for (int player = 0; player < 4; player++)
+        {
+            foreach (int card in hands[player])
+            {
+                if (card == index) ans=player;
+            }
+        }
+        return ans;
+    }
+
     private void FirstDelete()
     {
         for(int players =0; players < 4; players++)
@@ -93,6 +107,13 @@ public class Hands : MonoBehaviour
     }
 
     // Update is called once per frame
+    private void Update()
+    {
+        for (int players = 0; players < 4; players++)
+        {
+            for (int a = 1; a < 14; a++) DeletePair(a, players);
+        }
+    }
 
 }
 
