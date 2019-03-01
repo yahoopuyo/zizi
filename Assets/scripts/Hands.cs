@@ -66,11 +66,10 @@ public class Hands : MonoBehaviour
         return ans;
     }
 
-    private void FirstDelete()
+    public void Delete()
     {
         for(int players =0; players < 4; players++)
         {
-            for (int a = 1; a < 14; a++) DeletePair(a, players);
             for (int a = 1; a < 14; a++) DeletePair(a, players);
         }
     }
@@ -103,17 +102,16 @@ public class Hands : MonoBehaviour
         hands = new List<int>[4];
         grave = new List<int>();
         CardList();
-        FirstDelete();
+        Delete();
+        Delete();
     }
 
     // Update is called once per frame
     private void Update()
     {
-        for (int players = 0; players < 4; players++)
-        {
-            for (int a = 1; a < 14; a++) DeletePair(a, players);
-        }
+
     }
+
 
 }
 

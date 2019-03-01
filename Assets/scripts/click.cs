@@ -7,6 +7,7 @@ public class click : MonoBehaviour , IPointerClickHandler
 {
     private GameObject hand;
     private Hands hands;
+    private Distribute distribute;
     CardModel cardModel;
     int cardIndex;
     int nowowner; //引かれる前のowner
@@ -30,7 +31,12 @@ public class click : MonoBehaviour , IPointerClickHandler
 
             hands.hands[nowowner].Remove(cardIndex); //引かれる人の手札配列からカードを削除
             hands.hands[turnplayer].Add(cardIndex); //引いた人の手札配列にカードを追加
+
+            hands.Delete();
+            distribute = hand.GetComponent<Distribute>();
+            distribute.updateField();
         }
+
     }
     // Start is called before the first frame update
     void Start()

@@ -130,6 +130,12 @@ public class Distribute : MonoBehaviour
             distribute();
         }
     }
+    public void updateField()
+    {
+        initSources();
+        hands = GetComponent<Hands>();
+        distribute();
+    }
 
     // Start is called before the first frame update
     void Start()
