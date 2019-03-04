@@ -55,6 +55,7 @@ public class Click : MonoBehaviour , IPointerClickHandler, IPointerEnterHandler,
         {
             get();
 
+            if (turnPlayer != 0) return;    //randomCPUzizi用
             if (drawnPlayer == hands.Cardownerreturn(cardIndex))
             {
                 transform.Rotate(0, 0, 90);  //カードを90度回転

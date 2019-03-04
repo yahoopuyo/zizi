@@ -118,18 +118,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 2018181553}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &124177886
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 124177879}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ff9be6004cf240a6bc39500c264f82a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &124177887
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -203,6 +191,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d472753071541411e843352ee460450c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  originalBack: 
 --- !u!4 &895193055
 Transform:
   m_ObjectHideFlags: 0
@@ -278,6 +267,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d472753071541411e843352ee460450c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  originalBack: 
 --- !u!114 &1244723546
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -364,6 +354,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1522741720}
   - component: {fileID: 1522741721}
+  - component: {fileID: 1522741722}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -400,6 +391,19 @@ MonoBehaviour:
   turn: 0
   turnPlayer: 0
   drawnPlayer: 0
+--- !u!114 &1522741722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1522741719}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5865a2436c19b4a0c9b3faf9fb7128c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  which: 0
 --- !u!1 &1635253064
 GameObject:
   m_ObjectHideFlags: 0
@@ -584,6 +588,11 @@ PrefabInstance:
     - target: {fileID: 7539356322678851471, guid: 2902fba118a6e486595554afe43324f0,
         type: 3}
       propertyPath: m_Mass
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7878659350433996505, guid: 2902fba118a6e486595554afe43324f0,
+        type: 3}
+      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
