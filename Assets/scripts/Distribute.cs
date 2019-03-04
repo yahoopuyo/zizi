@@ -19,6 +19,7 @@ public class Distribute : MonoBehaviour
     private List<GameObject> sources;
     void distribute()
     {
+        //player0のoriginalsを表示
         int cardCount = 0;
         foreach(int i in hands.Gethand0())
         {
@@ -41,6 +42,7 @@ public class Distribute : MonoBehaviour
 
             cardCount++;
         }
+        //player3のoriginalsを表示
         cardCount = 0;
         foreach (int i in hands.Gethand3())
         {
@@ -64,6 +66,7 @@ public class Distribute : MonoBehaviour
 
             cardCount++;
         }
+        //player2のoriginalsを表示
         cardCount = 0;
         foreach (int i in hands.Gethand2())
         {
@@ -87,6 +90,7 @@ public class Distribute : MonoBehaviour
 
             cardCount++;
         }
+        //player1のoriginalを表示
         cardCount = 0;
         foreach (int i in hands.Gethand1())
         {
@@ -145,7 +149,7 @@ public class Distribute : MonoBehaviour
             float co = cardOffset * cardCount;
 
             temp = d_start3 + new Vector3(0f, co)*2;
-            cardModel.backIndex = 3;
+            cardModel.backIndex = hands.GetBack(i);
             cardModel.cardIndex = i;
 
             sources.Add(cardCopy);
@@ -169,7 +173,7 @@ public class Distribute : MonoBehaviour
             float co = cardOffset * cardCount;
 
             temp = d_start2 - new Vector3(co, 0f)*2;
-            cardModel.backIndex = 2;
+            cardModel.backIndex = hands.GetBack(i);
             cardModel.cardIndex = i;
 
             sources.Add(cardCopy);
@@ -193,7 +197,7 @@ public class Distribute : MonoBehaviour
             float co = cardOffset * cardCount;
 
             temp = d_start1 - new Vector3(0f, co)*2;
-            cardModel.backIndex = 1;
+            cardModel.backIndex = hands.GetBack(i);
             cardModel.cardIndex = i;
 
             sources.Add(cardCopy);
