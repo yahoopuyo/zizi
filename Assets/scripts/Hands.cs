@@ -9,6 +9,7 @@ public class Hands : MonoBehaviour
     public List<int>[] hands;
     public List<int>[] originals;
     public List<int>[] drawns;
+    public List<int> originalBack;
     private List<int> grave;
     private int k = 0;
     public List<int> Gethand0()
@@ -55,7 +56,20 @@ public class Hands : MonoBehaviour
         }
     }
 
+    private void InitBackList()
+    {
+        originalBack = new List<int>();
+        for(int cardIndex = 0; cardIndex<52; cardIndex++)
+        {
+            for (int i = 0; i < 4; i++) if (hands[i].Contains(cardIndex)) originalBack.Add(i);
+            if (cardIndex == deck.GetZizi()) originalBack.Add(4);
+        }
+    }
 
+    public int GetBack(int card)
+    {
+        return originalBack[card];
+    }
 
 
     public int Cardownerreturn(int index) //カードの持ち主を返す関数
@@ -127,6 +141,7 @@ public class Hands : MonoBehaviour
         }
         grave = new List<int>();
         CardList();
+        InitBackList(); //orginalBack[cardIndex]でbackIndexを返す、ziziは4
         Delete();
         Delete();
         makeoriginals(); //originals配列を作成
