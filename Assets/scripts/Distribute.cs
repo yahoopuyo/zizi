@@ -12,10 +12,10 @@ public class Distribute : MonoBehaviour
     private Vector3 start3 = new Vector3(6, -3.5f);
     private Vector3 start2 = new Vector3(4f, 3.5f);
     private Vector3 start1 = new Vector3(-6f, 3.5f);
-    private Vector3 d_start0 = new Vector3(-4f, -2.5f);
-    private Vector3 d_start3 = new Vector3(5, -3.5f);
-    private Vector3 d_start2 = new Vector3(4f, 2.5f);
-    private Vector3 d_start1 = new Vector3(-5f, 3.5f);
+    private Vector3 d_start0 = new Vector3(-3.5f, -1.4f);
+    private Vector3 d_start3 = new Vector3(3.9f, -3.0f);
+    private Vector3 d_start2 = new Vector3(3.5f, 1.4f);
+    private Vector3 d_start1 = new Vector3(-3.9f, 3.5f);
     private List<GameObject> sources;
     void distribute()
     {
@@ -83,6 +83,7 @@ public class Distribute : MonoBehaviour
             sources.Add(cardCopy);
 
             cardCopy.transform.position = temp;
+            cardCopy.transform.Rotate(new Vector3(0f, 0f, 180f));
             cardModel.ToggleFace(false);
 
             spriteRenderer.sortingOrder = cardCount;
@@ -178,6 +179,7 @@ public class Distribute : MonoBehaviour
             sources.Add(cardCopy);
 
             cardCopy.transform.position = temp;
+            cardCopy.transform.Rotate(new Vector3(0f, 0f, 180f));
             cardModel.ToggleFace(false);
 
             spriteRenderer.sortingOrder = cardCount;
