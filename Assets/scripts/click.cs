@@ -7,6 +7,7 @@ public class Click : MonoBehaviour , IPointerClickHandler, IPointerEnterHandler,
 {
     private GameObject hand;
     private GameObject gameManager;
+    ComputerForOnePlayer cpu1;
     private TurnManager turnManager;
     private Hands hands;
     private Distribute distribute;
@@ -18,6 +19,7 @@ public class Click : MonoBehaviour , IPointerClickHandler, IPointerEnterHandler,
     void get()
     {
         gameManager = GameObject.Find("GameManager");
+        cpu1 = gameManager.GetComponent<ComputerForOnePlayer>();
         turnManager = gameManager.GetComponent<TurnManager>();
         turnPlayer = turnManager.turnPlayer;
         drawnPlayer = turnManager.drawnPlayer;
@@ -55,24 +57,24 @@ public class Click : MonoBehaviour , IPointerClickHandler, IPointerEnterHandler,
         {
             get();
 
-            if (turnPlayer != 0) return;    //randomCPUzizi用
+            if (cpu1.flag) if (turnPlayer != 0) return;    //playernum == 1　の時
             if (drawnPlayer == hands.Cardownerreturn(cardIndex))
             {
-                hands.hands[drawnPlayer].Remove(cardIndex); //引かれる人の手札配列からカードを削除
-                hands.hands[turnPlayer].Add(cardIndex); //引いた人の手札配列にカードを追加
-
-                hands.DeletePair((cardIndex % 13) + 1,turnPlayer);
-                hands.ClickUpdate();
-                distribute = hand.GetComponent<Distribute>();
-                distribute.updateField();
-                turnManager.NextTurnPlayer();
-                turnManager.NextDrawnPlayer();
-                turnManager.turnNext();
+                //hands.hands[drawnPlayer].Remove(cardIndex); //引かれる人の手札配列からカードを削除
+                //hands.hands[turnPlayer].Add(cardIndex); //引いた人の手札配列にカードを追加
+                //hands.DeletePair((cardIndex % 13) + 1,turnPlayer);
+                //hands.ClickUpdate();
+                //distribute = hand.GetComponent<Distribute>();
+                //distribute.updateField();
+                //turnManager.NextTurnPlayer();
+                //turnManager.NextDrawnPlayer();
+                //turnManager.turnNext();
+                if (cpu1.moveFlag || cpu1.flashFlag) return;
+                cpu1.drawWithAnimation(drawnPlayer, cardIndex,turnPlayer);
             }
-       }
-
-
+        }
     }
+
     // Start is called before the first frame update
     void Start()
     {
