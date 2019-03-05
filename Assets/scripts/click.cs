@@ -58,11 +58,10 @@ public class Click : MonoBehaviour , IPointerClickHandler, IPointerEnterHandler,
             if (turnPlayer != 0) return;    //randomCPUzizi用
             if (drawnPlayer == hands.Cardownerreturn(cardIndex))
             {
-                transform.Rotate(0, 0, 90);  //カードを90度回転
                 hands.hands[drawnPlayer].Remove(cardIndex); //引かれる人の手札配列からカードを削除
                 hands.hands[turnPlayer].Add(cardIndex); //引いた人の手札配列にカードを追加
 
-                hands.Delete();
+                hands.DeletePair((cardIndex % 13) + 1,turnPlayer);
                 hands.ClickUpdate();
                 distribute = hand.GetComponent<Distribute>();
                 distribute.updateField();
