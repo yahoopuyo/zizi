@@ -14,7 +14,8 @@ GameObject:
   - component: {fileID: 2965134800190610363}
   - component: {fileID: 7539356322678851471}
   - component: {fileID: 7878659350433996505}
-  - component: {fileID: 5817871515314584077}
+  - component: {fileID: 6741805492931198416}
+  - component: {fileID: 618541754942336830}
   m_Layer: 0
   m_Name: Card
   m_TagString: Untagged
@@ -249,7 +250,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1.3888888}
   m_EdgeRadius: 0
---- !u!114 &5817871515314584077
+--- !u!114 &6741805492931198416
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -258,6 +259,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 2965134800190610359}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 23000f84edfb641e5b51dda28dc1267c, type: 3}
+  m_Script: {fileID: 11500000, guid: 4515d251d598e40c6929e49e498b3b53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &618541754942336830
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2965134800190610359}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be31e4fbd8e00430da7afbc55b9018f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 1
+  posCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

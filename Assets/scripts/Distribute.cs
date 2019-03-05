@@ -234,13 +234,38 @@ public class Distribute : MonoBehaviour
             initSources();
             hands = GetComponent<Hands>();
             distribute();
+            Center();
+            foreach (GameObject source in sources)
+            {
+                source.name = "Card" + source.GetComponent<CardModel>().cardIndex;
+            }
         }
     }
+    
+    public void Center()
+    {
+        List<int> grave = hands.GetGrave();
+        GameObject cardCopy = Instantiate(cardPrefab);
+        CardModel cardModel = cardCopy.GetComponent<CardModel>();
+
+        cardModel.cardIndex = grave[grave.Count - 1];
+        cardModel.ToggleFace(true);
+
+        cardCopy.transform.position = new Vector3(0,0,0);
+        sources.Add(cardCopy);
+    }
+
     public void updateField()
     {
         initSources();
         hands = GetComponent<Hands>();
         distribute();
+        Center();
+        foreach(GameObject source in sources)
+        {
+            source.name = "Card" + source.GetComponent<CardModel>().cardIndex;
+        }
+
     }
 
     // Start is called before the first frame update
