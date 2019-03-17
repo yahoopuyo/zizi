@@ -56,6 +56,7 @@ public class Hands : MonoBehaviour
         }
     }
 
+
     public int FindDeletedPair(int drawnCard, int turnPlayer)
     {
         int deletedPair = 100;
