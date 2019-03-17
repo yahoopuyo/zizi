@@ -11,7 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/zizitest.unity
     guid: 24564c938441742b08a4fe8cb7338fd8
-  - enabled: 1
-    path: Assets/Scenes/Source.unity
-    guid: 84d4c89675b9743eca002c609e5dc3ce
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   m_configObjects: {}

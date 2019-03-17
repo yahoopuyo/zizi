@@ -56,6 +56,17 @@ public class Hands : MonoBehaviour
         }
     }
 
+
+    public int FindDeletedPair(int drawnCard, int turnPlayer)
+    {
+        int deletedPair = 100;
+        foreach (int cI in hands[turnPlayer])
+        {
+            if (cI % 13 == drawnCard % 13) deletedPair = cI;
+        }
+        return deletedPair;
+    }
+
     private void InitBackList()
     {
         originalBack = new List<int>();
