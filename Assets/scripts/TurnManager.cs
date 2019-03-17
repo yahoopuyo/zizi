@@ -7,7 +7,9 @@ public class TurnManager : MonoBehaviour
     public int turn;
     public int turnPlayer;
     public int drawnPlayer;
+    InitCanvas init;
     private List<int> Wins = new List<int>();
+    public List<string> result = new List<string>();
     private GameObject hand;
     private Hands hands;
 
@@ -94,12 +96,18 @@ public class TurnManager : MonoBehaviour
             {
                 if (hands.hands[pl].Count == 0 && !Wins.Contains(pl))
                 {
-                    Debug.Log("player" + pl + "..." + CountWinners());
+                    result.Add("player" + pl + "..." + CountWinners());
                     Wins.Add(pl);
                 }
             }
         }
-        if (turnPlayer == drawnPlayer) Debug.Log("player" + turnPlayer + " losed");
+        if (turnPlayer == drawnPlayer)
+        {
+            result.Add("player" + turnPlayer + " losed");
+            init = GetComponent<InitCanvas>();
+            init.gameoverP.SetActive(true);
+            //Text text = GameObject.Find("Results").();
+        }
     }
     void Start()
     {

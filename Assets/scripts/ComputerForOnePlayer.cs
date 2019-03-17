@@ -85,7 +85,7 @@ public class ComputerForOnePlayer : MonoBehaviour
 
     void Start()
     {
-        //if(player number != 1)   flag = false　的な感じ？
+        flag = GameObject.Find("ModeData").GetComponent<ModeData>().IsSolo(); //　的な感じ？
     }
 
     void OnGUI()
