@@ -49,6 +49,7 @@ Assets/_TerrainAutoUpgrade.meta
 net_test.app/
 opensource_test.app/
 randomzizi.app/
+randomCPUzizi/
 #others
 *.terrainlayer
 *.terrainlayer.meta

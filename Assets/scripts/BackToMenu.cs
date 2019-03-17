@@ -8,8 +8,8 @@ public class BackToMenu : MonoBehaviour
 
     public void OnClick()
     {
-        Debug.Log("clicked");
-        SceneManager.LoadScene("SampleScene");
+       // Debug.Log("clicked");
+        SceneManager.LoadScene("MainMenu");
     }
     // Start is called before the first frame update
     void Start()
