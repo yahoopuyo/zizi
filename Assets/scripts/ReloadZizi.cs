@@ -24,12 +24,6 @@ public class ReloadZizi : MonoBehaviour
 
     private void OnGUI()
     {
-        if (GUI.Button(new Rect(100,350, 100, 20), "Restart"))
-        {
-            // 現在のScene名を取得する
-            Scene loadScene = SceneManager.GetActiveScene();
-            // Sceneの読み直し
-            SceneManager.LoadScene(loadScene.name);
-        }
+
     }
 }

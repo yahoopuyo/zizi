@@ -227,21 +227,32 @@ public class Distribute : MonoBehaviour
         }
     }
 
-    void OnGUI()
+    //void OnGUI()
+    //{
+    //    if (GUI.Button(new Rect(120, 10, 100, 20), "distribute"))
+    //    {
+    //        initSources();
+    //        hands = GetComponent<Hands>();
+    //        distribute();
+    //        Center();
+    //        foreach (GameObject source in sources)
+    //        {
+    //            source.name = "Card" + source.GetComponent<CardModel>().cardIndex;
+    //        }
+    //    }
+    //}
+
+    public void StartGame()
     {
-        if (GUI.Button(new Rect(120, 10, 100, 20), "distribute"))
+        initSources();
+        hands = GetComponent<Hands>();
+        distribute();
+        Center();
+        foreach (GameObject source in sources)
         {
-            initSources();
-            hands = GetComponent<Hands>();
-            distribute();
-            Center();
-            foreach (GameObject source in sources)
-            {
-                source.name = "Card" + source.GetComponent<CardModel>().cardIndex;
-            }
+            source.name = "Card" + source.GetComponent<CardModel>().cardIndex;
         }
     }
-    
     public void Center()
     {
         List<int> grave = hands.GetGrave();
