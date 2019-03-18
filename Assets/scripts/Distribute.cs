@@ -12,10 +12,14 @@ public class Distribute : MonoBehaviour
     private Vector3 start3 = new Vector3(6, -3.5f);
     private Vector3 start2 = new Vector3(4f, 3.5f);
     private Vector3 start1 = new Vector3(-6f, 3.5f);
-    private Vector3 d_start0 = new Vector3(-3.5f, -1.4f);
-    private Vector3 d_start3 = new Vector3(3.9f, -3.0f);
-    private Vector3 d_start2 = new Vector3(3.5f, 1.4f);
-    private Vector3 d_start1 = new Vector3(-3.9f, 3.5f);
+    //private Vector3 d_start0 = new Vector3(-3.5f, -1.4f);
+    //private Vector3 d_start3 = new Vector3(3.9f, -3.0f);
+    //private Vector3 d_start2 = new Vector3(3.5f, 1.4f);
+    //private Vector3 d_start1 = new Vector3(-3.9f, 3.5f);
+    private Vector3 d_start0 = new Vector3(-3.5f, -1.8f);
+    private Vector3 d_start3 = new Vector3(4.3f, -3.0f);
+    private Vector3 d_start2 = new Vector3(3.5f, 1.8f);
+    private Vector3 d_start1 = new Vector3(-4.3f, 3.5f);
     private List<GameObject> sources;
     void distribute()
     {
@@ -30,7 +34,7 @@ public class Distribute : MonoBehaviour
             float co = cardOffset * cardCount;
 
             temp = start0 + new Vector3(co, 0f);
-            cardModel.backIndex = 0;
+            cardModel.backIndex = hands.GetBack(i);
             cardModel.cardIndex = i;
 
             sources.Add(cardCopy);
@@ -53,7 +57,7 @@ public class Distribute : MonoBehaviour
             float co = cardOffset * cardCount;
 
             temp = start3 + new Vector3(0f, co);
-            cardModel.backIndex = 3;
+            cardModel.backIndex = hands.GetBack(i);
             cardModel.cardIndex = i;
 
             sources.Add(cardCopy);
@@ -77,7 +81,7 @@ public class Distribute : MonoBehaviour
             float co = cardOffset * cardCount;
 
             temp = start2 - new Vector3(co, 0f);
-            cardModel.backIndex = 2;
+            cardModel.backIndex = hands.GetBack(i);
             cardModel.cardIndex = i;
 
             sources.Add(cardCopy);
@@ -101,7 +105,7 @@ public class Distribute : MonoBehaviour
             float co = cardOffset * cardCount;
 
             temp = start1 - new Vector3(0f, co);
-            cardModel.backIndex = 1;
+            cardModel.backIndex = hands.GetBack(i);
             cardModel.cardIndex = i;
 
             sources.Add(cardCopy);
@@ -125,8 +129,8 @@ public class Distribute : MonoBehaviour
             Vector3 temp;
             float co = cardOffset * cardCount;
 
-            temp = d_start0 + new Vector3(co, 0f)*2;
-            cardModel.backIndex = 0;
+            temp = d_start0 + new Vector3(co, 0f)*1.7f;
+            cardModel.backIndex = hands.GetBack(i);
             cardModel.cardIndex = i;
 
             sources.Add(cardCopy);
@@ -148,7 +152,7 @@ public class Distribute : MonoBehaviour
             Vector3 temp;
             float co = cardOffset * cardCount;
 
-            temp = d_start3 + new Vector3(0f, co)*2;
+            temp = d_start3 + new Vector3(0f, co)*1.7f;
             cardModel.backIndex = hands.GetBack(i);
             cardModel.cardIndex = i;
 
@@ -172,7 +176,7 @@ public class Distribute : MonoBehaviour
             Vector3 temp;
             float co = cardOffset * cardCount;
 
-            temp = d_start2 - new Vector3(co, 0f)*2;
+            temp = d_start2 - new Vector3(co, 0f)*1.7f;
             cardModel.backIndex = hands.GetBack(i);
             cardModel.cardIndex = i;
 
@@ -196,7 +200,7 @@ public class Distribute : MonoBehaviour
             Vector3 temp;
             float co = cardOffset * cardCount;
 
-            temp = d_start1 - new Vector3(0f, co)*2;
+            temp = d_start1 - new Vector3(0f, co)*1.7f;
             cardModel.backIndex = hands.GetBack(i);
             cardModel.cardIndex = i;
 

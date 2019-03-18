@@ -11,6 +11,7 @@ public class ComputerForOnePlayer : MonoBehaviour
     private int turn;
     private int tP;
     private int dP;
+    private int level;
     GameObject hand;
     GameObject card;
     Hands hands;
@@ -77,32 +78,62 @@ public class ComputerForOnePlayer : MonoBehaviour
 
     private int draw(int drawnPlayer)
     {
-        int index = Random.Range(0, hands.hands[dP].Count);
-        int cI = hands.hands[dP][index];
+        if (level == 1 || level == 2) return cpu1(drawnPlayer);
+        else return cpu2(drawnPlayer);
+    }
 
+    private int cpu1(int drawnPlayer)
+    {
+        int index = Random.Range(0, hands.hands[drawnPlayer].Count);
+        int cI = hands.hands[drawnPlayer][index];
         return cI;
     }
 
-    void Start()
+    private int cpu2(int drawnPlayer)
     {
-        flag = GameObject.Find("ModeData").GetComponent<ModeData>().IsSolo(); //　的な感じ？
+        int rand = Random.Range(0,2);
+        Debug.Log(rand);
+        if (hands.drawns[drawnPlayer].Count == 0 || hands.originals[drawnPlayer].Count == 0) return cpu1(drawnPlayer);
+        if (rand == 0) return fromOriginal(drawnPlayer);
+        if (rand == 1) return fromDrawns(drawnPlayer);
+        return hands.hands[drawnPlayer][0];
     }
 
-    void OnGUI()
+    private int fromOriginal(int drawnPlayer)
     {
-        if (flag)
-        {
-            if (GUI.Button(new Rect(300, 10, 100, 20), "CPU turn draw"))
-            {
-                get();
-                if (tP != 0)
-                {
-                    if (moveFlag || flashFlag) return;  //待機処理中にもう一回押された時に無効化
-                    drawWithAnimation(dP,draw(dP),tP);
-                }
-            }
-        }
+        int index = Random.Range(0, hands.originals[drawnPlayer].Count);
+        int cI = hands.originals[drawnPlayer][index];
+        return cI;
     }
+
+    private int fromDrawns(int drawnPlayer)
+    {
+        int index = Random.Range(0, hands.drawns[drawnPlayer].Count);
+        int cI = hands.drawns[drawnPlayer][index];
+        return cI;
+    }
+    void Start()
+    {
+        ModeData modeData = GameObject.Find("ModeData").GetComponent<ModeData>();
+        flag = modeData.GetComponent<ModeData>().IsSolo(); //　的な感じ？
+        level = modeData.computerLevel;
+    }
+
+    //void OnGUI()
+    //{
+    //    if (flag)
+    //    {
+    //        if (GUI.Button(new Rect(300, 10, 100, 20), "CPU turn draw"))
+    //        {
+    //            get();
+    //            if (tP != 0)
+    //            {
+    //                if (moveFlag || flashFlag) return;  //待機処理中にもう一回押された時に無効化
+    //                drawWithAnimation(dP,draw(dP),tP);
+    //            }
+    //        }
+    //    }
+    //}
 
 
     // Update is called once per frame

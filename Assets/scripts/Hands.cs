@@ -6,6 +6,7 @@ using UnityEngine;
 public class Hands : MonoBehaviour
 {
     ZiziDeck deck;
+    private bool IsEasy = true;
     public List<int>[] hands;
     public List<int>[] originals;
     public List<int>[] drawns;
@@ -78,7 +79,8 @@ public class Hands : MonoBehaviour
 
     public int GetBack(int card)
     {
-        return originalBack[card];
+        if (IsEasy) return originalBack[card];
+        else return 2;
     }
 
 
@@ -140,6 +142,8 @@ public class Hands : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        ModeData modeData = GameObject.Find("ModeData").GetComponent<ModeData>();
+        IsEasy = modeData.IsEasy();
         deck = GetComponent<ZiziDeck>();
         hands = new List<int>[4];
         originals = new List<int>[4];

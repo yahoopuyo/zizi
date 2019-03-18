@@ -59,7 +59,7 @@ public class ModeData : MonoBehaviour
 
     public void OnClickStart()
     {
-        SceneManager.LoadScene("zizitest");
+        if (computerLevel != 0) SceneManager.LoadScene("zizitest");
     }
 
     public bool IsSolo()

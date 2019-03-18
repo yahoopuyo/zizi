@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TurnManager : MonoBehaviour
 {
@@ -96,7 +97,7 @@ public class TurnManager : MonoBehaviour
             {
                 if (hands.hands[pl].Count == 0 && !Wins.Contains(pl))
                 {
-                    result.Add("player" + pl + "..." + CountWinners());
+                    result.Add("player" + pl + " was " + CountWinners());
                     Wins.Add(pl);
                 }
             }
@@ -106,7 +107,10 @@ public class TurnManager : MonoBehaviour
             result.Add("player" + turnPlayer + " losed");
             init = GetComponent<InitCanvas>();
             init.gameoverP.SetActive(true);
-            //Text text = GameObject.Find("Results").();
+            string Order;
+            Order = result[0] + "st\n\n" + result[1] + "nd\n\n" + result[2] + "rd\n\n" + result[3];
+            Text text = GameObject.Find("Results").GetComponent<Text>();
+            text.text = Order;
         }
     }
     void Start()
