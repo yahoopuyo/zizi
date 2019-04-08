@@ -57,8 +57,7 @@ public class Click : MonoBehaviour , IPointerClickHandler, IPointerEnterHandler,
         {
             get();
 
-            //if (draw.flag) if (turnPlayer != 0) return;    //playernum == 1　の時
-            //if (draw.flag) return;    //playernum == 1　の時
+            //if (draw.flag) if (turnPlayer != 0) return;    //playernum == 1　の時デバッグ用にコメントアウトしてある
             if (drawnPlayer == hands.Cardownerreturn(cardIndex))
             {
                 //hands.hands[drawnPlayer].Remove(cardIndex); //引かれる人の手札配列からカードを削除

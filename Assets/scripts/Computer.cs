@@ -14,6 +14,12 @@ public class Computer : MonoBehaviour
     public bool zizikakuplace = false;
     public bool successflag = false;
 
+    /*
+    棋譜...record.record -> 正方形,None=-1
+    プライベート情報...info -> None=-1
+    handuniform...handuniform[player_num]で、player_numの持ってる背番号
+    */
+
     private void get()
     {
         record = GameObject.Find("GameManager").GetComponent<Record>();
@@ -42,7 +48,7 @@ public class Computer : MonoBehaviour
             zizikakunum = true;
             zizikakuplace = true;
         }
-        return zizi;
+        return zizi; //ziziの背番号を返す。なかったら-1。
     }
 
     private List<int> success(int drawnPlayer)
@@ -55,7 +61,7 @@ public class Computer : MonoBehaviour
             {
                 foreach(int myun in handUniforms[playerNumber])
                 {
-                    if(uniforms[myun] % 13 == info[un] % 13)
+                    if(info[myun] % 13 == info[un] % 13)
                     {
                         suc.Add(un);
                         successflag = true;
@@ -66,6 +72,7 @@ public class Computer : MonoBehaviour
 
         return suc;
     }
+
     public int draw(int drawnPlayer)
     {
         get();
@@ -90,6 +97,8 @@ public class Computer : MonoBehaviour
 
         return uniforms[CardUniform];
     }
+
+
 
     // Start is called before the first frame update
     void Start()
