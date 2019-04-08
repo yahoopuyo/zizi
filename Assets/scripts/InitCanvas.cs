@@ -7,6 +7,7 @@ public class InitCanvas : MonoBehaviour
     GameObject canvasStart;
     GameObject setP;
     GameObject setB;
+    GameObject debugP;
     public GameObject gameoverP;
     // Start is called before the first frame update
     void Start()
@@ -19,6 +20,8 @@ public class InitCanvas : MonoBehaviour
         setB.SetActive(true);
         gameoverP = GameObject.Find("GameOverPanel");
         gameoverP.SetActive(false);
+        debugP = GameObject.Find("debugPanel");
+        debugP.SetActive(false);
     }
 
     // Update is called once per frame

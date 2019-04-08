@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ComputerForOnePlayer : MonoBehaviour
+public class Draw : MonoBehaviour
 {
     public bool flag = true;   //プレイヤーが一人のときは、true
     public bool moveFlag = false; //処理待機(waitforsecond)中はtrue
@@ -14,8 +14,10 @@ public class ComputerForOnePlayer : MonoBehaviour
     private int level;
     GameObject hand;
     GameObject card;
+    Computer[] coms = new Computer[3];
     Hands hands;
     TurnManager turnManager;
+    Record record;
     Distribute distribute;
     public bool which;
 
@@ -23,11 +25,17 @@ public class ComputerForOnePlayer : MonoBehaviour
     {
         //card = GameObject.Find("Card");
         turnManager = GetComponent<TurnManager>();
+        record = GetComponent<Record>();
         turn = turnManager.turn;
         tP = turnManager.turnPlayer;
         dP = turnManager.drawnPlayer;
         hand = GameObject.Find("Hand"); //Handのクラスを取得
         hands = hand.GetComponent<Hands>();
+        for (int i = 0; i < 3; i++)
+        {
+            coms[i] = GameObject.Find("Com" + (i + 1)).GetComponent<Computer>();
+            //Debug.Log("Com" + (i + 1)); 
+        }
     }
 
     IEnumerator DrawWithAnimation(int drawnPlayer,int cardIndex,int turnPlayer)
@@ -40,7 +48,8 @@ public class ComputerForOnePlayer : MonoBehaviour
         moveFlag = false;
         if (hands.FindDeletedPair(cardIndex, turnPlayer) != 100)
         {
-            flashFlag = true;
+            flashFlag = true;   //アニメーション最中のアクション無効化用
+
             int deleted = hands.FindDeletedPair(cardIndex, turnPlayer);
             cardName = "Card" + deleted;
             card = GameObject.Find(cardName);
@@ -57,8 +66,17 @@ public class ComputerForOnePlayer : MonoBehaviour
             color.a = 1f;
             card.GetComponent<SpriteRenderer>().color = color;
             yield return new WaitForSeconds(1f);
+
+            record.updateRecordPaired(turn + 1, cardIndex, deleted);    //棋譜操作
+            record.updateInfoPaired(cardIndex, deleted);    //プライベート情報操作
             flashFlag = false;
         }
+        else
+        {
+            record.updateRecordUnpaired(turn + 1, cardIndex, turnPlayer);  //棋譜操作
+            record.updateInfoUnpaired(turnPlayer, cardIndex);   //プライベート情報操作
+        }
+
         hands.hands[dP].Remove(cardIndex); //引かれる人の手札配列からカードを削除
         hands.hands[tP].Add(cardIndex); //引いた人の手札配列にカードを追加
         hands.DeletePair((cardIndex % 13) + 1, turnPlayer);
@@ -152,7 +170,7 @@ public class ComputerForOnePlayer : MonoBehaviour
                 if (tP != 0)
                 {
                     if (moveFlag || flashFlag) return;  //待機処理中にもう一回押された時に無効化
-                    drawWithAnimation(dP, draw(dP), tP);
+                    drawWithAnimation(dP, coms[tP-1].draw(dP), tP);
                 }
             }
         }

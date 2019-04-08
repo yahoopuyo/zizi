@@ -13,6 +13,7 @@ public class Hands : MonoBehaviour
     public List<int> originalBack;
     private List<int> grave;
     private int k = 0;
+
     public List<int> Gethand0()
     {
         return originals[0];
@@ -57,9 +58,9 @@ public class Hands : MonoBehaviour
         }
     }
 
-    public int FindDeletedPair(int drawnCard, int turnPlayer)
+    public int FindDeletedPair(int drawnCard, int turnPlayer)//揃わなかったら100,揃ったら揃ったカード
     {
-        int deletedPair = 100;
+        int deletedPair = 100;  
         foreach (int cI in hands[turnPlayer])
         {
             if (cI % 13 == drawnCard % 13) deletedPair = cI;
@@ -159,6 +160,9 @@ public class Hands : MonoBehaviour
         Delete();
         Delete();
         makeoriginals(); //originals配列を作成
+        //Record record = GameObject.Find("GameManager").GetComponent<Record>();
+        //record.InitRecord(originals);
+        //record.DebugRecord();
     }
     
     public void ClickUpdate()
