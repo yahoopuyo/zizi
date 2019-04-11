@@ -8,6 +8,9 @@ public class Computer : MonoBehaviour
     private List<int> uniforms;
     private List<int> info;
     private List<int>[] handUniforms;
+    //private List<int>[] originalUniforms;
+    //private List<int>[] drawnUniform;
+    //private List<int> opensource;
     public int playerNumber;
     public int computerLevel;
     public bool zizikakunum = false;
@@ -15,9 +18,17 @@ public class Computer : MonoBehaviour
     public bool successflag = false;
 
     /*
+    ちょくちょく更新するので読んで！
+    〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜
     棋譜...record.record -> 正方形,None=-1
     プライベート情報...info -> None=-1
     handuniform...handuniform[player_num]で、player_numの持ってる背番号
+    〜〜〜〜〜〜〜〜〜〜〜〜〜4/10更新〜〜〜〜〜〜〜〜〜〜〜〜〜  
+    record.GetDrawnUniform()[player_num]で、player_numの持ってるドローンの背番号
+    record.GetOriginalUniform()[player_num]で、player_numの持ってるオリジナルの背番号
+    record.opensource()で、opensourceにあるカード番号  
+    (この３つは結構使うようならget()に入れてもらってもよい)
+    draw()の帰り値は「背番号」に変更！！！！
     */
 
     private void get()
@@ -26,6 +37,7 @@ public class Computer : MonoBehaviour
         info = record.info[playerNumber];
         handUniforms = record.GetHandUniform();
         uniforms = record.Uniform;
+
     }
 
     private int countN(List<int>[] rec,int uniform)
@@ -79,7 +91,7 @@ public class Computer : MonoBehaviour
         int zizikamo = publicZizikaku(record.record);
         int CardUniform = 100;
 
-        if (handUniforms[drawnPlayer].Count == 1) return uniforms[handUniforms[drawnPlayer][0]];
+        if (handUniforms[drawnPlayer].Count == 1) return handUniforms[drawnPlayer][0];
 
         //if (handUniforms[drawnPlayer].Contains(zizikamo)) handUniforms[drawnPlayer].Remove(zizikamo);
 
@@ -95,7 +107,7 @@ public class Computer : MonoBehaviour
             }
         }
 
-        return uniforms[CardUniform];
+        return CardUniform;
     }
 
 

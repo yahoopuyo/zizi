@@ -160,6 +160,41 @@ public class Record : MonoBehaviour
         return handUniform;
     }
 
+    public List<int>[] GetOriginalUniform()
+    {
+        get();
+        List<int>[] originalUniform = new List<int>[4];
+        for (int i = 0; i < 4; i++) originalUniform[i] = new List<int>();
+        for (int pn = 0; pn < 4; pn++)
+        {
+            foreach (int card in hands.originals[pn])
+            {
+                originalUniform[pn].Add(Uniform.IndexOf(card));
+            }
+        }
+        return originalUniform;
+    }
+
+    public List<int>[] GetDrawnUniform()
+    {
+        get();
+        List<int>[] drawnUniform = new List<int>[4];
+        for (int i = 0; i < 4; i++) drawnUniform[i] = new List<int>();
+        for (int pn = 0; pn < 4; pn++)
+        {
+            foreach (int card in hands.drawns[pn])
+            {
+                drawnUniform[pn].Add(Uniform.IndexOf(card));
+            }
+        }
+        return drawnUniform;
+    }
+
+    public List<int> opensource()
+    {
+        get();
+        return hands.GetGrave();
+    }
     // Start is called before the first frame update
     void Start()
     {

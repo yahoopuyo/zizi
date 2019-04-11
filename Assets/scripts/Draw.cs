@@ -170,7 +170,7 @@ public class Draw : MonoBehaviour
                 if (tP != 0)
                 {
                     if (moveFlag || flashFlag) return;  //待機処理中にもう一回押された時に無効化
-                    drawWithAnimation(dP, coms[tP-1].draw(dP), tP);
+                    drawWithAnimation(dP, record.Uniform[coms[tP-1].draw(dP)], tP);
                 }
             }
         }
