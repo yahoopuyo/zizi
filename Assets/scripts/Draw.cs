@@ -14,7 +14,7 @@ public class Draw : MonoBehaviour
     private int level;
     GameObject hand;
     GameObject card;
-    Computer[] coms = new Computer[3];
+    ComputerAki[] coms = new ComputerAki[3];
     Hands hands;
     TurnManager turnManager;
     Record record;
@@ -33,7 +33,7 @@ public class Draw : MonoBehaviour
         hands = hand.GetComponent<Hands>();
         for (int i = 0; i < 3; i++)
         {
-            coms[i] = GameObject.Find("Com" + (i + 1)).GetComponent<Computer>();
+            coms[i] = GameObject.Find("Com" + (i + 1)).GetComponent<ComputerAki>();
             //Debug.Log("Com" + (i + 1)); 
         }
     }

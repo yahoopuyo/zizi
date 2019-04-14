@@ -1,23 +1,21 @@
-﻿using System;
+﻿//using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Computer : MonoBehaviour
+public class ComputerAki : MonoBehaviour
 {
     Record record;
-    private List<int> uniforms;
     private List<int> info;
     private List<int>[] handUniforms;
-    //private List<int>[] originalUniforms;
-    //private List<int>[] drawnUniform;
-    //private List<int> opensource;
     public int playerNumber;
     public int computerLevel;
-    public int blankmod;               //ブランクの数字で１３なら０としておく
+    public List<int> blankmods;               //ブランクの数字で１３なら０としておく
     public bool zizikakunum = false;
     public bool zizikakuplace = false;
     public bool successflag = false;
+    private int zizinumber = -1;
+    private int ziziuniform = -1;
 
     /*
     ちょくちょく更新するので読んで！
@@ -38,7 +36,7 @@ public class Computer : MonoBehaviour
         record = GameObject.Find("GameManager").GetComponent<Record>();
         info = record.info[playerNumber];
         handUniforms = record.GetHandUniform();
-        uniforms = record.Uniform;
+        //uniforms = record.Uniform;
     }
 
     private List<int> scoresfordraw; //背番号の数だけ５０点が入った数列を用意するまだ
@@ -52,30 +50,33 @@ public class Computer : MonoBehaviour
 
     //zizikaku関数についてはvoid型にしたほうがメモリの節約になっていいと思う
 
-    private int Publiczizikaku(List<int>[] rec)
+    private void Publiczizikaku(List<int>[] rec)
     {
         get();
-        int zizi = -1;
         foreach (int i in record.UniformExists)
         {
-            if (countN(rec, i) == 0) zizi = i;
+            if (countN(rec, i) == 0) ziziuniform = i;
         }
-        if (zizi != -1)
+        if (ziziuniform != -1)
         {
             zizikakunum = true;
             zizikakuplace = true;
+            if (info[ziziuniform] != -1) zizinumber = info[ziziuniform] % 13;
         }
-        return zizi; //ziziの背番号を返す。なかったら-1。
+        //return zizi; //ziziの背番号を返す。なかったら-1。
     }
 
 
-    private List<int>[] Blanklister(List<int>[] a)  
+    private List<int>[] Blanklister(List<int>[] b0p,int blankindex)  //zizi候補配列を返す
     {
-        List<int>[] c = new List<int>[4];    
+        int blankmod = blankmods[blankindex];
+
+        List<int>[] c = new List<int>[4];
         for (int j=0; j<4; j++)
         {
             int d = -1;
-            foreach (int i in a[j])   //#a[j]が空ならc[j]={}としたい
+            c[j] = new List<int>();
+            foreach (int i in b0p[j])   //#a[j]が空ならc[j]={}としたい
             {
                 if (info[i] % 13 == blankmod) d = i;
                 else
@@ -89,330 +90,350 @@ public class Computer : MonoBehaviour
     }
 
 
-    private int zizinumber = -1;
+    //blankzizi用
+
     private List<int>[] blistpublic;
     private List<int>[] blistprivate;
-    private int[,] blanklist4;
-    private int[,] blanklist3;
+    private List<List<int>> blanklist4 = new List<List<int>>();
+    private List<List<int>> blanklist3 = new List<List<int>>();
+    private List<bool> PairChecked = new List<bool>();
 
-
-    private void InitBlankChaser(List<int>[] rec)
+    private void InitBlankChaser(List<int>[] rec,int blankindex)
     {
         get();
-
+        int blankmod = blankmods[blankindex];
         blistpublic = new List<int>[4]; //#b0pのこと
-        for (int j = 0; j < 4; j++) blistpublic[j] = handUniforms[playerNumber];
+        for (int j = 0; j < 4; j++) blistpublic[j] = handUniforms[j];
 
-        blistprivate = Blanklister(blistpublic);
-
-        int pos4 = strlen(blistprivate[0]) * strlen(blistprivate[1]) * strlen(blistprivate[2]) * strlen(blistprivate[3]);
-        blanklist4 = new int[4, pos4]; //#ziziかくしていてposが0ならblanklist4={ {} }としたい
-        foreach (int i in blistprivate[0])
+        blistprivate = Blanklister(blistpublic,blankindex);
+        //Debug.Log(blistprivate[0].Count);
+        int pos4 = blistprivate[0].Count * blistprivate[1].Count * blistprivate[2].Count * blistprivate[3].Count;
+        if (pos4 != 0)  //ziziかくしていてposが0ならblanklist4={ {} }としたい
         {
-            foreach (int j in blistprivate[1])
+            foreach (int i in blistprivate[0])
             {
-                foreach (int k in blistprivate[2])
-                {
-                    foreach (int l in blistprivate[3])
-                    {
-                        int[] m = new int[4] { i, j, k, l };
-                        for (int n = 0; n < pos4; n++)
-                        {
-                            if (blanklist4[n] == null)  //1回newにしないといけない？
-                            {
-                                blanklist4[n] = m;
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        
-        if (strlen(blanklist4) == 0) //#blanklist4に含まれる１次元配列の個数カウントできてる？ //#turn0だけ特別に逆
-        {
-            zizinumber = blankmod;
-            if (strlen(blistprivate) == 3)
-            {
-                int pos3 = ; //3つの積                         
-                blanklist3 = new int[3, pos3];
-                //以下は仮で１，２，３としている
-
                 foreach (int j in blistprivate[1])
                 {
                     foreach (int k in blistprivate[2])
                     {
                         foreach (int l in blistprivate[3])
                         {
-                            int[] m = new int[3] { j, k, l };
-                            for (int n = 0; n < pos3; n++)
-                            {
-                                if (blanklist3[n] == null)  //1回newにしないといけない？
-                                {
-                                    blanklist3[n] = m;
-                                    break;
-                                }
-                            }
+                            //Debug.Log(i);
+                            //Debug.Log(j);
+                            //Debug.Log(k);
+                            //Debug.Log(l);
+                            blanklist4.Add(new List<int> { i, j, k, l });
                         }
                     }
                 }
             }
-            else print("error"); //#debug用
+        }
+        //foreach(List<int> a in blanklist4)
+        //{
+        //    foreach (int b in a) Debug.Log(b);
+        //    Debug.Log("\n");
+        //}
+
+
+        if (blanklist4.Count == 0) //#blanklist4に含まれる１次元配列の個数カウントできてる？ //#turn0だけ特別に逆
+        {
+            zizinumber = blankmod;
+            zizikakunum = true;
+            if (blistprivate[playerNumber].Count == 0)
+            {
+                //以下は仮で１，２，３としている
+                List<int> playersTmp = new List<int> { 0, 1, 2, 3 };
+                playersTmp.Remove(playerNumber);
+                foreach (int j in blistprivate[playersTmp[0]])
+                {
+                    foreach (int k in blistprivate[playersTmp[1]])
+                    {
+                        foreach (int l in blistprivate[playersTmp[2]])
+                        {
+                            blanklist3.Add(new List<int> { j, k, l });
+                        }
+                    }
+                }
+            }
+            else  Debug.Log("error"); //#debug用
         }
     }
 
-    private List<int>[] BlankChaser(List<int>[] rec)
+    private void BlankChaser(List<int>[] rec,int blankindex)
     {
-        int match1 = draw();  //drawはどこのクラスに入ってるの？
-        int match2 = -1;
-        if (   )  //そろった
-        {
-            match2 = ;  //相方の背番号
-        }
-        
-        if (strlen(blanklist4) != 0)
-        {
-            if (   ) //#blankmodがそろった（背番号match1とmatch2がそろった）
-            {
-                for (int j = 0; j < strlen(blanklist4); j++) 
-                {
-                    int a = 0;
-                    int b = 0;
-                    for (int i = 0; i < 4; i++)
-                    {
-                        if (blanklist4[j][i] == match1)
-                        {
-                            a = 1; 
-                        }
-                        if (blanklist4[j][i] == match2)
-                        {
-                            b = 1;
-                        }
-                    }
-                    if (a * b != 1)　//#match1とmatch2が共存して無ければ
-                    {
-                        blanklist4[j] = null; //本当は消したい
-                    }
-                }
-            }
-            else
-            {
-                if (    ) //#そろった
-                {
-                    for (int j = 0; j < strlen(blanklist4); j++)
-                    {
-                        int a = 0;
-                        int b = 0;
-                        for (int i = 0; i < 4; i++)
-                        {
-                            if (blanklist4[j][i] == match1)
-                            {
-                                a = 1;
-                            }
-                            if (blanklist4[j][i] == match2)
-                            {
-                                b = 1;
-                            }
-                        }
-                        if (a * b == 1) //#match1とmatch2のいずれか一方があれば
-                        {
-                            blanklist4[j] = null; //本当は消したい
-                        }
-                    }
-                }
-                else　//#そろわず、移動したカードをmatch1として扱いmatch1が移動する直前のhanduniformsをmotomotとした
-                {
-                    List<int> motomoto = handUniforms[引くplayerNumber];　//おはぎ
-                    for (int j = 0; j < strlen(blanklist4); j++)
-                    {
-                        int a = 0;
-                        int b = 0;
-                        for (int i = 0; i < 4; i++)
-                        {
-                            if (blanklist4[j][i] == match1)
-                            {
-                                a = 1;
-                            }
-                            foreach (int k in motomoto)
-                            {
-                                if (blanklist4[j][i] == k)
-                                {
-                                    b = 1;
-                                }                     
-                            }
-                        }
-                        if (a * b == 1) //#match1とkがともにあれば
-                        {
-                            blanklist4[j] = null; //本当は消したい
-                        }
-                    }
-                }
-            }
-        }
-        else   //#ziziかく
-        {
-            if (zizinumber == -1)  //#ziziかくの瞬間
-            {
-                zizinumber = blankmod;
-                blistprivate = Blanklister(blistpublic); 
-                int pos3;
-                if (strlen(blistprivate) == 3)
-                {
-                    pos3 = ; //3つの積                         
-                    blanklist3 = new int[3, pos3];  
-                    //以下は仮で１，２，３としている
+        //int match1 = draw();  //drawはどこのクラスに入ってるの？
+        //int match2 = -1;
+        //if (   )  //そろった
+        //{
+        //    match2 = ;  //相方の背番号
+        //}
 
-                    foreach (int j in blistprivate[1])
+        get();
+        int blankmod = blankmods[blankindex];
+        List<int> deadBlanks = new List<int>();
+        foreach(int card in record.opensource()) if (card % 13 == blankmod) deadBlanks.Add(card);  //opensourceにカードが出ていたら。
+        if (deadBlanks.Count == 4) return;  //全部出てたらいらない
+
+        if (blanklist4.Count != 0)
+        {
+            if (deadBlanks.Count == 2 && !PairChecked[blankindex]) //#blankmodがそろった（背番号match1とmatch2がそろった）
+            {
+                List<List<int>> tmplist2 = new List<List<int>>();
+                foreach (List<int> kouho in blanklist4)
+                {
+                    if (kouho.Contains(deadBlanks[0]) && kouho.Contains(deadBlanks[1])) tmplist2.Add(kouho);
+                }
+                foreach (List<int> kouho in tmplist2) blanklist4.Remove(kouho);
+                PairChecked[blankindex] = true;
+                //for (int j = 0; j < blanklist4.Count; j++) 
+                //{
+                //    int a = 0;
+                //    int b = 0;
+                //    for (int i = 0; i < 4; i++)
+                //    {
+                //        if (blanklist4[j][i] == match1)
+                //        {
+                //            a = 1; 
+                //        }
+                //        if (blanklist4[j][i] == match2)
+                //        {
+                //            b = 1;
+                //        }
+                //    }
+                //    if (a * b != 1)　//#match1とmatch2が共存して無ければ
+                //    {
+                //        blanklist4[j] = null; //本当は消したい
+                //    }
+                //}
+            }
+            List<List<int>> tmplist = new List<List<int>>();
+            Debug.Log(blanklist4.Count);
+            foreach (List<int> kouho in blanklist4)
+            {
+                if (rec[kouho[0]][kouho[1]] != -1) { tmplist.Add(kouho); continue; }
+                if (rec[kouho[0]][kouho[2]] != -1) { tmplist.Add(kouho); continue; }
+                if (rec[kouho[0]][kouho[3]] != -1) { tmplist.Add(kouho); continue; }
+                if (rec[kouho[1]][kouho[2]] != -1) { tmplist.Add(kouho); continue; }
+                if (rec[kouho[1]][kouho[3]] != -1) { tmplist.Add(kouho); continue; }
+                if (rec[kouho[2]][kouho[3]] != -1) { tmplist.Add(kouho); continue; }
+            }
+            foreach(List<int> kouho in tmplist) blanklist4.Remove(kouho);
+            Debug.Log(blanklist4.Count);
+        }
+
+        //    else
+        //    {
+        //        if (    ) //#そろった
+        //        {
+        //            for (int j = 0; j < blanklist4.Count; j++)
+        //            {
+        //                int a = 0;
+        //                int b = 0;
+        //                for (int i = 0; i < 4; i++)
+        //                {
+        //                    if (blanklist4[j][i] == match1)
+        //                    {
+        //                        a = 1;
+        //                    }
+        //                    if (blanklist4[j][i] == match2)
+        //                    {
+        //                        b = 1;
+        //                    }
+        //                }
+        //                if (a * b == 1) //#match1とmatch2のいずれか一方があれば
+        //                {
+        //                    blanklist4[j] = null; //本当は消したい
+        //                }
+        //            }
+        //        }
+        //        else　//#そろわず、移動したカードをmatch1として扱いmatch1が移動する直前のhanduniformsをmotomotとした
+        //        {
+        //            List<int> motomoto = handUniforms[引くplayerNumber];　//おはぎ
+        //            for (int j = 0; j < blanklist4.Count; j++)
+        //            {
+        //                int a = 0;
+        //                int b = 0;
+        //                for (int i = 0; i < 4; i++)
+        //                {
+        //                    if (blanklist4[j][i] == match1)
+        //                    {
+        //                        a = 1;
+        //                    }
+        //                    foreach (int k in motomoto)
+        //                    {
+        //                        if (blanklist4[j][i] == k)
+        //                        {
+        //                            b = 1;
+        //                        }                     
+        //                    }
+        //                }
+        //                if (a * b == 1) //#match1とkがともにあれば
+        //                {
+        //                    blanklist4[j] = null; //本当は消したい
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
+        if(blanklist4.Count==0)   //ziziかく
+        {
+            if (zizinumber == -1)  //ziziかくの瞬間
+            {
+                string debug = playerNumber + "じじ書く(２ターン目以降)";
+                Debug.Log(debug);
+                zizinumber = blankmod;
+                zizikakunum = true;
+                blistprivate = Blanklister(blistpublic, blankindex);
+
+                int zeroPlayer = -1;
+                for (int i = 0; i < 4; i++) if (blistprivate[i].Count == 0) zeroPlayer = i;
+                if (zeroPlayer != -1)
+                {
+                    //以下は仮で１，２，３としている
+                    List<int> playersTmp = new List<int> { 0, 1, 2, 3 };
+                    playersTmp.Remove(zeroPlayer);
+                    foreach (int j in blistprivate[playersTmp[0]])
                     {
-                        foreach (int k in blistprivate[2])
+                        foreach (int k in blistprivate[playersTmp[1]])
                         {
-                            foreach (int l in blistprivate[3])
+                            foreach (int l in blistprivate[playersTmp[2]])
                             {
-                                int[] m = new int[3] { j, k, l };
-                                for (int n = 0; n < pos3; n++)
-                                {
-                                    if (blanklist3[n] == null)  //1回newにしないといけない？
-                                    {
-                                        blanklist3[n] = m;
-                                        break;
-                                    }
-                                }
+                                blanklist3.Add(new List<int> { j, k, l });
                             }
                         }
                     }
                 }
                 else
                 {
-                    pos3 = ; //3つの積                         
-                    blanklist3 = new int[3, pos3];
                     //４つから３つをえらばないといけない仮で１，２，３としている、、かなり面倒
-
-                    foreach (int j in blistprivate[1])
+                    List<int>[] playersTmp = new List<int>[4];
+                    for (int i = 0; i < 4; i++)
                     {
-                        foreach (int k in blistprivate[2])
+                        if(i != playerNumber)
                         {
-                            foreach (int l in blistprivate[3])
+                            List<int> tmp = new List<int> { 0, 1, 2, 3 };
+                            tmp.Remove(i);
+                            playersTmp[i] = tmp;
+                        }
+                    }
+                    foreach (List<int> vs in playersTmp)
+                    {
+                        foreach (int j in blistprivate[vs[0]])
+                        {
+                            foreach (int k in blistprivate[vs[1]])
                             {
-                                int[] m = new int[3] { j, k, l };
-                                for (int n = 0; n < pos3; n++)
+                                foreach (int l in blistprivate[vs[2]])
                                 {
-                                    if (blanklist3[n] == null)  //1回newにしないといけない？
-                                    {
-                                        blanklist3[n] = m;
-                                        break;
-                                    }
+                                    blanklist3.Add(new List<int> { j, k, l });
                                 }
                             }
                         }
                     }
                 }
-                for (int j = 0; j < pos3; j++) //#共存情報から消去
+
+                List<List<int>> tmplist = new List<List<int>>();
+                foreach (List<int> kouho in blanklist3)
                 {
-                    for (int i=0; i < 3; i++)
-                    {
-                        if (rec[j][i] != -1)
-                        {
-                            blanklist3[j] = null; //本当は消したい
-                        }                      
-                    }
+                    if (rec[kouho[0]][kouho[1]] != -1 || rec[kouho[0]][kouho[2]] != -1 || rec[kouho[1]][kouho[2]] != -1) tmplist.Add(kouho);
                 }
+                foreach (List<int> kouho in tmplist) blanklist3.Remove(kouho);
+                //for (int j = 0; j < blanklist3.Count; j++) //#共存情報から消去
+                //{
+                //    for (int i=0; i < 3; i++)
+                //    {
+                //        if (rec[j][i] != -1)
+                //        {
+                //            blanklist3[j] = null; //本当は消したい
+                //        }                      
+                //    }
+                //}
             }
             else　//#以前にziziかくしてた場合
             {
-                if (    ) //#blankmodがそろった（背番号match1とmatch2がそろった）
+                List<List<int>> tmplist = new List<List<int>>();
+                foreach (List<int> kouho in blanklist3)
                 {
-                    for (int j = 0; j < strlen(blanklist3); j++)
-                    {
-                        int a = 0;
-                        int b = 0;
-                        for (int i = 0; i < 3; i++)
-                        {
-                            if (blanklist3[j][i] == match1)
-                            {
-                                a = 1;
-                            }
-                            if (blanklist3[j][i] == match2)
-                            {
-                                b = 1;
-                            }
-                        }
-                        if (a * b != 1) //#match1とmatch2が共存して無ければ
-                        {
-                            blanklist3[j] = null; //本当は消したい
-                        }
-                    }
+                    if (rec[kouho[0]][kouho[1]] != -1 || rec[kouho[0]][kouho[2]] != -1 || rec[kouho[1]][kouho[2]] != -1) tmplist.Add(kouho);
                 }
-                else
-                {
-                    if (     ) //#そろった
-                    {
-                        for (int j = 0; j < strlen(blanklist3); j++)
-                        {
-                            int a = 0;
-                            int b = 0;
-                            for (int i = 0; i < 3; i++)
-                            {
-                                if (blanklist3[j][i] == match1)
-                                {
-                                    a = 1;
-                                }
-                                if (blanklist3[j][i] == match2)
-                                {
-                                    b = 1;
-                                }
-                            }
-                            if (a * b == 1) //#match1とmatch2のどちらか一方があれば
-                            {
-                                blanklist3[j] = null; //本当は消したい
-                            }
-                        }
-                    }
-                    else　//#そろわず、移動したカードをmatch1として扱いmatch1が移動する直前のhanduniformsをmotomotoとした
-                    {
-                        for (int j = 0; j < strlen(blanklist3); j++)
-                        {
-                            int a = 0;
-                            int b = 0;
-                            for (int i = 0; i < 3; i++)
-                            {
-                                if (blanklist3[j][i] == match1)
-                                {
-                                    a = 1;
-                                }
-                                foreach (int k in motomoto)
-                                {
-                                    if (blanklist3[j][i] == k)
-                                    {
-                                        b = 1;
-                                    }
-                                }
-                            }
-                            if (a * b == 1) //#match1とkがともにあれば
-                            {
-                                blanklist3[j] = null; //本当は消したい
-                            }
-                        }
-                    }
-                }
-            }  
+                foreach (List<int> kouho in tmplist) blanklist3.Remove(kouho);
+                //if (    ) //#blankmodがそろった（背番号match1とmatch2がそろった）
+                //{
+                //for (int j = 0; j < blanklist3.Count; j++)
+                //{
+                //        int a = 0;
+                //        int b = 0;
+                //        for (int i = 0; i < 3; i++)
+                //        {
+                //            if (blanklist3[j][i] == match1)
+                //            {
+                //                a = 1;
+                //            }
+                //            if (blanklist3[j][i] == match2)
+                //            {
+                //                b = 1;
+                //            }
+                //        }
+                //        if (a * b != 1) //#match1とmatch2が共存して無ければ
+                //        {
+                //            blanklist3[j] = null; //本当は消したい
+                //        }
+                //    }
+                //}
+                //else
+                //{
+                //    if (     ) //#そろった
+                //    {
+                //        for (int j = 0; j < blanklist3.Count; j++)
+                //        {
+                //            int a = 0;
+                //            int b = 0;
+                //            for (int i = 0; i < 3; i++)
+                //            {
+                //                if (blanklist3[j][i] == match1)
+                //                {
+                //                    a = 1;
+                //                }
+                //                if (blanklist3[j][i] == match2)
+                //                {
+                //                    b = 1;
+                //                }
+                //            }
+                //            if (a * b == 1) //#match1とmatch2のどちらか一方があれば
+                //            {
+                //                blanklist3[j] = null; //本当は消したい
+                //            }
+                //        }
+                //    }
+                //    else　//#そろわず、移動したカードをmatch1として扱いmatch1が移動する直前のhanduniformsをmotomotoとした
+                //    {
+                //        for (int j = 0; j < blanklist3.Count; j++)
+                //        {
+                //            int a = 0;
+                //            int b = 0;
+                //            for (int i = 0; i < 3; i++)
+                //            {
+                //                if (blanklist3[j][i] == match1)
+                //                {
+                //                    a = 1;
+                //                }
+                //                foreach (int k in motomoto)
+                //                {
+                //                    if (blanklist3[j][i] == k)
+                //                    {
+                //                        b = 1;
+                //                    }
+                //                }
+                //            }
+                //            if (a * b == 1) //#match1とkがともにあれば
+                //            {
+                //                blanklist3[j] = null; //本当は消したい
+                //            }
+                //        }
+                //    }
+                //}
+            }
         }
-
-        return; //どうする？
-    }
-
-    private int strlen(List<int>[] blistprivate)  //以下３つは自動的に生成された
-    {
-        throw new NotImplementedException();
-    }
-
-    private int strlen(int[,] blanklist4)
-    {
-        throw new NotImplementedException();
-    }
-
-    private int strlen(List<int> list)
-    {
-        throw new NotImplementedException();
+        //return; //どうする？
     }
 
     //ここまでブランクziziかく
@@ -439,13 +460,46 @@ public class Computer : MonoBehaviour
         return suc;
     }
 
+    private void Blankzizikaku()
+    {
+        if (blankmods.Count == 0) return;
+        BlankChaser(record.record, 0);
+        int debugcnt = 0;
+        if (zizinumber == blankmods[0] && ziziuniform==-1)
+        {
+            if(blanklist3.Count == 1)
+            {
+                foreach(int uni in blanklist3[0])
+                {
+                    if (record.UniformExists.Contains(uni))
+                    {
+                        ziziuniform = uni;
+                        debugcnt++;
+                    }
+                }
+            }
+        }
+        if (debugcnt > 1) Debug.Log("zizikakued though more than 2 exists");
+    }
+
+
+
+
+
+
+
+
+
+
+
     public int draw(int drawnPlayer)
     {
         get();
-        int zizikamo = Publiczizikaku(record.record); 
+        Blankzizikaku();
+        Publiczizikaku(record.record);
         int CardUniform = 100;
 
-        if (handUniforms[drawnPlayer].Count == 1) return uniforms[handUniforms[drawnPlayer][0]];
+        if (handUniforms[drawnPlayer].Count == 1) return handUniforms[drawnPlayer][0];
 
         //if (handUniforms[drawnPlayer].Contains(zizikamo)) handUniforms[drawnPlayer].Remove(zizikamo);
 
@@ -457,11 +511,11 @@ public class Computer : MonoBehaviour
             {
                 int index = Random.Range(0, handUniforms[drawnPlayer].Count);
                 CardUniform = handUniforms[drawnPlayer][index];
-                if (zizikamo != CardUniform) break;
+                if (ziziuniform != CardUniform) break;
             }
         }
 
-        return uniforms[CardUniform];
+        return CardUniform;
     }
 
 
@@ -469,10 +523,20 @@ public class Computer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
-    }
+        get();
+        List<int> gravenum = new List<int>();
+        foreach (int card in record.opensource()) gravenum.Add(card % 13);
+        for (int num=0; num < 13; num++)
+        {
+            if (!gravenum.Contains(num)) blankmods.Add(num);
+        }
+        for(int i = 0; i < blankmods.Count; i++)
+        {
+            PairChecked.Add(false);
+            InitBlankChaser(record.record,i);
+        }
 
-    // Update is called once per frame
+    }// Update is called once per frame
     void Update()
     {
         

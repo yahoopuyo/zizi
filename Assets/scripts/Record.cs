@@ -78,7 +78,7 @@ public class Record : MonoBehaviour
             numList.Add(hands.originals[i].Count);
             RecordSize += hands.originals[i].Count;
         }
-        Debug.Log(RecordSize);
+        //Debug.Log(RecordSize);
         FirstRecord(RecordSize);
         int tmp = 0;
         foreach (int i in numList)
@@ -94,10 +94,10 @@ public class Record : MonoBehaviour
         {
             foreach(int k in record[i])
             {
-                Debug.Log(k);
+                //Debug.Log(k);
             }
         }
-        for (int pn = 0; pn < 4; pn++) foreach (int card in info[pn]) Debug.Log(card);
+        //for (int pn = 0; pn < 4; pn++) foreach (int card in info[pn]) Debug.Log(card);
     }
 
     public void replaceRecord(int x,int y,int value)
@@ -199,7 +199,7 @@ public class Record : MonoBehaviour
     void Start()
     {
         Initialize();
-        Debug.Log(RecordSize);
+        //Debug.Log(RecordSize);
         DebugRecords();
     }
 
