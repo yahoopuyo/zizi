@@ -171,7 +171,7 @@ public class ComputerAki : MonoBehaviour
         get();
         int blankmod = blankmods[blankindex];
         List<int> deadBlanks = new List<int>();
-        foreach(int card in record.opensource()) if (card % 13 == blankmod) deadBlanks.Add(card);  //opensourceにカードが出ていたら。
+        foreach(int card in record.opensource()) if (card % 13 == blankmod) deadBlanks.Add(info.IndexOf(card));  //opensourceにカードが出ていたら。
         if (deadBlanks.Count == 4) return;  //全部出てたらいらない
 
         if (blanklist4.Count != 0)
@@ -181,7 +181,7 @@ public class ComputerAki : MonoBehaviour
                 List<List<int>> tmplist2 = new List<List<int>>();
                 foreach (List<int> kouho in blanklist4)
                 {
-                    if (kouho.Contains(deadBlanks[0]) && kouho.Contains(deadBlanks[1])) tmplist2.Add(kouho);
+                    if (kouho.Contains(deadBlanks[0]) || kouho.Contains(deadBlanks[1])) tmplist2.Add(kouho);
                 }
                 foreach (List<int> kouho in tmplist2) blanklist4.Remove(kouho);
                 PairChecked[blankindex] = true;
@@ -306,14 +306,14 @@ public class ComputerAki : MonoBehaviour
                 else
                 {
                     //４つから３つをえらばないといけない仮で１，２，３としている、、かなり面倒
-                    List<int>[] playersTmp = new List<int>[4];
+                    List<List<int>> playersTmp = new List<List<int>>();
                     for (int i = 0; i < 4; i++)
                     {
                         if(i != playerNumber)
                         {
                             List<int> tmp = new List<int> { 0, 1, 2, 3 };
                             tmp.Remove(i);
-                            playersTmp[i] = tmp;
+                            playersTmp.Add(tmp);
                         }
                     }
                     foreach (List<int> vs in playersTmp)
