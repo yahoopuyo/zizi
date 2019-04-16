@@ -14,7 +14,7 @@ public class Draw : MonoBehaviour
     private int level;
     GameObject hand;
     GameObject card;
-    ComputerAki[] coms = new ComputerAki[3];
+    ComputerVer2[] coms = new ComputerVer2[3];
     Hands hands;
     TurnManager turnManager;
     Record record;
@@ -33,7 +33,7 @@ public class Draw : MonoBehaviour
         hands = hand.GetComponent<Hands>();
         for (int i = 0; i < 3; i++)
         {
-            coms[i] = GameObject.Find("Com" + (i + 1)).GetComponent<ComputerAki>();
+            coms[i] = GameObject.Find("Com" + (i + 1)).GetComponent<ComputerVer2>();
             //Debug.Log("Com" + (i + 1)); 
         }
     }
@@ -46,11 +46,11 @@ public class Draw : MonoBehaviour
         moveFlag = true;
         yield return new WaitForSeconds(0.5f);  //0.5秒待機
         moveFlag = false;
-        if (hands.FindDeletedPair(cardIndex, turnPlayer) != 100)
+        int deleted = hands.FindDeletedPair(cardIndex, turnPlayer);
+        if (deleted != 100)
         {
             flashFlag = true;   //アニメーション最中のアクション無効化用
 
-            int deleted = hands.FindDeletedPair(cardIndex, turnPlayer);
             cardName = "Card" + deleted;
             card = GameObject.Find(cardName);
             var color = card.GetComponent<SpriteRenderer>().color;
@@ -76,7 +76,6 @@ public class Draw : MonoBehaviour
             record.updateRecordUnpaired(turn + 1, cardIndex, turnPlayer);  //棋譜操作
             record.updateInfoUnpaired(turnPlayer, cardIndex);   //プライベート情報操作
         }
-
         hands.hands[dP].Remove(cardIndex); //引かれる人の手札配列からカードを削除
         hands.hands[tP].Add(cardIndex); //引いた人の手札配列にカードを追加
         hands.DeletePair((cardIndex % 13) + 1, turnPlayer);
@@ -86,12 +85,20 @@ public class Draw : MonoBehaviour
         turnManager.NextTurnPlayer();
         turnManager.NextDrawnPlayer();
         turnManager.turnNext();
+        int deletedUniform;
+        if (deleted == 100) deletedUniform = -1;
+        else deletedUniform = record.Uniform.IndexOf(deleted);
+        for (int cn = 0; cn < 3; cn++)
+        {
+            coms[cn].load(dP, record.Uniform.IndexOf(cardIndex), tP,deletedUniform);
+        }
     }
 
     public void drawWithAnimation(int drawnPlayer,int cardIndex,int turnPlayer)
     {
         StartCoroutine(DrawWithAnimation(drawnPlayer,cardIndex,turnPlayer));
         StopCoroutine(DrawWithAnimation(drawnPlayer, cardIndex,turnPlayer));
+
     }
 
     private int draw(int drawnPlayer)
@@ -130,6 +137,7 @@ public class Draw : MonoBehaviour
         int cI = hands.drawns[drawnPlayer][index];
         return cI;
     }
+
     void Start()
     {
         ModeData modeData = GameObject.Find("ModeData").GetComponent<ModeData>();
@@ -170,7 +178,8 @@ public class Draw : MonoBehaviour
                 if (tP != 0)
                 {
                     if (moveFlag || flashFlag) return;  //待機処理中にもう一回押された時に無効化
-                    drawWithAnimation(dP, record.Uniform[coms[tP-1].draw(dP)], tP);
+                    int drawnUniform = record.Uniform[coms[tP - 1].draw(dP)];
+                    drawWithAnimation(dP, drawnUniform, tP);
                 }
             }
         }

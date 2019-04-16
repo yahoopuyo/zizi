@@ -29,6 +29,10 @@ public class ComputerAki : MonoBehaviour
     record.opensource()で、opensourceにあるカード番号  
     (この３つは結構使うようならget()に入れてもらってもよい)
     draw()の帰り値は「背番号」に変更！！！！
+    〜〜〜〜〜〜〜〜〜〜〜〜4/16更新〜〜〜〜〜〜〜〜〜〜〜〜
+    private変数として、previousTurnPlayer,previousDrawnPlayer,previousMovedCardを追加
+    中身はそれぞれ一個前のターンで誰が引いたか、誰がひかれたか、何を引いたか
+    この前はエラーが多くて大変だったので、エラーになりそうだったら日本語で書いてくれると助かります
     */
 
     private void get()
@@ -37,6 +41,27 @@ public class ComputerAki : MonoBehaviour
         info = record.info[playerNumber];
         handUniforms = record.GetHandUniform();
         //uniforms = record.Uniform;
+    }
+
+    //更新情報
+    private int  previousMovedCard;
+    private int previousDrawnPlayer;
+    private int previousTurnPlayer;
+
+
+    public void load(int drawnPlayer,int carduniform, int turnPlayer)
+    {
+        /*
+        更新されるタイミングは、誰かがカードを引いて、record諸々更新された後なので、BlankChaserで使われる際は
+        一個前のターンで誰が引いたか、誰がひかれたか、何を引いたか
+        が格納されるようになっています。      
+        */
+        get();
+        previousMovedCard = carduniform;
+        previousDrawnPlayer = drawnPlayer;
+        previousTurnPlayer = turnPlayer;
+        Publiczizikaku(record.record);
+        Blankzizikaku();
     }
 
     private List<int> scoresfordraw; //背番号の数だけ５０点が入った数列を用意するまだ
@@ -59,14 +84,17 @@ public class ComputerAki : MonoBehaviour
         }
         if (ziziuniform != -1)
         {
-            zizikakunum = true;
             zizikakuplace = true;
-            if (info[ziziuniform] != -1) zizinumber = info[ziziuniform] % 13;
+            if (info[ziziuniform] != -1)
+            {
+                zizinumber = info[ziziuniform] % 13;
+                zizikakunum = true;
+            }
         }
         //return zizi; //ziziの背番号を返す。なかったら-1。
     }
 
-
+    
     private List<int>[] Blanklister(List<int>[] b0p,int blankindex)  //zizi候補配列を返す
     {
         int blankmod = blankmods[blankindex];
@@ -170,18 +198,21 @@ public class ComputerAki : MonoBehaviour
 
         get();
         int blankmod = blankmods[blankindex];
-        List<int> deadBlanks = new List<int>();
-        foreach(int card in record.opensource()) if (card % 13 == blankmod) deadBlanks.Add(info.IndexOf(card));  //opensourceにカードが出ていたら。
-        if (deadBlanks.Count == 4) return;  //全部出てたらいらない
+        List<int> knownBlanks = new List<int>();
+        //foreach(int card in info) if (card % 13 == blankmod) knownBlanks.Add(info.IndexOf(card));  //opensourceにカードが出ていたら。
+        foreach (int card in record.opensource()) if (card % 13 == blankmod) knownBlanks.Add(info.IndexOf(card));
+        Debug.Log(knownBlanks.Count);
+        if (knownBlanks.Count == 4) return;  //全部出てたらいらない
 
         if (blanklist4.Count != 0)
         {
-            if (deadBlanks.Count == 2 && !PairChecked[blankindex]) //#blankmodがそろった（背番号match1とmatch2がそろった）
+            if (knownBlanks.Count >= 2 && !PairChecked[blankindex]) //#blankmodがそろった（背番号match1とmatch2がそろった）
             {
                 List<List<int>> tmplist2 = new List<List<int>>();
                 foreach (List<int> kouho in blanklist4)
                 {
-                    if (kouho.Contains(deadBlanks[0]) || kouho.Contains(deadBlanks[1])) tmplist2.Add(kouho);
+                    if (knownBlanks.Count == 3) if(!kouho.Contains(knownBlanks[0]) || !kouho.Contains(knownBlanks[1]) || !kouho.Contains(knownBlanks[2])) { tmplist2.Add(kouho); continue; }
+                    if (!kouho.Contains(knownBlanks[0]) || !kouho.Contains(knownBlanks[1])) tmplist2.Add(kouho);
                 }
                 foreach (List<int> kouho in tmplist2) blanklist4.Remove(kouho);
                 PairChecked[blankindex] = true;
@@ -210,12 +241,12 @@ public class ComputerAki : MonoBehaviour
             Debug.Log(blanklist4.Count);
             foreach (List<int> kouho in blanklist4)
             {
-                if (rec[kouho[0]][kouho[1]] != -1) { tmplist.Add(kouho); continue; }
-                if (rec[kouho[0]][kouho[2]] != -1) { tmplist.Add(kouho); continue; }
-                if (rec[kouho[0]][kouho[3]] != -1) { tmplist.Add(kouho); continue; }
-                if (rec[kouho[1]][kouho[2]] != -1) { tmplist.Add(kouho); continue; }
-                if (rec[kouho[1]][kouho[3]] != -1) { tmplist.Add(kouho); continue; }
-                if (rec[kouho[2]][kouho[3]] != -1) { tmplist.Add(kouho); continue; }
+                if (rec[kouho[0]][kouho[1]] != -1) if (!knownBlanks.Contains(kouho[0]) && !knownBlanks.Contains(kouho[1])) { tmplist.Add(kouho); Debug.Log(-1); continue; }
+                if (rec[kouho[0]][kouho[2]] != -1) if (!knownBlanks.Contains(kouho[0]) && !knownBlanks.Contains(kouho[2])) { tmplist.Add(kouho); Debug.Log(-2); continue; }
+                if (rec[kouho[0]][kouho[3]] != -1) if (!knownBlanks.Contains(kouho[0]) && !knownBlanks.Contains(kouho[3])) { tmplist.Add(kouho); Debug.Log(-3); continue; }
+                if (rec[kouho[1]][kouho[2]] != -1) if (!knownBlanks.Contains(kouho[1]) && !knownBlanks.Contains(kouho[2])) { tmplist.Add(kouho); Debug.Log(-4); continue; }
+                if (rec[kouho[1]][kouho[3]] != -1) if (!knownBlanks.Contains(kouho[1]) && !knownBlanks.Contains(kouho[3])) { tmplist.Add(kouho); Debug.Log(-5); continue; }
+                if (rec[kouho[2]][kouho[3]] != -1) if (!knownBlanks.Contains(kouho[2]) && !knownBlanks.Contains(kouho[3])) { tmplist.Add(kouho); Debug.Log(-6); continue; }
             }
             foreach(List<int> kouho in tmplist) blanklist4.Remove(kouho);
             Debug.Log(blanklist4.Count);
@@ -334,7 +365,9 @@ public class ComputerAki : MonoBehaviour
                 List<List<int>> tmplist = new List<List<int>>();
                 foreach (List<int> kouho in blanklist3)
                 {
-                    if (rec[kouho[0]][kouho[1]] != -1 || rec[kouho[0]][kouho[2]] != -1 || rec[kouho[1]][kouho[2]] != -1) tmplist.Add(kouho);
+                    if (rec[kouho[0]][kouho[1]] != -1) if (!knownBlanks.Contains(kouho[0]) || !knownBlanks.Contains(kouho[1])) { tmplist.Add(kouho); continue; }
+                    if (rec[kouho[0]][kouho[2]] != -1) if (!knownBlanks.Contains(kouho[0]) || !knownBlanks.Contains(kouho[2])) { tmplist.Add(kouho); continue; }
+                    if (rec[kouho[1]][kouho[2]] != -1) if (!knownBlanks.Contains(kouho[1]) || !knownBlanks.Contains(kouho[2])) { tmplist.Add(kouho); continue; }
                 }
                 foreach (List<int> kouho in tmplist) blanklist3.Remove(kouho);
                 //for (int j = 0; j < blanklist3.Count; j++) //#共存情報から消去
@@ -474,6 +507,7 @@ public class ComputerAki : MonoBehaviour
                     if (record.UniformExists.Contains(uni))
                     {
                         ziziuniform = uni;
+                        zizikakuplace = true;
                         debugcnt++;
                     }
                 }

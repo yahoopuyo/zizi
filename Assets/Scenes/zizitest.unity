@@ -455,6 +455,7 @@ GameObject:
   - component: {fileID: 373083442}
   - component: {fileID: 373083443}
   - component: {fileID: 373083444}
+  - component: {fileID: 373083445}
   m_Layer: 0
   m_Name: Com3
   m_TagString: Untagged
@@ -503,6 +504,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d0687c8122d8a4e24974c9757af3e105, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerNumber: 3
+  computerLevel: 0
+  blankmods: 
+  zizikakunum: 0
+  zizikakuplace: 0
+  successflag: 0
+--- !u!114 &373083445
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 373083441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e664a60ec91454093b5c9db77dfec347, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   playerNumber: 3
@@ -1379,6 +1398,7 @@ GameObject:
   - component: {fileID: 697888756}
   - component: {fileID: 697888757}
   - component: {fileID: 697888758}
+  - component: {fileID: 697888759}
   m_Layer: 0
   m_Name: Com2
   m_TagString: Untagged
@@ -1427,6 +1447,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d0687c8122d8a4e24974c9757af3e105, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerNumber: 2
+  computerLevel: 0
+  blankmods: 
+  zizikakunum: 0
+  zizikakuplace: 0
+  successflag: 0
+--- !u!114 &697888759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 697888755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e664a60ec91454093b5c9db77dfec347, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   playerNumber: 2
@@ -2686,6 +2724,7 @@ GameObject:
   - component: {fileID: 1383169195}
   - component: {fileID: 1383169196}
   - component: {fileID: 1383169197}
+  - component: {fileID: 1383169198}
   m_Layer: 0
   m_Name: Com1
   m_TagString: Untagged
@@ -2734,6 +2773,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d0687c8122d8a4e24974c9757af3e105, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerNumber: 1
+  computerLevel: 0
+  blankmods: 
+  zizikakunum: 0
+  zizikakuplace: 0
+  successflag: 0
+--- !u!114 &1383169198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1383169194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e664a60ec91454093b5c9db77dfec347, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   playerNumber: 1
