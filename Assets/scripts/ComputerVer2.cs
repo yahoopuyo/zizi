@@ -336,6 +336,7 @@ public class ComputerVer2 : MonoBehaviour
                     else //#そろわず、移動したカードをmatch1として扱いmatch1が移動する直前のhanduniformsをmotomotとした→直前ではなく直後にした。
                     {
                         List<int> motomoto = handUniforms[previousTurnPlayer];
+                        motomo.Remove(previousMovedCard);
                         List<List<int>> tmplist4 = new List<List<int>>();
                         //Debug.Log(blanklist3[blankindex].Count);
                         foreach (List<int> kouho in blanklist3[blankindex])
