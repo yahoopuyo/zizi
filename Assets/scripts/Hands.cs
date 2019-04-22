@@ -138,7 +138,6 @@ public class Hands : MonoBehaviour
                 originals[i].Add(card);
             }
         }
-
     }
 
 
