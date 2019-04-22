@@ -151,7 +151,6 @@ public class Hands : MonoBehaviour
         hands = new List<int>[4];
         originals = new List<int>[4];
         drawns = new List<int>[4];
-    }
     
         for(int i = 0; i < 4; i++)
         {
