@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -56,6 +56,7 @@ public class Hands : MonoBehaviour
                 }
             }
         }
+
     }
 
     public int FindDeletedPair(int drawnCard, int turnPlayer)//揃わなかったら100,揃ったら揃ったカード
@@ -83,8 +84,8 @@ public class Hands : MonoBehaviour
         if (IsEasy) return originalBack[card];
         else return 2;
     }
-
-
+    
+    
     public int Cardownerreturn(int index) //カードの持ち主を返す関数
     {
         int ans=5;
@@ -143,12 +144,14 @@ public class Hands : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //ModeData modeData = GameObject.Find("ModeData").GetComponent<ModeData>();
-        //IsEasy = modeData.IsEasy();
+        ModeData modeData = GameObject.Find("ModeData").GetComponent<ModeData>();
+        IsEasy = modeData.IsEasy();
         deck = GetComponent<ZiziDeck>();
         hands = new List<int>[4];
         originals = new List<int>[4];
         drawns = new List<int>[4];
+    }
+    
         for(int i = 0; i < 4; i++)
         {
             if (drawns[i] == null) drawns[i] = new List<int>();
@@ -160,7 +163,6 @@ public class Hands : MonoBehaviour
         Delete();
         Delete();
         makeoriginals(); //originals配列を作成
-        Debug.Log("hands called");
         //Record record = GameObject.Find("GameManager").GetComponent<Record>();
         //record.InitRecord(originals);
         //record.DebugRecord();
