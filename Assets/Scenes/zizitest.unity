@@ -453,8 +453,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 373083442}
-  - component: {fileID: 373083443}
-  - component: {fileID: 373083444}
   - component: {fileID: 373083445}
   m_Layer: 0
   m_Name: Com3
@@ -477,41 +475,6 @@ Transform:
   m_Father: {fileID: 424594072}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &373083443
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 373083441}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8cebc21b81dac4a9baee93de2317ae71, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerNumber: 3
-  computerLevel: 0
-  zizikakunum: 0
-  zizikakuplace: 0
-  successflag: 0
---- !u!114 &373083444
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 373083441}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0687c8122d8a4e24974c9757af3e105, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerNumber: 3
-  computerLevel: 0
-  blankmods: 
-  zizikakunum: 0
-  zizikakuplace: 0
-  successflag: 0
 --- !u!114 &373083445
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1396,8 +1359,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 697888756}
-  - component: {fileID: 697888757}
-  - component: {fileID: 697888758}
   - component: {fileID: 697888759}
   m_Layer: 0
   m_Name: Com2
@@ -1420,41 +1381,6 @@ Transform:
   m_Father: {fileID: 424594072}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &697888757
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 697888755}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8cebc21b81dac4a9baee93de2317ae71, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerNumber: 2
-  computerLevel: 0
-  zizikakunum: 0
-  zizikakuplace: 0
-  successflag: 0
---- !u!114 &697888758
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 697888755}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0687c8122d8a4e24974c9757af3e105, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerNumber: 2
-  computerLevel: 0
-  blankmods: 
-  zizikakunum: 0
-  zizikakuplace: 0
-  successflag: 0
 --- !u!114 &697888759
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2722,8 +2648,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1383169195}
-  - component: {fileID: 1383169196}
-  - component: {fileID: 1383169197}
   - component: {fileID: 1383169198}
   m_Layer: 0
   m_Name: Com1
@@ -2746,41 +2670,6 @@ Transform:
   m_Father: {fileID: 424594072}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1383169196
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1383169194}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8cebc21b81dac4a9baee93de2317ae71, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerNumber: 1
-  computerLevel: 0
-  zizikakunum: 0
-  zizikakuplace: 0
-  successflag: 0
---- !u!114 &1383169197
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1383169194}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0687c8122d8a4e24974c9757af3e105, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerNumber: 1
-  computerLevel: 0
-  blankmods: 
-  zizikakunum: 0
-  zizikakuplace: 0
-  successflag: 0
 --- !u!114 &1383169198
 MonoBehaviour:
   m_ObjectHideFlags: 0

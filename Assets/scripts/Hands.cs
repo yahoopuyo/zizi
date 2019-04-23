@@ -143,8 +143,8 @@ public class Hands : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        ModeData modeData = GameObject.Find("ModeData").GetComponent<ModeData>();
-        IsEasy = modeData.IsEasy();
+        //ModeData modeData = GameObject.Find("ModeData").GetComponent<ModeData>();
+        //IsEasy = modeData.IsEasy();
         deck = GetComponent<ZiziDeck>();
         hands = new List<int>[4];
         originals = new List<int>[4];
@@ -160,6 +160,7 @@ public class Hands : MonoBehaviour
         Delete();
         Delete();
         makeoriginals(); //originals配列を作成
+        Debug.Log("hands called");
         //Record record = GameObject.Find("GameManager").GetComponent<Record>();
         //record.InitRecord(originals);
         //record.DebugRecord();

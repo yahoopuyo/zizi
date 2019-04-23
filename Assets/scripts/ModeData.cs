@@ -55,6 +55,7 @@ public class ModeData : MonoBehaviour
     public void OnClickOnline()
     {
         Solo = false;
+        SceneManager.LoadScene("photontest1");
     }
 
     public void OnClickStart()
