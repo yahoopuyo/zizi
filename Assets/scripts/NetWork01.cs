@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
 
 public class NetWork01 : MonoBehaviour
 {
@@ -9,6 +11,8 @@ public class NetWork01 : MonoBehaviour
     [SerializeField] Transform spawnPoint;
     private GameObject hand;
     private bool In = false;
+    private bool Distributed=false;
+    public int player;
     int index;
     //void Start()
     //{
@@ -55,15 +59,15 @@ public class NetWork01 : MonoBehaviour
     {
         Debug.Log("ルームへ入室しました。");
         //GameObject player = PhotonNetwork.Instantiate("Card", spawnPoint.position, spawnPoint.rotation, 0);
+        ModeData md = GameObject.Find("ModeData").GetComponent<ModeData>();
         if (PhotonNetwork.playerList.Length == 1)
         {
-            index = 0;
-            hand = GameObject.Find("Hand");
-            //hand = PhotonNetwork.Instantiate("Hand", new Vector3(0f, 0f, 0f), new Quaternion(), 0);
-            //hand.name = "Hand";
-            hand.GetComponent<DistributeForAll>().StartGame();
+            md.player = 0;
         }
-        //else { index = 1; hand = GameObject.Find("Hand"); }
+
+        else if (PhotonNetwork.playerList.Length == 2) md.player = 1;
+        else if (PhotonNetwork.playerList.Length == 3) md.player = 2;
+        else md.player = 4;
     }
 
     void Update()
@@ -73,6 +77,11 @@ public class NetWork01 : MonoBehaviour
         {
             In = true;
             //hand.GetComponent<DistributeForAll>().StartGame();
+        }
+
+        if (In)
+        {
+            SceneManager.LoadScene("photon_in");
         }
     }
     // ルームの入室に失敗すると呼ばれる

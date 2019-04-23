@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Hands))]
 public class DistributeForAll : MonoBehaviour
 {
-    Hands hands;
+    public Hands hands;
     public float cardOffset;
     public GameObject cardPrefab;
     private Vector3 start0 = new Vector3(-4f, -3.5f);
@@ -288,7 +288,7 @@ public class DistributeForAll : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        //PhotonView view = GetComponent<PhotonView>();
     }
 
     // Update is called once per frame
@@ -296,4 +296,5 @@ public class DistributeForAll : MonoBehaviour
     {
 
     }
+
 }

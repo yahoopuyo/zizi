@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(ZiziDeck))]
 public class Hands : MonoBehaviour
 {
-    ZiziDeck deck;
+    public ZiziDeck deck;
     private bool IsEasy = true;
     public List<int>[] hands;
     public List<int>[] originals;
