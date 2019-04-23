@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,12 +6,14 @@ using UnityEngine;
 public class Hands : MonoBehaviour
 {
     ZiziDeck deck;
+    private bool IsEasy = true;
     public List<int>[] hands;
     public List<int>[] originals;
     public List<int>[] drawns;
     public List<int> originalBack;
     private List<int> grave;
     private int k = 0;
+
     public List<int> Gethand0()
     {
         return originals[0];
@@ -54,12 +56,12 @@ public class Hands : MonoBehaviour
                 }
             }
         }
+
     }
 
-
-    public int FindDeletedPair(int drawnCard, int turnPlayer)
+    public int FindDeletedPair(int drawnCard, int turnPlayer)//揃わなかったら100,揃ったら揃ったカード
     {
-        int deletedPair = 100;
+        int deletedPair = 100;  
         foreach (int cI in hands[turnPlayer])
         {
             if (cI % 13 == drawnCard % 13) deletedPair = cI;
@@ -79,10 +81,11 @@ public class Hands : MonoBehaviour
 
     public int GetBack(int card)
     {
-        return originalBack[card];
+        if (IsEasy) return originalBack[card];
+        else return 2;
     }
-
-
+    
+    
     public int Cardownerreturn(int index) //カードの持ち主を返す関数
     {
         int ans=5;
@@ -135,16 +138,21 @@ public class Hands : MonoBehaviour
                 originals[i].Add(card);
             }
         }
+
     }
 
 
     // Start is called before the first frame update
     void Start()
     {
+        ModeData modeData = GameObject.Find("ModeData").GetComponent<ModeData>();
+        IsEasy = modeData.IsEasy();
         deck = GetComponent<ZiziDeck>();
         hands = new List<int>[4];
         originals = new List<int>[4];
         drawns = new List<int>[4];
+    }
+    
         for(int i = 0; i < 4; i++)
         {
             if (drawns[i] == null) drawns[i] = new List<int>();
@@ -156,6 +164,9 @@ public class Hands : MonoBehaviour
         Delete();
         Delete();
         makeoriginals(); //originals配列を作成
+        //Record record = GameObject.Find("GameManager").GetComponent<Record>();
+        //record.InitRecord(originals);
+        //record.DebugRecord();
     }
     
     public void ClickUpdate()

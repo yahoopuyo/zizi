@@ -15,21 +15,15 @@ public class ReloadZizi : MonoBehaviour
     {
         if (Input.GetKey("q"))
         {
-            // 現在のScene名を取得する
-            Scene loadScene = SceneManager.GetActiveScene();
-            // Sceneの読み直し
-            SceneManager.LoadScene(loadScene.name);
+            Reload();
         }
     }
 
-    private void OnGUI()
+    public void Reload()
     {
-        if (GUI.Button(new Rect(100,350, 100, 20), "Restart"))
-        {
-            // 現在のScene名を取得する
-            Scene loadScene = SceneManager.GetActiveScene();
-            // Sceneの読み直し
-            SceneManager.LoadScene(loadScene.name);
-        }
+        // 現在のScene名を取得する
+        Scene loadScene = SceneManager.GetActiveScene();
+        // Sceneの読み直し
+        SceneManager.LoadScene(loadScene.name);
     }
 }

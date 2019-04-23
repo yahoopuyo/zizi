@@ -7,7 +7,7 @@ public class Click : MonoBehaviour , IPointerClickHandler, IPointerEnterHandler,
 {
     private GameObject hand;
     private GameObject gameManager;
-    ComputerForOnePlayer cpu1;
+    Draw draw;
     private TurnManager turnManager;
     private Hands hands;
     private Distribute distribute;
@@ -19,7 +19,7 @@ public class Click : MonoBehaviour , IPointerClickHandler, IPointerEnterHandler,
     void get()
     {
         gameManager = GameObject.Find("GameManager");
-        cpu1 = gameManager.GetComponent<ComputerForOnePlayer>();
+        draw = gameManager.GetComponent<Draw>();
         turnManager = gameManager.GetComponent<TurnManager>();
         turnPlayer = turnManager.turnPlayer;
         drawnPlayer = turnManager.drawnPlayer;
@@ -57,7 +57,7 @@ public class Click : MonoBehaviour , IPointerClickHandler, IPointerEnterHandler,
         {
             get();
 
-            if (cpu1.flag) if (turnPlayer != 0) return;    //playernum == 1　の時
+            //if (draw.flag) if (turnPlayer != 0) return;    //playernum == 1　の時デバッグ用にコメントアウトしてある
             if (drawnPlayer == hands.Cardownerreturn(cardIndex))
             {
                 //hands.hands[drawnPlayer].Remove(cardIndex); //引かれる人の手札配列からカードを削除
@@ -69,8 +69,8 @@ public class Click : MonoBehaviour , IPointerClickHandler, IPointerEnterHandler,
                 //turnManager.NextTurnPlayer();
                 //turnManager.NextDrawnPlayer();
                 //turnManager.turnNext();
-                if (cpu1.moveFlag || cpu1.flashFlag) return;
-                cpu1.drawWithAnimation(drawnPlayer, cardIndex,turnPlayer);
+                if (draw.moveFlag || draw.flashFlag) return;
+                draw.drawWithAnimation(drawnPlayer, cardIndex,turnPlayer);
             }
         }
     }
