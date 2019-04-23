@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -56,6 +56,7 @@ public class Hands : MonoBehaviour
                 }
             }
         }
+
     }
 
     public int FindDeletedPair(int drawnCard, int turnPlayer)//揃わなかったら100,揃ったら揃ったカード
@@ -83,8 +84,8 @@ public class Hands : MonoBehaviour
         if (IsEasy) return originalBack[card];
         else return 2;
     }
-
-
+    
+    
     public int Cardownerreturn(int index) //カードの持ち主を返す関数
     {
         int ans=5;
@@ -137,6 +138,7 @@ public class Hands : MonoBehaviour
                 originals[i].Add(card);
             }
         }
+
     }
 
 
@@ -149,6 +151,8 @@ public class Hands : MonoBehaviour
         hands = new List<int>[4];
         originals = new List<int>[4];
         drawns = new List<int>[4];
+    }
+    
         for(int i = 0; i < 4; i++)
         {
             if (drawns[i] == null) drawns[i] = new List<int>();
