@@ -17,7 +17,6 @@ public class ComputerVer2 : MonoBehaviour
     private int ziziuniform = -1;
 
     /*
-    ちょくちょく更新するので読んで！
     〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜
     棋譜...record.record -> 正方形,None=-1
     プライベート情報...info -> None=-1
