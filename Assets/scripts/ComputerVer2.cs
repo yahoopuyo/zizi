@@ -9,7 +9,7 @@ public class ComputerVer2 : MonoBehaviour
     private List<int>[] handUniforms;
     public int playerNumber;
     public int computerLevel;
-    public List<int> blankmods;               //ブランクの数字で１３なら０としておく
+    public List<int> blankmods;               //ブランクの数字 - 1
     public bool zizikakunum = false;
     public bool zizikakuplace = false;
     public bool successflag = false;
@@ -130,10 +130,9 @@ public class ComputerVer2 : MonoBehaviour
     {
         get();
         int blankmod = blankmods[blankindex];
-        for (int j = 0; j < 4; j++) blistpublic[j] = handUniforms[j];  //ここもしかして間違ってる？
+        for (int j = 0; j < 4; j++) blistpublic[j] = handUniforms[j];  
 
         blistprivate.Add(Blanklister(blistpublic, blankindex));
-        //Debug.Log(blistprivate[0].Count);
         int pos4 = blistprivate[blankindex][0].Count * blistprivate[blankindex][1].Count * blistprivate[blankindex][2].Count * blistprivate[blankindex][3].Count;
         if (pos4 != 0)  
         {
@@ -145,11 +144,14 @@ public class ComputerVer2 : MonoBehaviour
                     {
                         foreach (int l in blistprivate[blankindex][3])
                         {
-                            //Debug.Log(i);
-                            //Debug.Log(j);
-                            //Debug.Log(k);
-                            //Debug.Log(l);
                             blanklist4[blankindex].Add(new List<int> { i, j, k, l });
+                            //if (blanklist4[blankindex].Count<10)
+                            //{
+                                //Debug.Log(i);
+                                //Debug.Log(j);
+                                //Debug.Log(k);
+                                //Debug.Log(l);
+                            //}
                         }
                     }
                 }
@@ -192,16 +194,19 @@ public class ComputerVer2 : MonoBehaviour
     {
         get();
         int blankmod = blankmods[blankindex];
+        //Debug.Log(blankmod);
         List<int> knownBlanks = new List<int>();
         List<int> deadBlanks = new List<int>();
         foreach (int card in info) if (card % 13 == blankmod) knownBlanks.Add(info.IndexOf(card));  //opensourceにカードが出ていたら。
         foreach (int card in record.opensource()) if (card % 13 == blankmod) deadBlanks.Add(info.IndexOf(card));
-        //Debug.Log(knownBlanks.Count);
+
+        List<int> nonsuccessturn = new List<int>();
+
         if (deadBlanks.Count == 4) return;  //全部出てたらいらない←めっちゃいい
 
-        if (blanklist4.Count != 0) ////直感的にはこの部分特にRemoveで失敗してる気がする（blanklist4がうまく消せてない）
+        if (blanklist4[blankindex].Count != 0) 
         {
-            if (deadBlanks.Count == 2 && !PairChecked[blankindex]) //#blankmodがそろった（背番号match1とmatch2がそろった）
+            if (deadBlanks.Count == 2 && !PairChecked[blankindex]) //#blankmodがそろった
             {
                 List<List<int>> tmplist2 = new List<List<int>>();
                 foreach (List<int> kouho in blanklist4[blankindex])
@@ -219,45 +224,69 @@ public class ComputerVer2 : MonoBehaviour
                     //Debug.Log(blanklist4[blankindex].Count);
                     foreach (List<int> kouho in blanklist4[blankindex])
                     {
-                        if (kouho.Contains(previousMovedCard) && kouho.Contains(previousDeletedCard)) tmplist.Add(kouho);
+                        if (kouho.Contains(previousMovedCard) || kouho.Contains(previousDeletedCard)) tmplist.Add(kouho);
                     }
                     foreach (List<int> kouho in tmplist) blanklist4[blankindex].Remove(kouho);
                     //Debug.Log(blanklist4[blankindex].Count);
                 }
-                else //#そろわず、移動したカードをmatch1として扱いmatch1が移動する直前のhanduniformsをmotomotとした→直前ではなく直後にした。→直前に直した
+                else //#そろわず、移動したカードをpreviousMovedCardとして扱い移動する直前のhanduniformsをmotomotoとした
                 {
                     List<int> motomoto = handUniforms[previousTurnPlayer];
                     motomoto.Remove(previousMovedCard);
-                    List<List<int>> tmplist = new List<List<int>>();
-                    //Debug.Log(blanklist4[blankindex].Count);
-                    foreach (List<int> kouho in blanklist4[blankindex])
+                    nonsuccessturn.Add(rec[previousMovedCard][motomoto[0]]);  //turn番号の取得方法が分からなかったからとりあえず棋譜から読むことにした
+                    if (previousTurnPlayer == playerNumber) /////comの番のとき
                     {
-                        foreach (int uniform in motomoto)
+                        if (info[previousMovedCard] % 13 == blankmod) //引いたカードがブランクだったら
                         {
-                            if (kouho.Contains(previousMovedCard) && kouho.Contains(uniform)) tmplist.Add(kouho);
+                            List<List<int>> tmplist = new List<List<int>>();
+                            foreach (List<int> kouho in blanklist4[blankindex])
+                            {
+                                if (!kouho.Contains(previousMovedCard)) tmplist.Add(kouho);
+                            }
+                            foreach (List<int> kouho in tmplist) blanklist4[blankindex].Remove(kouho);
+                        }
+                        else
+                        {
+                            List<List<int>> tmplist = new List<List<int>>();
+                            foreach (List<int> kouho in blanklist4[blankindex])
+                            {
+                                if (kouho.Contains(previousMovedCard)) tmplist.Add(kouho);
+                            }
+                            foreach (List<int> kouho in tmplist) blanklist4[blankindex].Remove(kouho);
                         }
                     }
-                    foreach (List<int> kouho in tmplist) blanklist4[blankindex].Remove(kouho);
-                    //Debug.Log(blanklist4[blankindex].Count);
+                    else
+                    {
+                        List<List<int>> tmplist = new List<List<int>>();
+                        //Debug.Log(blanklist4[blankindex].Count);
+                        foreach (List<int> kouho in blanklist4[blankindex])
+                        {
+                            foreach (int uniform in motomoto)
+                            {
+                                if (kouho.Contains(previousMovedCard) && kouho.Contains(uniform)) tmplist.Add(kouho);
+                            }
+                        }
+                        foreach (List<int> kouho in tmplist) blanklist4[blankindex].Remove(kouho);
+                        //Debug.Log(blanklist4[blankindex].Count);
+                    }
                 }
             }
         }
 
-        if (blanklist4.Count == 0)   //ziziかく
+        if (blanklist4[blankindex].Count == 0)   //ziziかく
         {
             if (zizinumber == -1)  //ziziかくの瞬間
             {
-                string debug = playerNumber + "じじ書く(２ターン目以降)";
+                string debug = playerNumber + "zizi確した！(数字)";
                 Debug.Log(debug);
                 zizinumber = blankmod;
                 zizikakunum = true;
                 blistprivate[blankindex] = Blanklister(blistpublic, blankindex);
 
                 int zeroPlayer = -1;
-                for (int i = 0; i < 4; i++) if (blistprivate[blankindex][i].Count == 0) zeroPlayer = i;
+                for (int i = 0; i < 4; i++) if (blistprivate[blankindex][i].Count == 0) zeroPlayer = i; //ここちょっと怪しかったけどたぶんあってる
                 if (zeroPlayer != -1)
                 {
-                    //以下は仮で１，２，３としている
                     List<int> playersTmp = new List<int> { 0, 1, 2, 3 };
                     playersTmp.Remove(zeroPlayer);
                     foreach (int j in blistprivate[blankindex][playersTmp[0]])
@@ -270,10 +299,11 @@ public class ComputerVer2 : MonoBehaviour
                             }
                         }
                     }
+                    //Debug.Log(blanklist3[blankindex].Count + 1000);
                 }
                 else
                 {
-                    //４つから３つをえらばないといけない仮で１，２，３としている、、かなり面倒
+                    //４つから３つをえらばないといけない
                     List<List<int>> playersTmp = new List<List<int>>();
                     for (int i = 0; i < 4; i++)
                     {
@@ -300,17 +330,50 @@ public class ComputerVer2 : MonoBehaviour
                 }
 
                 List<List<int>> tmplist = new List<List<int>>();
-                foreach (List<int> kouho in blanklist3[blankindex])
+                foreach (List<int> kouho in blanklist3[blankindex])　//下記のコメントアウトのようにではなく、共存したら（かつ揃わなかったら）消去するようにした
                 {
-                    if (rec[kouho[0]][kouho[1]] != -1) if (!knownBlanks.Contains(kouho[0]) || !knownBlanks.Contains(kouho[1])) { tmplist.Add(kouho); continue; }
-                    if (rec[kouho[0]][kouho[2]] != -1) if (!knownBlanks.Contains(kouho[0]) || !knownBlanks.Contains(kouho[2])) { tmplist.Add(kouho); continue; }
-                    if (rec[kouho[1]][kouho[2]] != -1) if (!knownBlanks.Contains(kouho[1]) || !knownBlanks.Contains(kouho[2])) { tmplist.Add(kouho); continue; }
+                    if (nonsuccessturn.Contains(rec[kouho[0]][kouho[1]])) { tmplist.Add(kouho); continue; }
+                    if (nonsuccessturn.Contains(rec[kouho[0]][kouho[2]])) { tmplist.Add(kouho); continue; }
+                    if (nonsuccessturn.Contains(rec[kouho[1]][kouho[2]])) { tmplist.Add(kouho); continue; }
                 }
                 foreach (List<int> kouho in tmplist) blanklist3[blankindex].Remove(kouho);
+                //List<List<int>> tmplist = new List<List<int>>();
+                //foreach (List<int> kouho in blanklist3[blankindex])　//////たぶん間違ってる
+                //{
+                //    if (rec[kouho[0]][kouho[1]] != -1) if (!knownBlanks.Contains(kouho[0]) || !knownBlanks.Contains(kouho[1])) { tmplist.Add(kouho); continue; }
+                //    if (rec[kouho[0]][kouho[2]] != -1) if (!knownBlanks.Contains(kouho[0]) || !knownBlanks.Contains(kouho[2])) { tmplist.Add(kouho); continue; }
+                //    if (rec[kouho[1]][kouho[2]] != -1) if (!knownBlanks.Contains(kouho[1]) || !knownBlanks.Contains(kouho[2])) { tmplist.Add(kouho); continue; }
+                //}
+                //foreach (List<int> kouho in tmplist) blanklist3[blankindex].Remove(kouho);
+
+
+                //以下は雑に作った、もしかすると不要なものがあるかもしれない
+                if (knownBlanks.Count == 1)
+                {
+                    List<List<int>> tmplist2 = new List<List<int>>();
+                    foreach (List<int> kouho in blanklist3[blankindex])
+                    {
+                        if (!kouho.Contains(knownBlanks[0])) { tmplist2.Add(kouho); continue; }
+                    }
+                    foreach (List<int> kouho in tmplist2) blanklist3[blankindex].Remove(kouho);
+                }
+                if (knownBlanks.Count == 2)
+                {
+                    List<List<int>> tmplist2 = new List<List<int>>();
+                    foreach (List<int> kouho in blanklist3[blankindex])
+                    {
+                        if (!kouho.Contains(knownBlanks[0]) || !kouho.Contains(knownBlanks[1])) { tmplist2.Add(kouho); continue; }
+                    }
+                    foreach (List<int> kouho in tmplist2) blanklist3[blankindex].Remove(kouho);
+                }
+                if (knownBlanks.Count == 3) //knownblanksで置き換えてしまった
+                {
+                    blanklist3[blankindex] = new List<List<int>> { knownBlanks };
+                }
             }
             else　//#以前にziziかくしてた場合
             {
-                if (deadBlanks.Count == 2 && !PairChecked[blankindex]) //#blankmodがそろった（背番号match1とmatch2がそろった）
+                if (deadBlanks.Count == 2 && !PairChecked[blankindex]) //#blankmodがそろった
                 {
                     List<List<int>> tmplist2 = new List<List<int>>();
                     foreach (List<int> kouho in blanklist3[blankindex])
@@ -328,32 +391,79 @@ public class ComputerVer2 : MonoBehaviour
                         //Debug.Log(blanklist3[blankindex].Count);
                         foreach (List<int> kouho in blanklist3[blankindex])
                         {
-                            if (kouho.Contains(previousMovedCard) && kouho.Contains(previousDeletedCard)) tmplist3.Add(kouho);
+                            if (kouho.Contains(previousMovedCard) || kouho.Contains(previousDeletedCard)) tmplist3.Add(kouho);
                         }
                         foreach (List<int> kouho in tmplist3) blanklist3[blankindex].Remove(kouho);
                         //Debug.Log(blanklist3[blankindex].Count);
                     }
-                    else //#そろわず、移動したカードをmatch1として扱いmatch1が移動する直前のhanduniformsをmotomotとした→直前ではなく直後にした。
+                    else //#そろわず、移動したカードをpreviousMovedCardとして扱い移動する直前のhanduniformsをmotomotoとした
                     {
-                        List<int> motomoto = handUniforms[previousTurnPlayer];
-                        motomoto.Remove(previousMovedCard);
-                        List<List<int>> tmplist4 = new List<List<int>>();
-                        //Debug.Log(blanklist3[blankindex].Count);
-                        foreach (List<int> kouho in blanklist3[blankindex])
+                        if(previousTurnPlayer == playerNumber) /////comの番のとき
                         {
-                            foreach (int uniform in motomoto)
+                            if (info[previousMovedCard] % 13 == blankmod) //引いたカードがブランクだったら
                             {
-                                if (kouho.Contains(previousMovedCard) && kouho.Contains(uniform)) tmplist4.Add(kouho);
+                                List<List<int>> tmplist = new List<List<int>>();
+                                foreach (List<int> kouho in blanklist3[blankindex])
+                                {
+                                    if (!kouho.Contains(previousMovedCard)) tmplist.Add(kouho);
+                                }
+                                foreach (List<int> kouho in tmplist) blanklist3[blankindex].Remove(kouho);
+                            }
+                            else
+                            {
+                                List<List<int>> tmplist = new List<List<int>>();
+                                foreach (List<int> kouho in blanklist3[blankindex])
+                                {
+                                    if (kouho.Contains(previousMovedCard)) tmplist.Add(kouho);
+                                }
+                                foreach (List<int> kouho in tmplist) blanklist3[blankindex].Remove(kouho);
                             }
                         }
-                        foreach (List<int> kouho in tmplist4) blanklist3[blankindex].Remove(kouho);
-                        //Debug.Log(blanklist3.Count);
+                        else
+                        {
+                            List<int> motomoto = handUniforms[previousTurnPlayer];
+                            motomoto.Remove(previousMovedCard);
+                            List<List<int>> tmplist3 = new List<List<int>>();
+                            //Debug.Log(blanklist3[blankindex].Count);
+                            foreach (List<int> kouho in blanklist3[blankindex])
+                            {
+                                foreach (int uniform in motomoto)
+                                {
+                                    if (kouho.Contains(previousMovedCard) && kouho.Contains(uniform)) tmplist3.Add(kouho);
+                                }
+                            }
+                            foreach (List<int> kouho in tmplist3) blanklist3[blankindex].Remove(kouho);
+                            //Debug.Log(blanklist3.Count);
+                        }
+
                     }
                 }
             }
         }
-        Debug.Log(blanklist4[blankindex].Count);
-        //return; //どうする？
+        if (blanklist4[blankindex].Count != 0)
+        {
+            Debug.Log(blanklist4[blankindex].Count + blankindex * 0.1 + playerNumber * 0.01 + 0.004);
+        }
+        else
+        {
+            Debug.Log(blanklist3[blankindex].Count + blankindex * 0.1 + playerNumber * 0.01 + 0.003);
+            if (blanklist3[blankindex].Count<5)
+            {
+                foreach (List<int> a in blanklist3[blankindex])
+                {
+                    foreach (int b in a) Debug.Log(b);
+                    Debug.Log("\n");
+                }
+            }
+        }
+        //if (blanklist4[blankindex].Count<11)
+        //{
+        //foreach (List<int> a in blanklist4[blankindex])
+        //{
+        //foreach (int b in a) Debug.Log(b);
+        //Debug.Log("\n");
+        //}
+        //}
     }
 
     //ここまでブランクziziかく
@@ -383,7 +493,7 @@ public class ComputerVer2 : MonoBehaviour
     private void Blankzizikaku()
     {
         if (blankmods.Count == 0) return;  //blankindex付いてたのはミス？  
-        int debugcnt = 0;
+        int debugcnt = 0; //デバッグ用
         for (int j = 0; j < blankmods.Count; j++)
         {
             BlankChaser(record.record, j);
@@ -402,7 +512,7 @@ public class ComputerVer2 : MonoBehaviour
                     }
                 }
             }
-            if (debugcnt > 1) Debug.Log("zizikakued though more than 2 exists");  //本当は３枚ある場合も引かないようにしたい
+            if (debugcnt > 1) Debug.Log("zizi確してるけど場に３枚ある");  //本当は３枚ある場合も引かないようにしたい
         }
     }
 
