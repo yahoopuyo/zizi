@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Hands))]
+
 public class DistributeForAll : MonoBehaviour
 {
-    public Hands hands;
+    public HandsOnline hands;
     public float cardOffset;
     public GameObject cardPrefab;
     private Vector3 start0 = new Vector3(-4f, -3.5f);
@@ -20,29 +20,42 @@ public class DistributeForAll : MonoBehaviour
     private Vector3 d_start3 = new Vector3(4.3f, -3.0f);
     private Vector3 d_start2 = new Vector3(3.5f, 1.8f);
     private Vector3 d_start1 = new Vector3(-4.3f, 3.5f);
+
+    private List<Vector3> start = new List<Vector3>();
+    private List<Vector3> d_start = new List<Vector3>();
     private List<GameObject> sources;
+    private List<Vector3> rotate = new List<Vector3>();
+    private List<Vector3> ofset = new List<Vector3>();
+
+    private int player;
+    ModeData md;
+
+
     void distribute()
     {
-        //player0のoriginalsを表示
-        int cardCount = 0;
+
+    //player0のoriginalsを表示
+    int cardCount = 0;
         foreach (int i in hands.Gethand0())
         {
             Vector3 temp;
-            float co = cardOffset * cardCount;
-            temp = start0 + new Vector3(co, 0f);
-            GameObject cardCopy = PhotonNetwork.Instantiate("Card",temp,new Quaternion(),0);
+            //float co = cardOffset * cardCount;
+            temp = start[0] + ofset[0]*cardCount ;
+            //GameObject cardCopy = PhotonNetwork.Instantiate("Card",temp,new Quaternion(),0);
+            GameObject cardCopy = (GameObject)Instantiate(cardPrefab);
             CardModel cardModel = cardCopy.GetComponent<CardModel>();
             SpriteRenderer spriteRenderer = cardCopy.GetComponent<SpriteRenderer>();
 
 
-
             cardModel.backIndex = hands.GetBack(i);
             cardModel.cardIndex = i;
+            cardCopy.transform.Rotate(rotate[0]);
 
             sources.Add(cardCopy);
 
             cardCopy.transform.position = temp;
-            cardModel.ToggleFace(true);
+            if (player == 0) cardModel.ToggleFace(true);
+            else cardModel.ToggleFace(false);
 
             spriteRenderer.sortingOrder = cardCount;
 
@@ -56,18 +69,18 @@ public class DistributeForAll : MonoBehaviour
             CardModel cardModel = cardCopy.GetComponent<CardModel>();
             SpriteRenderer spriteRenderer = cardCopy.GetComponent<SpriteRenderer>();
             Vector3 temp;
-            float co = cardOffset * cardCount;
+            //float co = cardOffset * cardCount;
 
-            temp = start3 + new Vector3(0f, co);
+            temp = start[3] + ofset[3]*cardCount ;
             cardModel.backIndex = hands.GetBack(i);
             cardModel.cardIndex = i;
 
             sources.Add(cardCopy);
 
             cardCopy.transform.position = temp;
-            cardCopy.transform.Rotate(new Vector3(0f, 0f, 90f));
-            cardModel.ToggleFace(false);
-
+            cardCopy.transform.Rotate(rotate[3]);
+            if(player ==3) cardModel.ToggleFace(true);
+            else cardModel.ToggleFace(false);
             spriteRenderer.sortingOrder = cardCount;
 
             cardCount++;
@@ -80,17 +93,18 @@ public class DistributeForAll : MonoBehaviour
             CardModel cardModel = cardCopy.GetComponent<CardModel>();
             SpriteRenderer spriteRenderer = cardCopy.GetComponent<SpriteRenderer>();
             Vector3 temp;
-            float co = cardOffset * cardCount;
+            //float co = cardOffset * cardCount;
 
-            temp = start2 - new Vector3(co, 0f);
+            temp = start[2] + ofset[2]*cardCount ;
             cardModel.backIndex = hands.GetBack(i);
             cardModel.cardIndex = i;
 
             sources.Add(cardCopy);
 
             cardCopy.transform.position = temp;
-            cardCopy.transform.Rotate(new Vector3(0f, 0f, 180f));
-            cardModel.ToggleFace(false);
+            cardCopy.transform.Rotate(rotate[2]);
+            if(player == 2) cardModel.ToggleFace(true);
+            else cardModel.ToggleFace(false);
 
             spriteRenderer.sortingOrder = cardCount;
 
@@ -104,17 +118,18 @@ public class DistributeForAll : MonoBehaviour
             CardModel cardModel = cardCopy.GetComponent<CardModel>();
             SpriteRenderer spriteRenderer = cardCopy.GetComponent<SpriteRenderer>();
             Vector3 temp;
-            float co = cardOffset * cardCount;
+            //float co = cardOffset * cardCount;
 
-            temp = start1 - new Vector3(0f, co);
+            temp = start[1] + ofset[1]*cardCount ;
             cardModel.backIndex = hands.GetBack(i);
             cardModel.cardIndex = i;
 
             sources.Add(cardCopy);
 
             cardCopy.transform.position = temp;
-            cardCopy.transform.Rotate(new Vector3(0f, 0f, 270f));
-            cardModel.ToggleFace(false);
+            cardCopy.transform.Rotate(rotate[1]);
+            if(player == 1) cardModel.ToggleFace(true);
+            else cardModel.ToggleFace(false);
 
             spriteRenderer.sortingOrder = cardCount;
 
@@ -129,16 +144,18 @@ public class DistributeForAll : MonoBehaviour
             CardModel cardModel = cardCopy.GetComponent<CardModel>();
             SpriteRenderer spriteRenderer = cardCopy.GetComponent<SpriteRenderer>();
             Vector3 temp;
-            float co = cardOffset * cardCount;
+            //float co = cardOffset * cardCount;
 
-            temp = d_start0 + new Vector3(co, 0f) * 1.7f;
+            temp = d_start[0] + ofset[0]*cardCount  * 1.7f;
             cardModel.backIndex = hands.GetBack(i);
             cardModel.cardIndex = i;
+            cardCopy.transform.Rotate(rotate[3]);
 
             sources.Add(cardCopy);
 
             cardCopy.transform.position = temp;
-            cardModel.ToggleFace(true);
+            if(player ==0) cardModel.ToggleFace(true);
+            else cardModel.ToggleFace(false);
 
             spriteRenderer.sortingOrder = cardCount;
 
@@ -152,17 +169,18 @@ public class DistributeForAll : MonoBehaviour
             CardModel cardModel = cardCopy.GetComponent<CardModel>();
             SpriteRenderer spriteRenderer = cardCopy.GetComponent<SpriteRenderer>();
             Vector3 temp;
-            float co = cardOffset * cardCount;
+            //float co = cardOffset * cardCount;
 
-            temp = d_start3 + new Vector3(0f, co) * 1.7f;
+            temp = d_start[3] + ofset[3]*cardCount  * 1.7f;
             cardModel.backIndex = hands.GetBack(i);
             cardModel.cardIndex = i;
 
             sources.Add(cardCopy);
 
             cardCopy.transform.position = temp;
-            cardCopy.transform.Rotate(new Vector3(0f, 0f, 90f));
-            cardModel.ToggleFace(false);
+            cardCopy.transform.Rotate(rotate[3]);
+            if(player ==3) cardModel.ToggleFace(true);
+            else cardModel.ToggleFace(false);
 
             spriteRenderer.sortingOrder = cardCount;
 
@@ -176,17 +194,18 @@ public class DistributeForAll : MonoBehaviour
             CardModel cardModel = cardCopy.GetComponent<CardModel>();
             SpriteRenderer spriteRenderer = cardCopy.GetComponent<SpriteRenderer>();
             Vector3 temp;
-            float co = cardOffset * cardCount;
+            //float co = cardOffset * cardCount;
 
-            temp = d_start2 - new Vector3(co, 0f) * 1.7f;
+            temp = d_start[2] + ofset[2]*cardCount  * 1.7f;
             cardModel.backIndex = hands.GetBack(i);
             cardModel.cardIndex = i;
 
             sources.Add(cardCopy);
 
             cardCopy.transform.position = temp;
-            cardCopy.transform.Rotate(new Vector3(0f, 0f, 180f));
-            cardModel.ToggleFace(false);
+            cardCopy.transform.Rotate(rotate[2]);
+            if(player ==2)cardModel.ToggleFace(true);
+            else cardModel.ToggleFace(false);
 
             spriteRenderer.sortingOrder = cardCount;
 
@@ -200,17 +219,18 @@ public class DistributeForAll : MonoBehaviour
             CardModel cardModel = cardCopy.GetComponent<CardModel>();
             SpriteRenderer spriteRenderer = cardCopy.GetComponent<SpriteRenderer>();
             Vector3 temp;
-            float co = cardOffset * cardCount;
+            //float co = cardOffset * cardCount;
 
-            temp = d_start1 - new Vector3(0f, co) * 1.7f;
+            temp = d_start[1] + ofset[1]*cardCount  * 1.7f;
             cardModel.backIndex = hands.GetBack(i);
             cardModel.cardIndex = i;
 
             sources.Add(cardCopy);
 
             cardCopy.transform.position = temp;
-            cardCopy.transform.Rotate(new Vector3(0f, 0f, 270f));
-            cardModel.ToggleFace(false);
+            cardCopy.transform.Rotate(rotate[1]);
+            if (player == 1) cardModel.ToggleFace(true);
+            else cardModel.ToggleFace(false);
 
             spriteRenderer.sortingOrder = cardCount;
 
@@ -251,7 +271,7 @@ public class DistributeForAll : MonoBehaviour
     public void StartGame()
     {
         initSources();
-        hands = GetComponent<Hands>();
+        hands = GetComponent<HandsOnline>();
         distribute();
         Center();
         foreach (GameObject source in sources)
@@ -275,20 +295,56 @@ public class DistributeForAll : MonoBehaviour
     public void updateField()
     {
         initSources();
-        hands = GetComponent<Hands>();
+        hands = GetComponent<HandsOnline>();
         distribute();
         Center();
         foreach (GameObject source in sources)
         {
             source.name = "Card" + source.GetComponent<CardModel>().cardIndex;
         }
+    }
 
+    private void ShiftList(List<Vector3> list)
+    {
+        List<Vector3> tmp = new List<Vector3>(list);
+        for(int i = 0; i < 4; i++)
+        {
+            list[i] = tmp[(4 - player + i) % 4];
+        }
     }
 
     // Start is called before the first frame update
-    void Start()
+    public void SetVectors()
     {
+        start.Add(start0);
+        start.Add(start1);
+        start.Add(start2);
+        start.Add(start3);
+
+        d_start.Add(d_start0);
+        d_start.Add(d_start1);
+        d_start.Add(d_start2);
+        d_start.Add(d_start3);
+
+        ofset.Add(new Vector3(cardOffset, 0f));
+        ofset.Add(new Vector3(0f, -cardOffset));
+        ofset.Add(new Vector3(-cardOffset,0));
+        ofset.Add(new Vector3(0f,cardOffset));
+
+        rotate.Add(new Vector3(0f, 0f, 0f));
+        rotate.Add(new Vector3(0f, 0f, 270f));
+        rotate.Add(new Vector3(0f, 0f, 180f));
+        rotate.Add(new Vector3(0f, 0f, 90f));
+
         //PhotonView view = GetComponent<PhotonView>();
+        md = GameObject.Find("ModeData").GetComponent<ModeData>();
+        player = md.player;
+
+        ShiftList(start);
+        ShiftList(d_start);
+        ShiftList(ofset);
+        ShiftList(rotate);
+
     }
 
     // Update is called once per frame
@@ -296,5 +352,4 @@ public class DistributeForAll : MonoBehaviour
     {
 
     }
-
 }

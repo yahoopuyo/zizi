@@ -11,7 +11,7 @@ public class NetWork01 : MonoBehaviour
     [SerializeField] Transform spawnPoint;
     private GameObject hand;
     private bool In = false;
-    private bool Distributed=false;
+    private bool Loaded=false;
     public int player;
     int index;
     //void Start()
@@ -79,9 +79,10 @@ public class NetWork01 : MonoBehaviour
             //hand.GetComponent<DistributeForAll>().StartGame();
         }
 
-        if (In)
+        if (In && !Loaded)
         {
             SceneManager.LoadScene("photon_in");
+            Loaded = true;
         }
     }
     // ルームの入室に失敗すると呼ばれる

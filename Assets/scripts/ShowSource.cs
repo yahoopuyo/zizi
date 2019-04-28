@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Hands))]
+
 public class ShowSource : MonoBehaviour
 {
     GameObject hand;
