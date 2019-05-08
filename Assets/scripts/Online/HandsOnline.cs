@@ -7,7 +7,7 @@ public class HandsOnline : MonoBehaviour
 {
     public ZiziDeck deck;
     private bool IsEasy = true;
-    private bool distributed=false;
+    public bool distributed=false;
     public List<int>[] hands;
     public List<int>[] originals;
     public List<int>[] drawns;
@@ -149,6 +149,7 @@ public class HandsOnline : MonoBehaviour
         ModeData modeData = GameObject.Find("ModeData").GetComponent<ModeData>();
         IsEasy = modeData.IsEasy();
         deck = GetComponent<ZiziDeck>();
+        /*
         hands = new List<int>[4];
         originals = new List<int>[4];
         drawns = new List<int>[4];
@@ -166,6 +167,7 @@ public class HandsOnline : MonoBehaviour
                              //Record record = GameObject.Find("GameManager").GetComponent<Record>();
                              //record.InitRecord(originals);
                              //record.DebugRecord();
+       */
         
     }
 

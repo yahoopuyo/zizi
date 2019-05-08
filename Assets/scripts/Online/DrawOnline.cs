@@ -12,29 +12,34 @@ public class DrawOnline : MonoBehaviour
     private int tP;
     private int dP;
     private int level;
+    private int player;
+    public int numOfPlayer;
+    public int numOfComs;
+
     GameObject hand;
     GameObject card;
-    ComputerVer2[] coms = new ComputerVer2[3];
-    Hands hands;
-    TurnManager turnManager;
-    Record record;
-    Distribute distribute;
+    ComputerOnline[] coms = new ComputerOnline[4];
+
+    HandsOnline hands;
+    TurnManagerOnline turnManager;
+    RecordOnline record;
+    DistributeForAll distribute;
     public bool which;
 
     private void get()
     {
         //card = GameObject.Find("Card");
-        turnManager = GetComponent<TurnManager>();
-        record = GetComponent<Record>();
+        turnManager = GetComponent<TurnManagerOnline>();
+        record = GetComponent<RecordOnline>();
         turn = turnManager.turn;
         tP = turnManager.turnPlayer;
         dP = turnManager.drawnPlayer;
         hand = GameObject.Find("Hand"); //Handのクラスを取得
-        hands = hand.GetComponent<Hands>();
-        for (int i = 0; i < 3; i++)
+        hands = hand.GetComponent<HandsOnline>();
+        for (int i = 0; i < numOfComs; i++)
         {
-            coms[i] = GameObject.Find("Com" + (i + 1)).GetComponent<ComputerVer2>();
-            //Debug.Log("Com" + (i + 1)); 
+            coms[numOfPlayer + i] = GameObject.Find("Com" + (numOfPlayer + i)).GetComponent<ComputerOnline>();
+            //Debug.Log("Com" + (i + 1));
         }
     }
 
@@ -80,7 +85,7 @@ public class DrawOnline : MonoBehaviour
         hands.hands[tP].Add(cardIndex); //引いた人の手札配列にカードを追加
         hands.DeletePair((cardIndex % 13) + 1, turnPlayer);
         hands.ClickUpdate();
-        distribute = hand.GetComponent<Distribute>();
+        distribute = hand.GetComponent<DistributeForAll>();
         distribute.updateField();
         turnManager.NextTurnPlayer();
         turnManager.NextDrawnPlayer();
@@ -88,61 +93,44 @@ public class DrawOnline : MonoBehaviour
         int deletedUniform;
         if (deleted == 100) deletedUniform = -1;
         else deletedUniform = record.Uniform.IndexOf(deleted);
-        for (int cn = 0; cn < 3; cn++)
+        for (int cn = 0; cn < numOfComs; cn++)
         {
-            coms[cn].load(dP, record.Uniform.IndexOf(cardIndex), tP, deletedUniform);
+            coms[cn + numOfPlayer].load(dP, record.Uniform.IndexOf(cardIndex), tP, deletedUniform);
         }
+    }
+
+
+    [PunRPC]
+    void SendAction(int[] drawData)
+    {
+        int drawnPlayer = drawData[0];
+        int cardIndex = drawData[1];
+        int turnPlayer = drawData[2];
+        StartCoroutine(DrawWithAnimation(drawnPlayer, cardIndex, turnPlayer));
+        StopCoroutine(DrawWithAnimation(drawnPlayer, cardIndex, turnPlayer));
+    }
+
+    void Send(int drawnPlayer, int drawncard, int turnPlayer)
+    {
+        int[] data = new int[3]{ drawnPlayer, drawncard, turnPlayer};
+        PhotonView view = GetComponent<PhotonView>();
+        view.RPC("SendAction", PhotonTargets.All, data);
     }
 
     public void drawWithAnimation(int drawnPlayer, int cardIndex, int turnPlayer)
     {
-        StartCoroutine(DrawWithAnimation(drawnPlayer, cardIndex, turnPlayer));
-        StopCoroutine(DrawWithAnimation(drawnPlayer, cardIndex, turnPlayer));
-
+        Send(drawnPlayer, cardIndex, turnPlayer);
     }
 
-    private int draw(int drawnPlayer)
-    {
-        if (level == 1 || level == 2) return cpu1(drawnPlayer);
-        else return cpu2(drawnPlayer);
-    }
-
-    private int cpu1(int drawnPlayer)
-    {
-        int index = Random.Range(0, hands.hands[drawnPlayer].Count);
-        int cI = hands.hands[drawnPlayer][index];
-        return cI;
-    }
-
-    private int cpu2(int drawnPlayer)
-    {
-        int rand = Random.Range(0, 2);
-        Debug.Log(rand);
-        if (hands.drawns[drawnPlayer].Count == 0 || hands.originals[drawnPlayer].Count == 0) return cpu1(drawnPlayer);
-        if (rand == 0) return fromOriginal(drawnPlayer);
-        if (rand == 1) return fromDrawns(drawnPlayer);
-        return hands.hands[drawnPlayer][0];
-    }
-
-    private int fromOriginal(int drawnPlayer)
-    {
-        int index = Random.Range(0, hands.originals[drawnPlayer].Count);
-        int cI = hands.originals[drawnPlayer][index];
-        return cI;
-    }
-
-    private int fromDrawns(int drawnPlayer)
-    {
-        int index = Random.Range(0, hands.drawns[drawnPlayer].Count);
-        int cI = hands.drawns[drawnPlayer][index];
-        return cI;
-    }
 
     void Start()
     {
         ModeData modeData = GameObject.Find("ModeData").GetComponent<ModeData>();
         flag = modeData.GetComponent<ModeData>().IsSolo(); //　的な感じ？
         level = modeData.computerLevel;
+        player = modeData.player;
+        numOfPlayer = modeData.numOfPlayer;
+        numOfComs = 4 - numOfPlayer;
     }
 
     //void OnGUI()
@@ -170,31 +158,31 @@ public class DrawOnline : MonoBehaviour
             card.transform.Translate(0, Time.deltaTime * 0.6f, 0);
         }
 
-        if (flag)
+        if (true) //ここは、computer existsの時、とそのうちする
         {
             if (Input.GetKeyDown(KeyCode.Return))
             {
                 get();
-                if (tP != 0)
+                if (tP >= numOfPlayer && player == 0) //master player のみがコンピューター操作できる、
                 {
                     if (moveFlag || flashFlag) return;  //待機処理中にもう一回押された時に無効化
-                    int drawnUniform = record.Uniform[coms[tP - 1].draw(dP)];
-                    drawWithAnimation(dP, drawnUniform, tP);
+                    int drawncard= record.Uniform[coms[tP].draw(dP)];
+                    drawWithAnimation(dP, drawncard, tP);
                 }
             }
         }
-
-
-        //if (tP == 0)
-        //{
-        //    card.GetComponent<Click>().enabled = true;
-        //    which = true;
-        //}
-        //else
-        //{
-        //card.GetComponent<Click>().enabled = false;
-        //which = false;
-        //}
-        //↑これでできると思ったんだけど、なぜかできないので、clickを少しだけ動かした。
     }
+
+       
+    //if (tP == 0)
+    //{
+    //    card.GetComponent<Click>().enabled = true;
+    //    which = true;
+    //}
+    //else
+    //{
+    //card.GetComponent<Click>().enabled = false;
+    //which = false;
+    //}
+    //↑これでできると思ったんだけど、なぜかできないので、clickを少しだけ動かした。
 }

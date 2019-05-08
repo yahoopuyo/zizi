@@ -13,6 +13,7 @@ public class ModeData : MonoBehaviour
     private bool Solo;
     public int computerLevel;
     public int player;
+    public int numOfPlayer;
     // Start is called before the first frame update
 
     void Start()

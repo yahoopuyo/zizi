@@ -10,9 +10,12 @@ public class RecordOnline : MonoBehaviour
     public List<int>[] info = new List<int>[4];
     public int RecordSize = 0;
     private List<int>[] handUniform = new List<int>[4];
+    public bool Initialized = false;
+    
 
     GameObject Hand;
     HandsOnline hands;
+    ZiziDeck deck;
 
     private void get()
     {
@@ -198,14 +201,22 @@ public class RecordOnline : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Initialize();
-        //Debug.Log(RecordSize);
-        DebugRecords();
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        if(!Initialized)
+        {
+            get();
+            if(hands.distributed)
+            {
+                Initialize();
+                //Debug.Log(RecordSize);
+                //DebugRecords();
+                Initialized = true;
+            }
+        }
     }
 }

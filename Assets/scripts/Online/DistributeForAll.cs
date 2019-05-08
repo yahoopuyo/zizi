@@ -149,7 +149,7 @@ public class DistributeForAll : MonoBehaviour
             temp = d_start[0] + ofset[0]*cardCount  * 1.7f;
             cardModel.backIndex = hands.GetBack(i);
             cardModel.cardIndex = i;
-            cardCopy.transform.Rotate(rotate[3]);
+            cardCopy.transform.Rotate(rotate[0]);
 
             sources.Add(cardCopy);
 

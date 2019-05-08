@@ -9,19 +9,20 @@ public class ClickOnline : Photon.MonoBehaviour, IPointerClickHandler, IPointerE
     private GameObject hand;
     private GameObject gameManager;
     DrawOnline draw;
-    private TurnManager turnManager;
+    private TurnManagerOnline turnManager;
     private HandsOnline hands;
     private Distribute distribute;
     CardModel cardModel;
     int cardIndex;
     int turnPlayer;
     int drawnPlayer;
+    int player;
 
     void get()
     {
         gameManager = GameObject.Find("GameManager");
         draw = gameManager.GetComponent<DrawOnline>();
-        turnManager = gameManager.GetComponent<TurnManager>();
+        turnManager = gameManager.GetComponent<TurnManagerOnline>();
         turnPlayer = turnManager.turnPlayer;
         drawnPlayer = turnManager.drawnPlayer;
         hand = GameObject.Find("Hand"); //Handのクラスを取得
@@ -58,7 +59,7 @@ public class ClickOnline : Photon.MonoBehaviour, IPointerClickHandler, IPointerE
         {
             get();
 
-            //if (draw.flag) if (turnPlayer != 0) return;    //playernum == 1　の時デバッグ用にコメントアウトしてある
+            if (turnPlayer != player) return;
             if (drawnPlayer == hands.Cardownerreturn(cardIndex))
             {
                 //hands.hands[drawnPlayer].Remove(cardIndex); //引かれる人の手札配列からカードを削除
@@ -79,7 +80,7 @@ public class ClickOnline : Photon.MonoBehaviour, IPointerClickHandler, IPointerE
     // Start is called before the first frame update
     void Start()
     {
-
+        player = GameObject.Find("ModeData").GetComponent<ModeData>().player;
     }
 
     // Update is called once per frame
