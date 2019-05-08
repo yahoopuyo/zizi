@@ -1039,6 +1039,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   computerLevel: 0
+  player: 0
+  numOfPlayer: 2
 --- !u!4 &851138682
 Transform:
   m_ObjectHideFlags: 0

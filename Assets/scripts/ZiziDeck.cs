@@ -63,10 +63,10 @@ public class ZiziDeck : UnityEngine.MonoBehaviour
     void Start()
     {
         Debug.Log("zizideck called");
-        seed = Random.Range(0, 10000);
         md = GameObject.Find("ModeData").GetComponent<ModeData>();
         if (!md.IsSolo() && md.player == 0)
         {
+            seed = Random.Range(0, 10000);
             PhotonView view = GetComponent<PhotonView>();
             view.RPC("SendSeed", PhotonTargets.All, seed);
         }

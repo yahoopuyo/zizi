@@ -71,20 +71,47 @@ public class NetWork01 : MonoBehaviour
         else md.player = 3;
     }
 
+    void OnClickStart()
+    {
+        
+    }
+
+    [PunRPC]
+    void Load(int a)
+    {
+        md.numOfPlayer = PhotonNetwork.playerList.Length; //仮にこうしている
+        SceneManager.LoadScene("photon_in");
+    }
+
+    void LoadScene()
+    {
+        PhotonView view = GetComponent<PhotonView>();
+        view.RPC("Load", PhotonTargets.All,1);
+    }
+
+
     void Update()
     {
         connectionText.text = PhotonNetwork.connectionStateDetailed.ToString();
-        if(!In && PhotonNetwork.playerList.Length == 2)
+
+        if(!In && PhotonNetwork.playerList.Length == md.numOfPlayer)
         {
             In = true;
-            //hand.GetComponent<DistributeForAll>().StartGame();
+            //numOfPlayer = PhotonNetwork.playerList.Length; //仮にこうしている
         }
 
-        if (In && !Loaded)
+        if(!Loaded && In)
         {
-            md.numOfPlayer = 2; //仮にこうしている
             Loaded = true;
             SceneManager.LoadScene("photon_in");
+        }
+
+        if(Input.GetKeyDown(KeyCode.Return))
+        {
+            if (md.player == 0)
+            {
+                
+            }
         }
     }
     // ルームの入室に失敗すると呼ばれる
