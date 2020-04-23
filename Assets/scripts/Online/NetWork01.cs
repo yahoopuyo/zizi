@@ -10,8 +10,8 @@ public class NetWork01 : MonoBehaviour
     [SerializeField] Text connectionText;
     [SerializeField] Transform spawnPoint;
     private GameObject hand;
-    private bool In = false;
-    private bool Loaded=false;
+    private bool In;
+    private bool Loaded;
     public int player;
     ModeData md;
     int index;
@@ -42,9 +42,12 @@ public class NetWork01 : MonoBehaviour
     void Start()
     {
         // Photonに接続する(引数でゲームのバージョンを指定できる)
-        PhotonNetwork.ConnectUsingSettings(null);
+        if (PhotonNetwork.connected) PhotonNetwork.Disconnect();
+        else PhotonNetwork.ConnectUsingSettings(null);
+        //In = false;
+        //Loaded = false;
         md = GameObject.Find("ModeData").GetComponent<ModeData>();
-
+        md.roomName = "myroom"; //初めに指定できるようにする
     }
 
     // ロビーに入ると呼ばれる
@@ -54,7 +57,9 @@ public class NetWork01 : MonoBehaviour
         RoomOptions ro = new RoomOptions() { IsVisible = true, MaxPlayers = 4 };//maxPlayerは人数の上限
         // ルームに入室する
         PhotonNetwork.JoinOrCreateRoom("myRoom", ro, TypedLobby.Default);
-    }
+        //if (md.isHost) PhotonNetwork.JoinOrCreateRoom(md.roomName, ro, TypedLobby.Default);
+        //else PhotonNetwork.JoinRandomRoom();
+    } 
 
     // ルームに入室すると呼ばれる
     void OnJoinedRoom()
@@ -69,6 +74,7 @@ public class NetWork01 : MonoBehaviour
         else if (PhotonNetwork.playerList.Length == 2) md.player = 1;
         else if (PhotonNetwork.playerList.Length == 3) md.player = 2;
         else md.player = 3;
+        Debug.Log("プレイヤー" + md.player);
     }
 
     void OnClickStart()
@@ -77,16 +83,17 @@ public class NetWork01 : MonoBehaviour
     }
 
     [PunRPC]
-    void Load(int a)
+    void Load()
     {
         md.numOfPlayer = PhotonNetwork.playerList.Length; //仮にこうしている
+        Debug.Log("you are player" + md.player);
         SceneManager.LoadScene("photon_in");
     }
 
     void LoadScene()
     {
         PhotonView view = GetComponent<PhotonView>();
-        view.RPC("Load", PhotonTargets.All,1);
+        view.RPC("Load", PhotonTargets.All);
     }
 
 
@@ -94,10 +101,12 @@ public class NetWork01 : MonoBehaviour
     {
         connectionText.text = PhotonNetwork.connectionStateDetailed.ToString();
 
-        if(!In && PhotonNetwork.playerList.Length == md.numOfPlayer)
+        //if(!In && PhotonNetwork.playerList.Length == md.numOfPlayer)
+        /*
+        if (!In && PhotonNetwork.playerList.Length == 2)
         {
-            In = true;
-            //numOfPlayer = PhotonNetwork.playerList.Length; //仮にこうしている
+        //In = true;
+        numOfPlayer = PhotonNetwork.playerList.Length; //仮にこうしている
         }
 
         if(!Loaded && In)
@@ -105,12 +114,16 @@ public class NetWork01 : MonoBehaviour
             Loaded = true;
             SceneManager.LoadScene("photon_in");
         }
+        */
 
         if(Input.GetKeyDown(KeyCode.Return))
         {
+            //押した人がホストだったら
             if (md.player == 0)
             {
-                
+                PhotonNetwork.room.IsOpen = false;
+                Loaded = true;
+                LoadScene();
             }
         }
     }

@@ -14,6 +14,8 @@ public class ModeData : MonoBehaviour
     public int computerLevel;
     public int player;
     public int numOfPlayer;
+    public bool isHost;
+    public string roomName;
     // Start is called before the first frame update
 
     void Start()

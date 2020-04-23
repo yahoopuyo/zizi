@@ -11,7 +11,7 @@ public class BackToMenu : MonoBehaviour
         // Debug.Log("clicked");
         Destroy(GameObject.Find("ModeData"));
         SceneManager.LoadScene("MainMenu");
-    }
+        }
     // Start is called before the first frame update
     void Start()
     {
