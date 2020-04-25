@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon;
+using System.Globalization;
 
 public class ZiziDeck : UnityEngine.MonoBehaviour
 {
     private List<int> cards;
     private int zizi;
     private int seed;
+    public int numOfPlayer;
+    public bool shared=false;
     ModeData md;
     public List<int> GetCards()
     {
@@ -21,7 +24,7 @@ public class ZiziDeck : UnityEngine.MonoBehaviour
 
     public void Shuffle()
     {
-        Random.InitState(seed);
+        //Random.InitState(seed);
         if (cards == null)
         {
             cards = new List<int>();
@@ -53,21 +56,26 @@ public class ZiziDeck : UnityEngine.MonoBehaviour
     [PunRPC]
     void SendSeed(int num)
     {
+        md.numOfPlayer = numOfPlayer;
         Random.InitState(num);
+        Shuffle();
+        shared = true;
+        Debug.Log(num);
     }
 
     void Start()
     {
-        Shuffle();
-        seed = Random.Range(0, 10000);
+        Debug.Log("zizideck called");
         md = GameObject.Find("ModeData").GetComponent<ModeData>();
-        if(md.player == 0)
+        if (!md.IsSolo() && md.player == 0)
         {
+            numOfPlayer = md.numOfPlayer;
+            seed = Random.Range(0, 10000);
             PhotonView view = GetComponent<PhotonView>();
             view.RPC("SendSeed", PhotonTargets.All, seed);
         }
-                        // メソッド名
-        
+        else if (md.IsSolo())Shuffle();
+
     }
 
     

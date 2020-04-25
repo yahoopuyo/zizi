@@ -2046,8 +2046,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1244723547}
-  - component: {fileID: 1244723546}
-  - component: {fileID: 1244723545}
   - component: {fileID: 1244723544}
   m_Layer: 0
   m_Name: OpenSource
@@ -2086,32 +2084,7 @@ MonoBehaviour:
   - {x: 27.5, y: -3, z: 0}
   - {x: 32.5, y: -3, z: 0}
   co: 0.4
---- !u!114 &1244723545
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1244723543}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d472753071541411e843352ee460450c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  deck: {fileID: 0}
-  originalBack: 
---- !u!114 &1244723546
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1244723543}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0aefcacac4247480197e261ec6f60e1c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+
 --- !u!4 &1244723547
 Transform:
   m_ObjectHideFlags: 0

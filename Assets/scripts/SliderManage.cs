@@ -27,5 +27,6 @@ public class SliderManage : MonoBehaviour
         value = (int)slider.value;
         modeData.computerLevel = value;
         text.text = "cpu level ... " + value;
+
     }
 }

@@ -12,6 +12,8 @@ public class Click : MonoBehaviour , IPointerClickHandler, IPointerEnterHandler,
     private Hands hands;
     private Distribute distribute;
     CardModel cardModel;
+    int preDrawnPlayer;
+    int drawnCard;
     int cardIndex;
     int turnPlayer;
     int drawnPlayer;
@@ -22,6 +24,8 @@ public class Click : MonoBehaviour , IPointerClickHandler, IPointerEnterHandler,
         draw = gameManager.GetComponent<Draw>();
         turnManager = gameManager.GetComponent<TurnManager>();
         turnPlayer = turnManager.turnPlayer;
+        drawnCard = turnManager.drawnCard;
+        preDrawnPlayer = turnManager.preDrawnPlayer;
         drawnPlayer = turnManager.drawnPlayer;
         hand = GameObject.Find("Hand"); //Handのクラスを取得
         hands = hand.GetComponent<Hands>();
@@ -33,6 +37,12 @@ public class Click : MonoBehaviour , IPointerClickHandler, IPointerEnterHandler,
     {
         get();
 
+        if(drawnCard == cardIndex && preDrawnPlayer == 0) //前ひかれたカードだったら
+        {
+            cardModel.ToggleFace(true);
+            Debug.Log("selected");
+        }
+
         if (drawnPlayer == hands.Cardownerreturn(cardIndex))
         {
             var v = new Vector2(0, 0.4f);
@@ -43,6 +53,11 @@ public class Click : MonoBehaviour , IPointerClickHandler, IPointerEnterHandler,
     public void OnPointerExit(PointerEventData eventData)
     {
         get();
+
+        if (drawnCard == cardIndex && preDrawnPlayer == 0) //前ひかれたカードだったら
+        {
+            cardModel.ToggleFace(false);
+        }
 
         if (drawnPlayer == hands.Cardownerreturn(cardIndex))
         {

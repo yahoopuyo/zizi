@@ -20,4 +20,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 8285bf7a40665402d9fdd5c454701079
+  - enabled: 1
+    path: Assets/Scenes/photontest1.unity
+    guid: ccf6ccf2a564a416cb960e180ef66204
+  - enabled: 1
+    path: Assets/Scenes/photon_in.unity
+    guid: a10f1b866bfca52449a8e9232ae6b1d2
   m_configObjects: {}

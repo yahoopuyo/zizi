@@ -370,5 +370,15 @@ PrefabInstance:
       propertyPath: posCurve.m_Curve.Array.data[2].value
       value: 0.002357483
       objectReference: {fileID: 0}
+    - target: {fileID: 618541754942336830, guid: 2902fba118a6e486595554afe43324f0,
+        type: 3}
+      propertyPath: viewIdField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 618541754942336830, guid: 2902fba118a6e486595554afe43324f0,
+        type: 3}
+      propertyPath: instantiationId
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2902fba118a6e486595554afe43324f0, type: 3}

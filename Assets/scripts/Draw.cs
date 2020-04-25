@@ -76,6 +76,7 @@ public class Draw : MonoBehaviour
             record.updateRecordUnpaired(turn + 1, cardIndex, turnPlayer);  //棋譜操作
             record.updateInfoUnpaired(turnPlayer, cardIndex);   //プライベート情報操作
         }
+        
         hands.hands[dP].Remove(cardIndex); //引かれる人の手札配列からカードを削除
         hands.hands[tP].Add(cardIndex); //引いた人の手札配列にカードを追加
         hands.DeletePair((cardIndex % 13) + 1, turnPlayer);
@@ -84,7 +85,7 @@ public class Draw : MonoBehaviour
         distribute.updateField();
         turnManager.NextTurnPlayer();
         turnManager.NextDrawnPlayer();
-        turnManager.turnNext();
+        turnManager.turnNext(cardIndex);
         int deletedUniform;
         if (deleted == 100) deletedUniform = -1;
         else deletedUniform = record.Uniform.IndexOf(deleted);
