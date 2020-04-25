@@ -110,7 +110,7 @@ public class TurnManagerOnline : MonoBehaviour
         {
             result.Add("player" + turnPlayer + " losed");
             init = GetComponent<InitCanvas>();
-            //init.gameoverP.SetActive(true);
+            init.gameoverP.SetActive(true);
             string Order;
             Order = result[0] + "st\n\n" + result[1] + "nd\n\n" + result[2] + "rd\n\n" + result[3];
             Text text = GameObject.Find("Results").GetComponent<Text>();
