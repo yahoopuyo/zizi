@@ -73,6 +73,8 @@ public class Draw : MonoBehaviour
         }
         else
         {
+            turnManager.preDrawnCard = cardIndex;
+            turnManager.preDrawnPlayer = drawnPlayer;
             record.updateRecordUnpaired(turn + 1, cardIndex, turnPlayer);  //棋譜操作
             record.updateInfoUnpaired(turnPlayer, cardIndex);   //プライベート情報操作
         }

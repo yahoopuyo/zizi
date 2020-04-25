@@ -8,6 +8,8 @@ public class TurnManager : MonoBehaviour
     public int turn;
     public int turnPlayer;
     public int drawnPlayer;
+    public int preDrawnCard;
+    public int preDrawnPlayer;
     InitCanvas init;
     private List<int> Wins = new List<int>();
     public List<string> result = new List<string>();
@@ -118,6 +120,8 @@ public class TurnManager : MonoBehaviour
         turn = 0;
         turnPlayer = 0;
         drawnPlayer = 3;
+        preDrawnCard = 100;
+        preDrawnPlayer = 100;
     }
 
     void Update()
