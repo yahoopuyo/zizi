@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon;
+using System.Globalization;
 
 public class ZiziDeck : UnityEngine.MonoBehaviour
 {
     private List<int> cards;
     private int zizi;
     private int seed;
+    public int numOfPlayer;
     public bool shared=false;
     ModeData md;
     public List<int> GetCards()
@@ -54,6 +56,7 @@ public class ZiziDeck : UnityEngine.MonoBehaviour
     [PunRPC]
     void SendSeed(int num)
     {
+        md.numOfPlayer = numOfPlayer;
         Random.InitState(num);
         Shuffle();
         shared = true;
@@ -66,6 +69,7 @@ public class ZiziDeck : UnityEngine.MonoBehaviour
         md = GameObject.Find("ModeData").GetComponent<ModeData>();
         if (!md.IsSolo() && md.player == 0)
         {
+            numOfPlayer = md.numOfPlayer;
             seed = Random.Range(0, 10000);
             PhotonView view = GetComponent<PhotonView>();
             view.RPC("SendSeed", PhotonTargets.All, seed);

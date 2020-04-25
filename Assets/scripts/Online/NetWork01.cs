@@ -82,20 +82,22 @@ public class NetWork01 : MonoBehaviour
         
     }
 
+    /*
     [PunRPC]
     void Load()
     {
         md.numOfPlayer = PhotonNetwork.playerList.Length; //仮にこうしている
         Debug.Log("you are player" + md.player);
-        SceneManager.LoadScene("photon_in");
+        //SceneManager.LoadScene("photon_in");
     }
 
-    void LoadScene()
+    void LoadGameScene()
     {
         PhotonView view = GetComponent<PhotonView>();
         view.RPC("Load", PhotonTargets.All);
     }
 
+    */
 
     void Update()
     {
@@ -116,14 +118,21 @@ public class NetWork01 : MonoBehaviour
         }
         */
 
+        if(md.player > 0)
+        {
+            SceneManager.LoadScene("photon_in");
+        }
         if(Input.GetKeyDown(KeyCode.Return))
         {
             //押した人がホストだったら
             if (md.player == 0)
             {
                 PhotonNetwork.room.IsOpen = false;
+                md.numOfPlayer = PhotonNetwork.playerList.Length;
                 Loaded = true;
-                LoadScene();
+                SceneManager.LoadScene("photon_in");
+                
+
             }
         }
     }
