@@ -13,6 +13,8 @@ public class ClickOnline : Photon.MonoBehaviour, IPointerClickHandler, IPointerE
     private HandsOnline hands;
     private Distribute distribute;
     CardModel cardModel;
+    int preDrawnPlayer;
+    int drawnCard;
     int cardIndex;
     int turnPlayer;
     int drawnPlayer;
@@ -25,6 +27,8 @@ public class ClickOnline : Photon.MonoBehaviour, IPointerClickHandler, IPointerE
         turnManager = gameManager.GetComponent<TurnManagerOnline>();
         turnPlayer = turnManager.turnPlayer;
         drawnPlayer = turnManager.drawnPlayer;
+        preDrawnPlayer = turnManager.preDrawnPlayer;
+        drawnCard = turnManager.drawnCard;
         hand = GameObject.Find("Hand"); //Handのクラスを取得
         hands = hand.GetComponent<HandsOnline>();
         cardModel = GetComponent<CardModel>();
@@ -35,6 +39,11 @@ public class ClickOnline : Photon.MonoBehaviour, IPointerClickHandler, IPointerE
     {
         get();
 
+        if (drawnCard == cardIndex && preDrawnPlayer == player) //前ひかれたカードだったら
+        {
+            cardModel.ToggleFace(true);
+            Debug.Log("selected");
+        }
         if (drawnPlayer == hands.Cardownerreturn(cardIndex))
         {
             var v = new Vector2(0, 0.4f);
@@ -45,7 +54,11 @@ public class ClickOnline : Photon.MonoBehaviour, IPointerClickHandler, IPointerE
     public void OnPointerExit(PointerEventData eventData)
     {
         get();
-
+        if (drawnCard == cardIndex && preDrawnPlayer == player) //前ひかれたカードだったら
+        {
+            cardModel.ToggleFace(false);
+            Debug.Log("selected");
+        }
         if (drawnPlayer == hands.Cardownerreturn(cardIndex))
         {
             var v = new Vector2(0, -0.4f);

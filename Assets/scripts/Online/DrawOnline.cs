@@ -89,7 +89,7 @@ public class DrawOnline : MonoBehaviour
         distribute.updateField();
         turnManager.NextTurnPlayer();
         turnManager.NextDrawnPlayer();
-        turnManager.turnNext();
+        turnManager.turnNext(cardIndex);
         int deletedUniform;
         if (deleted == 100) deletedUniform = -1;
         else deletedUniform = record.Uniform.IndexOf(deleted);

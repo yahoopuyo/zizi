@@ -8,6 +8,8 @@ public class TurnManagerOnline : MonoBehaviour
     public int turn;
     public int turnPlayer;
     public int drawnPlayer;
+    public int drawnCard;
+    public int preDrawnPlayer;
     InitCanvas init;
     private List<int> Wins = new List<int>();
     public List<string> result = new List<string>();
@@ -85,12 +87,14 @@ public class TurnManagerOnline : MonoBehaviour
                 break;
 
         }
+        preDrawnPlayer = drawnPlayer;
         drawnPlayer = nextD;
     }
 
-    public void turnNext()
+    public void turnNext(int cardIndex)
     {
         turn++;
+        drawnCard = cardIndex;
         if (CountWinners() > Wins.Count)
         {
             for (int pl = 0; pl < 4; pl++)
@@ -118,6 +122,8 @@ public class TurnManagerOnline : MonoBehaviour
         turn = 0;
         turnPlayer = 0;
         drawnPlayer = 3;
+        drawnCard = 100;
+        preDrawnPlayer = 100;
     }
 
     void Update()
