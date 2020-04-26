@@ -63,6 +63,7 @@ The following packages were updated:
 Packages were changed.
 Update Mode: updateDependencies
 
+
 The following packages were added:
   com.unity.2d.sprite@1.0.0
   com.unity.2d.tilemap@1.0.0
@@ -79,3 +80,4 @@ The following packages were updated:
   com.unity.timeline from version 1.0.0 to 1.2.6
 The following packages were removed:
   com.unity.package-manager-ui@2.1.2
+
