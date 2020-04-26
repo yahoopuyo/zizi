@@ -15,6 +15,10 @@ public class TurnManagerOnline : MonoBehaviour
     public List<string> result = new List<string>();
     private GameObject hand;
     private HandsOnline hands;
+    private GameObject textyou;
+    private GameObject textnpn;
+    private GameObject textnnpn;
+    private GameObject textnnnpn;
 
     private int CountWinners()
     {
@@ -115,6 +119,10 @@ public class TurnManagerOnline : MonoBehaviour
             Order = result[0] + "st\n\n" + result[1] + "nd\n\n" + result[2] + "rd\n\n" + result[3];
             Text text = GameObject.Find("Results").GetComponent<Text>();
             text.text = Order;
+		textyou.SetActive(false);
+		textnpn.SetActive(false);
+		textnnpn.SetActive(false);
+		textnnnpn.SetActive(false);
         }
     }
     void Start()
@@ -124,6 +132,14 @@ public class TurnManagerOnline : MonoBehaviour
         drawnPlayer = 3;
         drawnCard = 100;
         preDrawnPlayer = 100;
+	GameObject textyou = GameObject.Find("yourPlayerNum");	
+	GameObject textnpn = GameObject.Find("nextPlayerNum");
+	GameObject textnnpn = GameObject.Find("nextnextPlayerNum");
+	GameObject textnnnpn = GameObject.Find("nextnextnextPlayerNum");
+	textyou.SetActive(true);
+	textnpn.SetActive(true);
+	textnpn.SetActive(true);
+	textnpn.SetActive(true);
     }
 
     void Update()
