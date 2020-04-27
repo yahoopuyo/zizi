@@ -43,6 +43,7 @@ Assets/Photon Unity Networking.meta
 Assets/PhotonChatAPI.meta
 Assets/Plugins.meta
 Assets/_TerrainAutoUpgrade.meta
+Assets/PhotonChatApi/
 
 
 #buildrelated??
@@ -55,4 +56,3 @@ randomCPUzizi/
 *.terrainlayer.meta
 *.pfx
 *.pfx.meta
-
