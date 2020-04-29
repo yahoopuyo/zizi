@@ -16,6 +16,7 @@ public class ModeData : MonoBehaviour
     public int numOfPlayer;
     public bool isHost;
     public string roomName;
+    public List<int> score;
     // Start is called before the first frame update
 
     void Start()
@@ -29,6 +30,7 @@ public class ModeData : MonoBehaviour
         menu.SetActive(true);
         inst = GameObject.Find("InstructionPanel");
         inst.SetActive(false);
+        score = new List<int>() { 0,0,0,0 };
     }
 
     // Update is called once per frame
