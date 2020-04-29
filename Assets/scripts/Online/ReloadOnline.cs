@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-public class ReloadOniline : MonoBehaviour
+public class ReloadOnline : MonoBehaviour
 {
 
     ModeData md;
@@ -15,7 +15,7 @@ public class ReloadOniline : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     [PunRPC]
@@ -25,6 +25,7 @@ public class ReloadOniline : MonoBehaviour
         // Sceneの読み直し
         SceneManager.LoadScene(loadScene.name);
     }
+
     void RestartGame()
     {
         PhotonView view = GetComponent<PhotonView>();
@@ -32,7 +33,18 @@ public class ReloadOniline : MonoBehaviour
     }
     public void ReloadForAll()
     {
-        RestartGame();
-        Invoke("Reload", 1.0f);
+        if (md.isHost)
+        {
+            RestartGame();
+            StartCoroutine(DelayMethod(1.0f));
+        }
+    }
+    private IEnumerator DelayMethod(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        Debug.Log("reload");
+        Scene loadScene = SceneManager.GetActiveScene();
+        // Sceneの読み直し
+        SceneManager.LoadScene(loadScene.name);
     }
 }

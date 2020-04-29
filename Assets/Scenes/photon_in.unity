@@ -309,6 +309,7 @@ GameObject:
   m_Component:
   - component: {fileID: 120766926}
   - component: {fileID: 120766925}
+  - component: {fileID: 120766927}
   m_Layer: 0
   m_Name: ReloadScene
   m_TagString: Untagged
@@ -325,7 +326,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 120766924}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 366d5846f3e914280a718565f11bd39f, type: 3}
+  m_Script: {fileID: 11500000, guid: 4a2422bf296baf2438c2677fdc591d25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &120766926
@@ -342,6 +343,33 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &120766927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 120766924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  OwnerShipWasTransfered: 0
+  prefixBackup: -1
+  synchronization: 0
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 3
+  instantiationId: 3
+  currentMasterID: -1
+  isRuntimeInstantiated: 0
 --- !u!1 &136692396
 GameObject:
   m_ObjectHideFlags: 0
@@ -681,7 +709,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 120766925}
-        m_MethodName: Reload
+        m_MethodName: ReloadForAll
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1808,6 +1836,8 @@ GameObject:
   - component: {fileID: 697409367}
   - component: {fileID: 697409369}
   - component: {fileID: 697409368}
+  - component: {fileID: 697409373}
+  - component: {fileID: 697409371}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1907,6 +1937,18 @@ MonoBehaviour:
   numOfPlayer: 0
   numOfComs: 0
   which: 0
+--- !u!114 &697409371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 697409365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 656241de04990be45aad1776d13a38de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &697409372
 Transform:
   m_ObjectHideFlags: 0
@@ -1921,6 +1963,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &697409373
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 697409365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a65b2645103a5bb4c87a32e4e8837bb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &704803910
 GameObject:
   m_ObjectHideFlags: 0
@@ -4500,7 +4554,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 120766925}
+      - m_Target: {fileID: 0}
         m_MethodName: Reload
         m_Mode: 1
         m_Arguments:
