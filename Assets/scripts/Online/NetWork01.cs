@@ -69,6 +69,7 @@ public class NetWork01 : MonoBehaviour
         if (PhotonNetwork.playerList.Length == 1)
         {
             md.player = 0;
+            md.isHost = true;
         }
 
         else if (PhotonNetwork.playerList.Length == 2) md.player = 1;
