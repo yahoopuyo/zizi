@@ -15,6 +15,7 @@ public class DrawOnline : MonoBehaviour
     private int player;
     public int numOfPlayer;
     public int numOfComs;
+    public bool[] computerFlags;
 
     GameObject hand;
     GameObject card;
@@ -36,9 +37,9 @@ public class DrawOnline : MonoBehaviour
         dP = turnManager.drawnPlayer;
         hand = GameObject.Find("Hand"); //Handのクラスを取得
         hands = hand.GetComponent<HandsOnline>();
-        for (int i = 0; i < numOfComs; i++)
+        for (int i = 0; i < 4; i++)
         {
-            coms[numOfPlayer + i] = GameObject.Find("Com" + (numOfPlayer + i)).GetComponent<ComputerOnline>();
+            coms[i] = GameObject.Find("Com" + (i)).GetComponent<ComputerOnline>();
             //Debug.Log("Com" + (i + 1));
         }
     }
@@ -93,9 +94,9 @@ public class DrawOnline : MonoBehaviour
         int deletedUniform;
         if (deleted == 100) deletedUniform = -1;
         else deletedUniform = record.Uniform.IndexOf(deleted);
-        for (int cn = 0; cn < numOfComs; cn++)
+        for (int cn = 0; cn < 4; cn++)
         {
-            coms[cn + numOfPlayer].load(dP, record.Uniform.IndexOf(cardIndex), tP, deletedUniform);
+            coms[cn].load(dP, record.Uniform.IndexOf(cardIndex), tP, deletedUniform);
         }
     }
 
@@ -112,7 +113,7 @@ public class DrawOnline : MonoBehaviour
 
     void Send(int drawnPlayer, int drawncard, int turnPlayer)
     {
-        int[] data = new int[3]{ drawnPlayer, drawncard, turnPlayer};
+        int[] data = new int[3] { drawnPlayer, drawncard, turnPlayer };
         PhotonView view = GetComponent<PhotonView>();
         view.RPC("SendAction", PhotonTargets.All, data);
     }
@@ -131,6 +132,10 @@ public class DrawOnline : MonoBehaviour
         player = modeData.player;
         numOfPlayer = modeData.numOfPlayer;
         numOfComs = 4 - numOfPlayer;
+        if (numOfComs == 1) computerFlags = new bool[4] { false, true, true, true };
+        if (numOfComs == 2) computerFlags = new bool[4] { false, true, false, true };
+        if (numOfComs == 3) computerFlags = new bool[4] { false, false, false, true };
+        if (numOfComs == 4) computerFlags = new bool[4] { false, false, false, false };
     }
 
     //void OnGUI()
@@ -158,12 +163,12 @@ public class DrawOnline : MonoBehaviour
             card.transform.Translate(0, Time.deltaTime * 0.6f, 0);
         }
 
-        if (true) //ここは、computer existsの時、とそのうちする
+        if (numOfComs != 0) //ここは、computer existsの時、とそのうちする
         {
             if (Input.GetKeyDown(KeyCode.Return))
             {
                 get();
-                if (tP >= numOfPlayer && player == 0) //master player のみがコンピューター操作できる、
+                if (computerFlags[tP] && player == 0) //master player のみがコンピューター操作できるように、後でIsHostにしよう
                 {
                     if (moveFlag || flashFlag) return;  //待機処理中にもう一回押された時に無効化
                     int drawncard= record.Uniform[coms[tP].draw(dP)];
