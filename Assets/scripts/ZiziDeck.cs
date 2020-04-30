@@ -9,7 +9,6 @@ public class ZiziDeck : UnityEngine.MonoBehaviour
     private List<int> cards;
     private int zizi;
     private int seed;
-    public int numOfPlayer;
     public bool shared=false;
     ModeData md;
     public List<int> GetCards()
@@ -54,13 +53,14 @@ public class ZiziDeck : UnityEngine.MonoBehaviour
     }
 
     [PunRPC]
-    void SendSeed(int num)
+    void SendSeed(int num,int numOfPlayer)
     {
         md.numOfPlayer = numOfPlayer;
         Random.InitState(num);
         Shuffle();
         shared = true;
         Debug.Log(num);
+        if (numOfPlayer == 2 && md.player == 1) md.player = 2;//仮の処理
     }
 
     void Start()
@@ -69,10 +69,9 @@ public class ZiziDeck : UnityEngine.MonoBehaviour
         md = GameObject.Find("ModeData").GetComponent<ModeData>();
         if (!md.IsSolo() && md.player == 0)
         {
-            numOfPlayer = md.numOfPlayer;
             seed = Random.Range(0, 10000);
             PhotonView view = GetComponent<PhotonView>();
-            view.RPC("SendSeed", PhotonTargets.All, seed);
+            view.RPC("SendSeed", PhotonTargets.All, seed,md.numOfPlayer);
         }
         else if (md.IsSolo())Shuffle();
 
