@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
+using System.Threading;
 
 
 public class NetWork01 : MonoBehaviour
@@ -18,6 +20,7 @@ public class NetWork01 : MonoBehaviour
     RoomName push1;
     RoomMake push2;
     public int players;
+    private int preplayers;
     Text numplayers;
     Dropdown dd;
     Text dlabel;
@@ -43,7 +46,7 @@ public class NetWork01 : MonoBehaviour
         push3 = GameObject.Find("RoomDropdown").GetComponent<Guest>();
         push4 = GameObject.Find("BackButton").GetComponent<BackButton>();
         push5 = GameObject.Find("BackToMenuButton").GetComponent<BackToMenu>();
-        DontDestroyOnLoad(this);
+        //DontDestroyOnLoad(this);
     }
 
     // ロビーに入ると呼ばれる
@@ -82,11 +85,18 @@ public class NetWork01 : MonoBehaviour
         Debug.Log("ルームへ入室しました。");
     }
 
-    //ルームの入室に失敗したら呼ばれる、ロビーに戻す
-    void OnPhotonRandomJoinFailed()
+    //ルームの作成に失敗したら呼ばれる、ロビーに戻す
+    void OnPhotonCreateRoomFailed()
     {
+        Debug.Log("ルームの作成に失敗しました。");
         SceneManager.LoadScene("photontest1");
+    }
+
+    //ルームの入室に失敗したら呼ばれる、ロビーに戻す
+    void OnPhotonJoinRoomFailed()
+    {
         Debug.Log("ルームの入室に失敗しました。");
+        SceneManager.LoadScene("photontest1");
     }
 
     //接続が切れたらよばれる
@@ -96,7 +106,7 @@ public class NetWork01 : MonoBehaviour
         if (bmenu)
         {
             SceneManager.LoadScene("MainMenu");
-            Destroy(this);
+            //Destroy(this);
         }
         else SceneManager.LoadScene("photontest1");
     }
@@ -128,47 +138,59 @@ public class NetWork01 : MonoBehaviour
         // ルーム内のプレーヤー数
         players = PhotonNetwork.playerList.Length;
         numplayers.text = "Players are  " + players + "/4";
+        if (players > preplayers) md.player = players - 1;
+        preplayers = players;
 
         if (push1.hostpush1) //ホストがルーム作った瞬間、入室
         {
             push1.hostpush1 = false;
             md.roomName = roomhost.text;
             RoomOptions ro = new RoomOptions() { IsVisible = true, MaxPlayers = 4 };//maxPlayerは人数の上限                                                      
-            PhotonNetwork.JoinOrCreateRoom(md.roomName, ro, TypedLobby.Default);
+            PhotonNetwork.CreateRoom(md.roomName, ro, TypedLobby.Default);
+            md.isHost = true;
         }
 
         if (push2.hostpush2 && In) //ホストが決定した
         {
             push2.hostpush2 = false;
-            PhotonNetwork.room.IsOpen = false;
             PhotonNetwork.room.IsVisible = false;
-            md.isHost = true;
-            md.player = 0;
             md.numOfPlayer = players;
+            md.player = 0;
+            //3秒待たせる
+            Thread.Sleep(3000);
             SceneManager.LoadScene("photon_in");
         }
 
-        if (push3.guestpush) //ゲストがルームに入る瞬間
+        if (push3.guestpush) //ゲストがルームに入る瞬間、photon_inはまだ
         {
             push3.guestpush = false;
             md.roomName = dlabel.text;
             PhotonNetwork.JoinRoom(md.roomName);
-            md.player = players - 1;
-            SceneManager.LoadScene("photon_in");
         }
-
-        if (push4.backbutton) //ホストが部屋作成後、戻る場合
+        
+        if (push4.backbutton) //入室後、戻る場合
         {
-            //LoadScene();
             push4.backbutton = false;
+            PhotonNetwork.room.IsOpen = false; //全員ロビーに戻す前準備
+            //時間おいた方がいいかも
             PhotonNetwork.Disconnect();
         }
 
         if (push5.backmenu) //BackToMenuが押された
         {
             push5.backmenu = false;
+            PhotonNetwork.room.IsOpen = false; //全員ロビーに戻す前準備
             bmenu = true;
             PhotonNetwork.Disconnect();
+        }
+
+        if (In && !md.isHost) //ゲストでかつ入室済み
+        {
+            // ゲストのphoton_in
+            if (!PhotonNetwork.room.IsVisible) SceneManager.LoadScene("photon_in");
+
+            //誰かの戻る動作をうけて、ゲストがphotontest1のリロード
+            if (!PhotonNetwork.room.IsOpen) PhotonNetwork.Disconnect();
         }
     }
 }
