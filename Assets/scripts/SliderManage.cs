@@ -5,12 +5,9 @@ using UnityEngine.UI;
 
 public class SliderManage : MonoBehaviour
 {
-    Slider slider;
-    int value;
     // Start is called before the first frame update
     void Start()
     {
-        slider = GetComponent<Slider>();
 
     }
 
@@ -24,9 +21,9 @@ public class SliderManage : MonoBehaviour
     {
         ModeData modeData = GameObject.Find("ModeData").GetComponent<ModeData>();
         Text text = GameObject.Find("SliderText").GetComponent<Text>();
-        value = (int)slider.value;
+        Slider slider = GameObject.Find("Slider").GetComponent<Slider>();
+        int value = (int)slider.value;
         modeData.computerLevel = value;
         text.text = "cpu level ... " + value;
-
     }
 }
