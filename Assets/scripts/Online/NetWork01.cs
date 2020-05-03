@@ -90,7 +90,7 @@ public class NetWork01 : MonoBehaviour
         PhotonNetwork.Disconnect();
     }
 
-    //ルームの入室に失敗したら呼ばれる、ロビーに戻す
+    //ルームの入室に失敗したら呼ばれる、基本的には呼ばれないはず
     void OnPhotonJoinRoomFailed()
     {
         Debug.Log("ルームの入室に失敗しました。");
@@ -139,7 +139,7 @@ public class NetWork01 : MonoBehaviour
         if (players > preplayers && md.player == 0 && !md.isHost)
         {
             md.player = players - 1;
-            PhotonNetwork.playerName = md.player.ToString();
+            if (md.player > 0) PhotonNetwork.playerName = md.player.ToString();
         }
 
         if (push1.hostpush1) //ホストがルーム作った瞬間、入室
@@ -166,7 +166,7 @@ public class NetWork01 : MonoBehaviour
         if (push3.guestpush) //ゲストがルームに入る瞬間、photon_inはまだ
         {
             push3.guestpush = false;
-            md.roomName = dlabel.text;
+            md.roomName = dlabel.text;;
             PhotonNetwork.JoinRoom(md.roomName);
         }
         
