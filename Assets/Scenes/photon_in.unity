@@ -1952,6 +1952,7 @@ MonoBehaviour:
   flashFlag: 0
   numOfPlayer: 0
   numOfComs: 0
+  computerFlags: 
   which: 0
 --- !u!114 &697409371
 MonoBehaviour:
