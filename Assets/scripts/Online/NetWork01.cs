@@ -128,6 +128,12 @@ public class NetWork01 : MonoBehaviour
     }
     */
 
+    IEnumerator photonIn()
+    {
+        yield return new WaitForSeconds(1.0f);  //1秒待機
+        SceneManager.LoadScene("photon_in");
+    }
+
 
     void Update()
     {
@@ -159,8 +165,7 @@ public class NetWork01 : MonoBehaviour
             PhotonNetwork.room.IsVisible = false;
             md.numOfPlayer = players;
             md.player = 0;
-            Thread.Sleep(1000);
-            SceneManager.LoadScene("photon_in");
+            StartCoroutine("photonIn");
         }
 
         if (push3.guestpush) //ゲストがルームに入る瞬間、photon_inはまだ
