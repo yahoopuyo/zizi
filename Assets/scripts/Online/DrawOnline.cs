@@ -132,10 +132,10 @@ public class DrawOnline : MonoBehaviour
         player = modeData.player;
         numOfPlayer = modeData.numOfPlayer;
         numOfComs = 4 - numOfPlayer;
-        if (numOfComs == 1) computerFlags = new bool[4] { false, true, true, true };
-        if (numOfComs == 2) computerFlags = new bool[4] { false, true, false, true };
-        if (numOfComs == 3) computerFlags = new bool[4] { false, false, false, true };
-        if (numOfComs == 4) computerFlags = new bool[4] { false, false, false, false };
+        if (numOfPlayer == 1) computerFlags = new bool[4] { false, true, true, true };
+        if (numOfPlayer == 2) computerFlags = new bool[4] { false, true, false, true };
+        if (numOfPlayer == 3) computerFlags = new bool[4] { false, false, false, true };
+        if (numOfPlayer == 4) computerFlags = new bool[4] { false, false, false, false };
     }
 
     //void OnGUI()
