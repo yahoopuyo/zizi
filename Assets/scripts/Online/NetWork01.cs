@@ -33,8 +33,6 @@ public class NetWork01 : MonoBehaviour
 
     void Start()
     {
-        // Photonに接続する(引数でゲームのバージョンを指定できる)
-        if (PhotonNetwork.connected) PhotonNetwork.Disconnect();
         PhotonNetwork.ConnectUsingSettings(null);
         md = GameObject.Find("ModeData").GetComponent<ModeData>();
         roomhost = GameObject.Find("InputFieldText").GetComponent<Text>();
@@ -89,14 +87,14 @@ public class NetWork01 : MonoBehaviour
     void OnPhotonCreateRoomFailed()
     {
         Debug.Log("ルームの作成に失敗しました。");
-        SceneManager.LoadScene("photontest1");
+        PhotonNetwork.Disconnect();
     }
 
     //ルームの入室に失敗したら呼ばれる、ロビーに戻す
     void OnPhotonJoinRoomFailed()
     {
         Debug.Log("ルームの入室に失敗しました。");
-        SceneManager.LoadScene("photontest1");
+        PhotonNetwork.Disconnect();
     }
 
     //接続が切れたらよばれる
@@ -138,8 +136,11 @@ public class NetWork01 : MonoBehaviour
         // ルーム内のプレーヤー数
         players = PhotonNetwork.playerList.Length;
         numplayers.text = "Players are  " + players + "/4";
-        if (players > preplayers) md.player = players - 1;
-        preplayers = players;
+        if (players > preplayers && md.player == 0 && !md.isHost)
+        {
+            md.player = players - 1;
+            PhotonNetwork.playerName = md.player.ToString();
+        }
 
         if (push1.hostpush1) //ホストがルーム作った瞬間、入室
         {
@@ -148,16 +149,17 @@ public class NetWork01 : MonoBehaviour
             RoomOptions ro = new RoomOptions() { IsVisible = true, MaxPlayers = 4 };//maxPlayerは人数の上限                                                      
             PhotonNetwork.CreateRoom(md.roomName, ro, TypedLobby.Default);
             md.isHost = true;
+            PhotonNetwork.playerName = "0";
         }
 
         if (push2.hostpush2 && In) //ホストが決定した
         {
             push2.hostpush2 = false;
+            PhotonNetwork.room.IsOpen = false;
             PhotonNetwork.room.IsVisible = false;
             md.numOfPlayer = players;
             md.player = 0;
-            //3秒待たせる
-            Thread.Sleep(3000);
+            Thread.Sleep(1000);
             SceneManager.LoadScene("photon_in");
         }
 
@@ -171,15 +173,12 @@ public class NetWork01 : MonoBehaviour
         if (push4.backbutton) //入室後、戻る場合
         {
             push4.backbutton = false;
-            PhotonNetwork.room.IsOpen = false; //全員ロビーに戻す前準備
-            //時間おいた方がいいかも
             PhotonNetwork.Disconnect();
         }
 
         if (push5.backmenu) //BackToMenuが押された
         {
             push5.backmenu = false;
-            PhotonNetwork.room.IsOpen = false; //全員ロビーに戻す前準備
             bmenu = true;
             PhotonNetwork.Disconnect();
         }
@@ -190,8 +189,10 @@ public class NetWork01 : MonoBehaviour
             if (!PhotonNetwork.room.IsVisible) SceneManager.LoadScene("photon_in");
 
             //誰かの戻る動作をうけて、ゲストがphotontest1のリロード
-            if (!PhotonNetwork.room.IsOpen) PhotonNetwork.Disconnect();
+            if (players < preplayers) PhotonNetwork.Disconnect();
         }
+
+        preplayers = players;
     }
 }
 
