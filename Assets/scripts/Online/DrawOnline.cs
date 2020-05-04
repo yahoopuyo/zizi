@@ -19,7 +19,7 @@ public class DrawOnline : MonoBehaviour
 
     GameObject hand;
     GameObject card;
-    ComputerOnline[] coms = new ComputerOnline[4];
+    ComputerVer2Online[] coms = new ComputerVer2Online[4];
 
     HandsOnline hands;
     TurnManagerOnline turnManager;
@@ -39,7 +39,7 @@ public class DrawOnline : MonoBehaviour
         hands = hand.GetComponent<HandsOnline>();
         for (int i = 0; i < 4; i++)
         {
-            coms[i] = GameObject.Find("Com" + (i)).GetComponent<ComputerOnline>();
+            coms[i] = GameObject.Find("Com" + (i)).GetComponent<ComputerVer2Online>();
             //Debug.Log("Com" + (i + 1));
         }
     }
