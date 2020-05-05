@@ -23,14 +23,17 @@ public class ScoreManagerOnline : MonoBehaviour
         List<int> scoreToOrder = new List<int>() {100,50,40,0 };
         init = GetComponent<InitCanvas>();
         init.gameoverP.SetActive(true);
+        string[] playerInfo = md.playerInfo;
         string order;
         string points;
         for (int i=0; i < 4; i++)
         {
             score[wins[i]] += scoreToOrder[i];
+            result[i] = "i位:" + playerInfo[wins[i]];
         }
-        order = result[0] + "st\n\n" + result[1] + "nd\n\n" + result[2] + "rd\n\n" + result[3]; //Add points to this string
-        points = "\n\nplayer0:" + score[0] + "pt  player1:" + score[1] + "pt\tplayer2:" + score[2] + "pt\tplayer3:" + score[3] + "pt";
+        
+        order = result[0] + "st\n" + result[1] + "nd\n" + result[2] + "rd\n" + result[3]; //Add points to this string
+        points = "\n\n" + playerInfo[0] + ":" + score[0] + "pt\t" + playerInfo[1] + ":" + score[1] + "pt\t" + playerInfo[2] +":"+ score[2] + "pt\t" + playerInfo[3] +":" + score[3] + "pt";
         Text text = GameObject.Find("Results").GetComponent<Text>();
         text.text = order + points;
     }

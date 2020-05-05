@@ -39,7 +39,7 @@ public class ClickOnline : Photon.MonoBehaviour, IPointerClickHandler, IPointerE
     {
         get();
 
-        if (drawnCard == cardIndex && preDrawnPlayer == player) //前ひかれたカードだったら
+        if (drawnCard == cardIndex && preDrawnPlayer == player && drawnCard != hands.GetGrave()[-1] && drawnCard != hands.GetGrave()[-2]) //前ひかれたカードだったら
         {
             cardModel.ToggleFace(true);
             Debug.Log("selected");

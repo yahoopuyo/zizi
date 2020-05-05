@@ -15,7 +15,7 @@ public class DrawOnline : MonoBehaviour
     private int player;
     public int numOfPlayer;
     public int numOfComs;
-    public bool[] computerFlags;
+    //public bool[] computerFlags;
 
     GameObject hand;
     GameObject card;
@@ -25,6 +25,7 @@ public class DrawOnline : MonoBehaviour
     TurnManagerOnline turnManager;
     RecordOnline record;
     DistributeForAll distribute;
+    ModeData md;
     public bool which;
 
     private void get()
@@ -37,6 +38,7 @@ public class DrawOnline : MonoBehaviour
         dP = turnManager.drawnPlayer;
         hand = GameObject.Find("Hand"); //Handのクラスを取得
         hands = hand.GetComponent<HandsOnline>();
+        md = GameObject.Find("ModeData").GetComponent<ModeData>();
         for (int i = 0; i < 4; i++)
         {
             coms[i] = GameObject.Find("Com" + (i)).GetComponent<ComputerVer2Online>();
@@ -132,10 +134,12 @@ public class DrawOnline : MonoBehaviour
         player = modeData.player;
         numOfPlayer = modeData.numOfPlayer;
         numOfComs = 4 - numOfPlayer;
+        /*
         if (numOfPlayer == 1) computerFlags = new bool[4] { false, true, true, true };
         if (numOfPlayer == 2) computerFlags = new bool[4] { false, true, false, true };
         if (numOfPlayer == 3) computerFlags = new bool[4] { false, false, false, true };
         if (numOfPlayer == 4) computerFlags = new bool[4] { false, false, false, false };
+        */
     }
 
     //void OnGUI()
@@ -168,7 +172,7 @@ public class DrawOnline : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Return))
             {
                 get();
-                if (computerFlags[tP] && player == 0) //master player のみがコンピューター操作できるように、後でIsHostにしよう
+                if (md.playerInfo[tP] == "Com" && md.IsHost()) //master player のみがコンピューター操作できるように、後でIsHostにしよう
                 {
                     if (moveFlag || flashFlag) return;  //待機処理中にもう一回押された時に無効化
                     int drawncard= record.Uniform[coms[tP].draw(dP)];
