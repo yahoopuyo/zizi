@@ -12,18 +12,22 @@ public class NetworkIn : MonoBehaviour
     {
         Debug.Log(PhotonNetwork.player.NickName);
         md = GameObject.Find("ModeData").GetComponent<ModeData>();
-        draw = GetComponent<DrawOnline>();
+        //draw = GetComponent<DrawOnline>();
     }
 
-    void OnPhotonPlayerDisconnected(PhotonPlayer otherPlayer)
+    void OnPhotonPlayerDisconnected(PhotonPlayer otherPlayer)   //抜けたときの挙動
     {
         Debug.Log("on disconnected called");
         String outPlayerName = otherPlayer.NickName;
-        Debug.Log(outPlayerName);
-        if (md.numOfPlayer == 2 && outPlayerName == "1") draw.computerFlags[2] = true;
-        if (md.numOfPlayer != 2 && outPlayerName == "1") draw.computerFlags[1] = true;
-        if (outPlayerName == "2") draw.computerFlags[2] = true;
-        if (outPlayerName == "3") draw.computerFlags[3] = true;
+        int outPlayerNum = Array.IndexOf(md.playerInfo, outPlayerName);
+        md.playerInfo[outPlayerNum] = "Com";
+        /*
+        if (md.numOfPlayer == 2 && outPlayerName == "1") md.playerInfo[2] = "Com";
+        if (md.numOfPlayer != 2 && outPlayerName == "1") md.playerInfo[1] = "Com";
+        if (outPlayerName == "2") md.playerInfo[2] = "Com";
+        if (outPlayerName == "3") md.playerInfo[3] = "Com";
+        */
+        md.numOfPlayer--;
     }
     // Update is called once per frame
     void Update()

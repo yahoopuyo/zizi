@@ -56,7 +56,6 @@ public class DistributeForAll : MonoBehaviour
             cardCopy.transform.position = temp;
             if (player == 0) cardModel.ToggleFace(true);
             else cardModel.ToggleFace(false);
-
             spriteRenderer.sortingOrder = cardCount;
 
             cardCount++;
