@@ -18,6 +18,7 @@ public class ModeData : MonoBehaviour
     public int numOfPlayer;
     public string roomName;
     public List<int> score;
+    public List<int> zzkkscore;
     public string[] playerInfo;
     // Start is called before the first frame update
 
@@ -33,6 +34,7 @@ public class ModeData : MonoBehaviour
         inst = GameObject.Find("InstructionPanel");
         inst.SetActive(false);
         score = new List<int>() { 0,0,0,0 };
+        zzkkscore = new List<int>() { 0, 0, 0, 0 };
         playerInfo = new string[4] { "player", "Com", "Com", "Com" }; //for solo play
     }
 

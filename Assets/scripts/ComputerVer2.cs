@@ -610,21 +610,24 @@ public class ComputerVer2 : MonoBehaviour
             }
         }
 
+        List<int> nonsuc2 = new List<int>(nonsuc);
         foreach (int un in nonsuc)
         {
-            if (success(drawnPlayer).Contains(un)) nonsuc.Remove(un);
+            if (success(drawnPlayer).Contains(un)) nonsuc2.Remove(un);
         }
 
-        return nonsuc;
+        return nonsuc2;
     }
 
     private bool dangerousCard(int drawnPlayer, int cardUni) //書き方あってる？
     {
-        List<int> uniexists = record.UniformExists;
+        List<int> uniexists = new List<int>(record.UniformExists);
+        Debug.Log("record.UniformExistsは" + record.UniformExists.Count + "枚から");
         foreach (int un in handUniforms[playerNumber])
         {
             uniexists.Remove(un); //ターンプレーヤー以外の手札を入れてる
         }
+        Debug.Log(record.UniformExists.Count + "枚になりました");
 
         bool judge = true;
 
@@ -647,9 +650,11 @@ public class ComputerVer2 : MonoBehaviour
             {
                 if (blanklist3[j].Count == 1)
                 {
+                    //foreach (int un in record.UniformExists) Debug.Log(un);
                     foreach (int uni in blanklist3[j][0])
                     {
-                        if (record.UniformExists.Contains(uni))
+                        Debug.Log(uni + "の背番号がzizi");
+                        if (record.UniformExists.Contains(uni)) //ここに入らないことがある....
                         {
                             ziziuniform = uni;
                             zizikakuplace = true;
@@ -657,9 +662,10 @@ public class ComputerVer2 : MonoBehaviour
                             Debug.Log("プレーヤー" + playerNumber + "はブランクじじかくでziziuniformが" + ziziuniform + "と決定");
                         }
                     }
+                    if (debugcnt==0) Debug.Log("やばい");
                 }
             }
-            if (debugcnt > 1) Debug.Log("zizi確してるけど場に３枚ある");  //本当は３枚ある場合も引かないようにしたい
+            if (debugcnt > 1) Debug.Log("zizi確してるけど場に３枚ある");  //変な挙動をしてるかも
         }
     }
 
