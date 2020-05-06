@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -107,9 +108,11 @@ public class TurnManagerOnline : MonoBehaviour
         }
         if (turnPlayer == drawnPlayer)
         {
+            int zizi = hands.hands[turnPlayer][0];
+            Debug.Log("zizi is " + zizi);
             result.Add("player" + turnPlayer + " lost");
             Wins.Add(turnPlayer);
-            sm.WriteResult(Wins,result);
+            sm.WriteResult(Wins,zizi);
             
         }
     }

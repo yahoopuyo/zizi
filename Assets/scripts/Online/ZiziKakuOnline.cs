@@ -25,6 +25,11 @@ public class ZiziKakuOnline : MonoBehaviour
         }
     }
 
+    public void RemoveFromGuessList(int cardIndex)
+    {
+        guessListIndex.Remove(cardIndex);
+    }
+
     // Start is called before the first frame update
     void Start()
     {
