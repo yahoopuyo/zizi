@@ -11,7 +11,7 @@ public class ScoreManagerOnline : MonoBehaviour
     InitCanvas init;
     List<int> score;
     List<int> zzkkscore;
-    List<string>[] result = new List<string>[4];
+    List<string> result = new List<string>();
     public List<List<int>[]> zzkkList = new List<List<int>[]>();
     private List<int> zzkkrank = new List<int>() { 0, 0, 0, 0 };
 
@@ -54,7 +54,7 @@ public class ScoreManagerOnline : MonoBehaviour
         for (int i=0; i < 4; i++)
         {
             score[wins[i]] += scoreToOrder[i];
-            result[i] = (i+1) + "位: " + playerInfo[wins[i]];
+            result.Add((i+1) + "位: " + playerInfo[wins[i]]);
         }
         
         order = result[0] + "st\n" + result[1] + "nd\n" + result[2] + "rd\n" + result[3]; //Add points to this string

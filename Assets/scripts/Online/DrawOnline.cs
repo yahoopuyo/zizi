@@ -26,6 +26,7 @@ public class DrawOnline : MonoBehaviour
     RecordOnline record;
     DistributeForAll distribute;
     ModeData md;
+    ZiziKakuOnline zizikaku;
     public bool which;
 
     private void get()
@@ -39,6 +40,7 @@ public class DrawOnline : MonoBehaviour
         hand = GameObject.Find("Hand"); //Handのクラスを取得
         hands = hand.GetComponent<HandsOnline>();
         md = GameObject.Find("ModeData").GetComponent<ModeData>();
+        zizikaku = GetComponent<ZiziKakuOnline>();
         for (int i = 0; i < 4; i++)
         {
             coms[i] = GameObject.Find("Com" + (i)).GetComponent<ComputerVer2Online>();
@@ -77,6 +79,8 @@ public class DrawOnline : MonoBehaviour
 
             record.updateRecordPaired(turn + 1, cardIndex, deleted);    //棋譜操作
             record.updateInfoPaired(cardIndex, deleted);    //プライベート情報操作
+
+            zizikaku.RemoveFromGuessList(cardIndex, deleted); //ziziかくとして選択中のを消す
             flashFlag = false;
         }
         else
