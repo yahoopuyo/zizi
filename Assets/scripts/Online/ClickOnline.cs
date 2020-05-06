@@ -3,15 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Photon;
+using System;
 
 public class ClickOnline : Photon.MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitH​​andler
 {
     private GameObject hand;
     private GameObject gameManager;
     DrawOnline draw;
+    ZiziKakuOnline zizikaku;
     private TurnManagerOnline turnManager;
     private HandsOnline hands;
-    private Distribute distribute;
+    private DistributeForAll distribute;
     CardModel cardModel;
     int preDrawnPlayer;
     int drawnCard;
@@ -33,6 +35,7 @@ public class ClickOnline : Photon.MonoBehaviour, IPointerClickHandler, IPointerE
         hands = hand.GetComponent<HandsOnline>();
         cardModel = GetComponent<CardModel>();
         cardIndex = cardModel.cardIndex; //カードモデルからcardIndexを取得
+        zizikaku = gameManager.GetComponent<ZiziKakuOnline>();
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -68,10 +71,9 @@ public class ClickOnline : Photon.MonoBehaviour, IPointerClickHandler, IPointerE
 
     void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
     {
-        if (eventData.clickCount > 0) //クリック回数>0の時  一応残すけどこのままいくならif文とっても良いはず
+        get();
+        if (eventData.button == PointerEventData.InputButton.Left) //クリック回数>0の時  一応残すけどこのままいくならif文とっても良いはず
         {
-            get();
-
             if (turnPlayer != player) return;
             if (drawnPlayer == hands.Cardownerreturn(cardIndex))
             {
@@ -87,6 +89,16 @@ public class ClickOnline : Photon.MonoBehaviour, IPointerClickHandler, IPointerE
                 if (draw.moveFlag || draw.flashFlag) return;
                 draw.drawWithAnimation(drawnPlayer, cardIndex, turnPlayer);
             }
+        }
+        if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            int owner = hands.Cardownerreturn(cardIndex);
+            bool face;
+            if (owner == 5) return; //選ばれたカードが誰のものでもなかったら
+            if (zizikaku.UpdateGuessList(cardIndex)) return;  //もう6つ選択していて、増やそうとしている場合
+            cardModel.ToggleZizikaku();
+            cardModel.ToggleFace(owner == player);
+
         }
     }
 

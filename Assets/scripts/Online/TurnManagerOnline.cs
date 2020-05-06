@@ -107,8 +107,9 @@ public class TurnManagerOnline : MonoBehaviour
         }
         if (turnPlayer == drawnPlayer)
         {
+            result.Add("player" + turnPlayer + " lost");
             Wins.Add(turnPlayer);
-            sm.WriteResult(Wins,zizi);
+            sm.WriteResult(Wins,result);
             
         }
     }

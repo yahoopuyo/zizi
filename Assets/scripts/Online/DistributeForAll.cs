@@ -29,9 +29,9 @@ public class DistributeForAll : MonoBehaviour
 
     private int player;
     ModeData md;
+    ZiziKakuOnline zizikaku;
 
-
-    void distribute()
+    public void distribute()
     {
 
     //player0のoriginalsを表示
