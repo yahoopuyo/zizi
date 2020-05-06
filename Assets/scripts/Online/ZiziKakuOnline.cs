@@ -6,6 +6,16 @@ public class ZiziKakuOnline : MonoBehaviour
 {
     //private List<GameObject> guessListCard;
     private List<int> guessListIndex;
+
+    ScoreManagerOnline sm;
+
+    [PunRPC]
+    void SendGuessList(int turn, int playernum)
+    {
+        guessListIndex.Insert(0, turn + 100); //先頭にturn+100を挿入（100はziziと被らせないため)
+        sm.zzkkList.Insert(playernum, guessListIndex);
+    }
+
     private bool zizikakued;
 
 
@@ -14,6 +24,7 @@ public class ZiziKakuOnline : MonoBehaviour
     {
         return guessListIndex.Contains(cardIndex);
     }
+
     public bool UpdateGuessList(int cardIndex) //return true when it deesn't need to ToggleFace
     {
         if (zizikakued) return true;//もうzizi確済みなら無視する
@@ -50,6 +61,7 @@ public class ZiziKakuOnline : MonoBehaviour
     void Start()
     {
         guessListIndex = new List<int>();
+        sm = GetComponent<ScoreManagerOnline>();
     }
 
     // Update is called once per frame

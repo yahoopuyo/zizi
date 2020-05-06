@@ -12,7 +12,7 @@ public class ScoreManagerOnline : MonoBehaviour
     List<int> score;
     List<int> zzkkscore;
     List<string> result = new List<string>();
-    public List<List<int>[]> zzkkList = new List<List<int>[]>();
+    public List<List<int>> zzkkList = new List<List<int>>();
     private List<int> zzkkrank = new List<int>() { 0, 0, 0, 0 };
 
     // Start is called before the first frame update
@@ -54,11 +54,11 @@ public class ScoreManagerOnline : MonoBehaviour
         for (int i=0; i < 4; i++)
         {
             score[wins[i]] += scoreToOrder[i];
-            result.Add((i+1) + "位: " + playerInfo[wins[i]]);
+            result.Add("No." + (i+1) + ": " + playerInfo[wins[i]]);
         }
         
-        order = result[0] + "st\n" + result[1] + "nd\n" + result[2] + "rd\n" + result[3]; //Add points to this string
-        points = "\n\n" + playerInfo[0] + ":" + score[0] + " + " + zzkkscore[0] + " pt\t" + playerInfo[1] + ":" + score[1] + " + " + zzkkscore[1] + " pt\t" + playerInfo[2] +":"+ score[2] + " + " + zzkkscore[2] + " pt\t" + playerInfo[3] +":" + score[3] + " + " + zzkkscore[3] + " pt";
+        order = result[0] + "\n" + result[1] + "\n" + result[2] + "\n" + result[3]; //Add points to this string
+        points = "\n\n" + playerInfo[0] + ": " + score[0] + " + " + zzkkscore[0] + " pt,     " + playerInfo[1] + ": " + score[1] + " + " + zzkkscore[1] + " pt"+ "\n" + playerInfo[2] +": "+ score[2] + " + " + zzkkscore[2] + " pt,     " + playerInfo[3] +": " + score[3] + " + " + zzkkscore[3] + " pt";
         Text text = GameObject.Find("Results").GetComponent<Text>();
         text.text = order + points;
     }
