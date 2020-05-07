@@ -8,12 +8,14 @@ public class ZiziKakuOnline : MonoBehaviour
     private List<int> guessListIndex;
 
     ScoreManagerOnline sm;
+    TurnManagerOnline tm;
+    ModeData md;
 
     [PunRPC]
-    void SendGuessList(int turn, int playernum)
+    void SendGuessList()
     {
-        guessListIndex.Insert(0, turn + 100); //先頭にturn+100を挿入（100はziziと被らせないため)
-        sm.zzkkList.Insert(playernum, guessListIndex);
+        guessListIndex.Insert(0, tm.turn + 100); //先頭にturn+100を挿入（100はziziと被らせないため)
+        sm.zzkkList.Insert(md.player, guessListIndex);
     }
 
     private bool zizikakued;
@@ -52,8 +54,8 @@ public class ZiziKakuOnline : MonoBehaviour
     {
         zizikakued = true;
         guessListIndex.Clear();
-        PhotonView view = GetComponent<PhotonView>();
-        //view.RPC("SendGuessList", PhotonTargets.All, turn,playernum);　 //turn とかplayernumは適当に取得しといて
+        PhotonView view = GetComponent<PhotonView>(); //GameObject.Find("GameManager")してないのが気になる
+        //view.RPC("SendGuessList", PhotonTargets.All);
     }
 
 
@@ -62,6 +64,8 @@ public class ZiziKakuOnline : MonoBehaviour
     {
         guessListIndex = new List<int>();
         sm = GetComponent<ScoreManagerOnline>();
+        tm = GetComponent<TurnManagerOnline>();
+        md = GameObject.Find("ModeData").GetComponent<ModeData>();
     }
 
     // Update is called once per frame
