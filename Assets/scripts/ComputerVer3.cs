@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ComputerVer2 : MonoBehaviour
+public class ComputerVer3 : MonoBehaviour
 {
     Record record;
     private List<int> info;
@@ -78,7 +78,7 @@ public class ComputerVer2 : MonoBehaviour
                     if (info[j] != -1 && info[previousMovedCard] % 13 != info[j] % 13) //揃わない場合だけ、infoUsingBlankを使いたいけど複雑化するから保留
                     {
                         record.record[previousMovedCard][j] = 99;
-                        record.record[j][previousMovedCard] = 99;;
+                        record.record[j][previousMovedCard] = 99; ;
                         //Debug.Log("previousMovedCardのカード番号は" + info[previousMovedCard] + "で、" + info[j] + "と違うはずです");
                     }
                 }
@@ -661,7 +661,7 @@ public class ComputerVer2 : MonoBehaviour
                             Debug.Log("プレーヤー" + playerNumber + "はブランクじじかくでziziuniformが" + ziziuniform + "と決定");
                         }
                     }
-                    if (debugcnt==0) Debug.Log("ここに入るとやばい");
+                    if (debugcnt == 0) Debug.Log("ここに入るとやばい");
                 }
             }
             if (debugcnt > 1) Debug.Log("zizi確してるけど場に３枚ある");  //変な挙動をしてるかも

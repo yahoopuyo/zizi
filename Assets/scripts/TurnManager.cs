@@ -110,6 +110,8 @@ public class TurnManager : MonoBehaviour
         }
         if (turnPlayer == drawnPlayer)
         {
+            int zizi = hands.hands[turnPlayer][0];
+            UnityEngine.Debug.Log("zizi is " + (zizi%13 + 1));
             result.Add("player" + turnPlayer + " losed");
             init = GetComponent<InitCanvas>();
             init.gameoverP.SetActive(true);
