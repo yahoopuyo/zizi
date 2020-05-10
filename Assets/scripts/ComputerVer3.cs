@@ -669,6 +669,162 @@ public class ComputerVer3 : MonoBehaviour
     }
 
 
+    /*
+    public void ZiziUniform()
+    {
+        foreach (int uni in record.UniformExists)
+        {
+            List<int> uniexists = new List<int>(record.UniformExists);
+            uniexists.Remove(uni); //uni以外の残り10枚でペアが作れるか
+
+            while (true)
+            {
+                List<List<int>> uniexists = 
+                int t = uniexists[0]; //先頭と後で比較する
+                uniexists.RemoveAt(0); //残り9枚
+                foreach (int u in uniexists)
+                {
+                    if (record.record[t][u] == -1)
+                    {
+                        if (uniexists.Count == 1) return false;
+                    }
+                }
+            }
+        }
+    }
+    */
+    /*
+    public bool ZiziUniform(int uni)
+    {
+        List<int> uniexists3 = new List<int>(record.UniformExists);
+        uniexists3.Remove(uni); //残り4枚
+        int t3 = uniexists3[0];
+        uniexists3.RemoveAt(0); //残り3枚
+        foreach (int u3 in uniexists3)
+        {
+            int non = t3 + u3 * 100;
+            if (record.record[t3][u3] == -1 && !unsuccessful.Contains(non))
+            {
+                Debug.Log("t3は" + t3 + "、u3は" + u3);
+                if (uniexists3.Count == 1)
+                {
+                    Debug.Log("場に残り３枚で背番号" + uni + "はziziかも");
+                    return false;
+                }
+                List<int> uniexists1 = new List<int>(uniexists3);
+                uniexists1.Remove(u3); //残り2枚
+                int t1 = uniexists1[0];
+                uniexists1.RemoveAt(0); //残り1枚
+                foreach (int u1 in uniexists1)
+                {
+                    non = t1 + u1 * 100;
+                    if (record.record[t1][u1] == -1 && !unsuccessful.Contains(non))
+                    {
+                        Debug.Log("t1は" + t1 + "、u1は" + u1);
+                        if (uniexists1.Count == 1)
+                        {
+                            Debug.Log("場に残り5枚で背番号" + uni + "はziziかも");
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        Debug.Log("背番号" + uni + "は、ziziでは絶対ない");
+        return true;
+    }
+    */
+
+    /*
+    public bool ZiziUniform(int uni) //背番号をいれるとzizi確定ならtrueを返す、場に11枚以下のみ、13枚以上だとtrueを返してしまう
+    {
+        List<int> uniexists9 = new List<int>(record.UniformExists);
+        uniexists9.Remove(uni); //uni以外の残り10枚でペアが作れるか
+        if (uniexists9.Count == 0) return false;
+        int t9 = uniexists9[0]; //先頭と後で比較する
+        uniexists9.RemoveAt(0); //残り9枚
+        foreach (int u9 in uniexists9)
+        {
+            int non = t9 + u9 * 100;
+            if (record.record[t9][u9] == -1 && !unsuccessful.Contains(non))
+            {
+                if (uniexists9.Count == 1)
+                {
+                    Debug.Log("場に残り3枚で背番号" + uni + "はziziかも");
+                    return false;
+                }
+                List<int> uniexists7 = new List<int>(uniexists9);
+                uniexists7.Remove(u9); //残り8枚
+                int t7 = uniexists7[0];
+                uniexists7.RemoveAt(0); //残り7枚
+                foreach (int u7 in uniexists7)
+                {
+                    non = t7 + u7 * 100;
+                    if (record.record[t7][u7] == -1 && !unsuccessful.Contains(non))
+                    {
+                        if (uniexists7.Count == 1)
+                        {
+                            Debug.Log("場に残り5枚で背番号" + uni + "はziziかも");
+                            return false;
+                        }
+                        List<int> uniexists5 = new List<int>(uniexists7);
+                        uniexists5.Remove(u7); //残り6枚
+                        int t5 = uniexists5[0];
+                        uniexists5.RemoveAt(0); //残り5枚
+                        foreach (int u5 in uniexists5)
+                        {
+                            non = t5 + u5 * 100;
+                            if (record.record[t5][u5] == -1 && !unsuccessful.Contains(non))
+                            {
+                                if (uniexists5.Count == 1)
+                                {
+                                    Debug.Log("場に残り7枚で背番号" + uni + "はziziかも");
+                                    return false;
+                                }
+                                List<int> uniexists3 = new List<int>(uniexists5);
+                                uniexists3.Remove(u5); //残り4枚
+                                int t3 = uniexists3[0];
+                                uniexists3.RemoveAt(0); //残り3枚
+                                foreach (int u3 in uniexists3)
+                                {
+                                    non = t3 + u3 * 100;
+                                    if (record.record[t3][u3] == -1 && !unsuccessful.Contains(non))
+                                    {
+                                        if (uniexists3.Count == 1)
+                                        {
+                                            Debug.Log("場に残り9枚で背番号" + uni + "はziziかも");
+                                            return false;
+                                        }
+                                        List<int> uniexists1 = new List<int>(uniexists3);
+                                        uniexists1.Remove(u3); //残り2枚
+                                        int t1 = uniexists1[0];
+                                        uniexists1.RemoveAt(0); //残り1枚
+                                        foreach (int u1 in uniexists1)
+                                        {
+                                            non = t1 + u1 * 100;
+                                            if (record.record[t1][u1] == -1 && !unsuccessful.Contains(non))
+                                            {
+                                                if (uniexists1.Count == 1)
+                                                {
+                                                    Debug.Log("場に残り11枚で背番号" + uni + "はziziかも");
+                                                    return false;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        Debug.Log("背番号" + uni + "は、ziziでは絶対ない");
+        return true;
+    }
+    */
+
+
     public int draw(int drawnPlayer)
     {
         get();

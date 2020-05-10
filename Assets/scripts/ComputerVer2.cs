@@ -15,6 +15,7 @@ public class ComputerVer2 : MonoBehaviour
     public bool successflag = false;
     private int zizinumber = -1;
     private int ziziuniform = -1;
+    private List<int> unsuccessful = new List<int>(); //recordとはあまり被らせないつもり
 
     /*
     〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜
@@ -67,7 +68,7 @@ public class ComputerVer2 : MonoBehaviour
 
     private List<int> scoresfordraw; //背番号の数だけ５０点が入った数列を用意するまだ
 
-    private void ownrecord() //publiczizikakuをそのまま使ってprivatezizizkakuを実装した,直接record.recordを更新することに変えた
+    private void ownrecord() //publiczizikakuをそのまま使ってprivatezizizkakuを実装した,直接record.recordを更新するのはやめた
     {
         if (previousTurnPlayer == playerNumber) //comの番のとき
         {
@@ -75,11 +76,15 @@ public class ComputerVer2 : MonoBehaviour
             {
                 for (int j = 0; j < info.Count; j++)
                 {
-                    if (info[j] != -1 && info[previousMovedCard] % 13 != info[j] % 13) //揃わない場合だけ、infoUsingBlankを使いたいけど複雑化するから保留
+                    if (record.record[j][previousMovedCard] == -1 && info[j] != -1 && info[previousMovedCard] % 13 != info[j] % 13) //揃わない場合だけ、infoUsingBlankを使いたいけど複雑化するから保留
                     {
-                        record.record[previousMovedCard][j] = 99;
-                        record.record[j][previousMovedCard] = 99;;
-                        //Debug.Log("previousMovedCardのカード番号は" + info[previousMovedCard] + "で、" + info[j] + "と違うはずです");
+                        int non = previousMovedCard + (100 * j); //2桁ずつで読み取る
+                        if (!unsuccessful.Contains(non))
+                        {
+                            non = j + previousMovedCard * 100;
+                            unsuccessful.Add(non); //逆順にしたもの
+                            Debug.Log("player" + playerNumber + "はunsuccessfulにペア" + non + "を加えました");
+                        }
                     }
                 }
             }
@@ -89,7 +94,11 @@ public class ComputerVer2 : MonoBehaviour
     private int countN(List<int>[] rec, int uniform)
     {
         int cnt = 0;
-        foreach (int un in rec[uniform]) if (un == -1) cnt++;
+        foreach (int un in rec[uniform])
+        {
+            int non = un + uniform * 100;
+            if (un == -1 && !unsuccessful.Contains(non)) cnt++;
+        }
         return cnt;
     }
 
@@ -361,27 +370,16 @@ public class ComputerVer2 : MonoBehaviour
                     }
                 }
 
-                Debug.Log(nonsuccessturn.Count + 0.1);
-                //foreach (int b in nonsuccessturn) Debug.Log(b);
-                //Debug.Log(nonsuccessturn[0]);
+                //Debug.Log(nonsuccessturn.Count + 0.1);
 
-                List<List<int>> tmplist = new List<List<int>>();　//以下うまく消せてない模様....
-                foreach (List<int> kouho in blanklist3[blankindex])　//下記のコメントアウトのようにではなく、共存したら（かつ揃わなかったら）消去するようにした
+                List<List<int>> tmplist = new List<List<int>>();　//以下うまく消せてない模様....?
+                foreach (List<int> kouho in blanklist3[blankindex])　//共存したら消去するようにした
                 {
                     if (nonsuccessturn.Contains(rec[kouho[0]][kouho[1]])) { tmplist.Add(kouho); continue; }
                     if (nonsuccessturn.Contains(rec[kouho[0]][kouho[2]])) { tmplist.Add(kouho); continue; }
                     if (nonsuccessturn.Contains(rec[kouho[1]][kouho[2]])) { tmplist.Add(kouho); continue; }
                 }
                 foreach (List<int> kouho in tmplist) blanklist3[blankindex].Remove(kouho);
-                //List<List<int>> tmplist = new List<List<int>>();
-                //foreach (List<int> kouho in blanklist3[blankindex])　//////たぶん間違ってる
-                //{
-                //    if (rec[kouho[0]][kouho[1]] != -1) if (!knownBlanks.Contains(kouho[0]) || !knownBlanks.Contains(kouho[1])) { tmplist.Add(kouho); continue; }
-                //    if (rec[kouho[0]][kouho[2]] != -1) if (!knownBlanks.Contains(kouho[0]) || !knownBlanks.Contains(kouho[2])) { tmplist.Add(kouho); continue; }
-                //    if (rec[kouho[1]][kouho[2]] != -1) if (!knownBlanks.Contains(kouho[1]) || !knownBlanks.Contains(kouho[2])) { tmplist.Add(kouho); continue; }
-                //}
-                //foreach (List<int> kouho in tmplist) blanklist3[blankindex].Remove(kouho);
-
 
                 //以下は雑に作った、もしかすると不要なものがあるかもしれない
                 if (knownBlanks.Count == 1)
@@ -481,39 +479,17 @@ public class ComputerVer2 : MonoBehaviour
             }
         }
 
-        if (blanklist4[blankindex].Count != 0)
-        {
-            Debug.Log(blanklist4[blankindex].Count + blankindex * 0.1 + playerNumber * 0.01 + 0.004);
-        }
-        else
-        {
-            Debug.Log(blanklist3[blankindex].Count + blankindex * 0.1 + playerNumber * 0.01 + 0.003);
-            //if (blanklist3[blankindex].Count<5)
-            //{
-            //    foreach (List<int> a in blanklist3[blankindex])
-            //    {
-            //        foreach (int b in a) Debug.Log(b);
-            //        Debug.Log("\n");
-            //    }
-            //}
-        }
-        //if (blanklist4[blankindex].Count<11)
-        //{
-        //foreach (List<int> a in blanklist4[blankindex])
-        //{
-        //foreach (int b in a) Debug.Log(b);
-        //Debug.Log("\n");
-        //}
-        //}
+        if (blanklist4[blankindex].Count != 0) Debug.Log("p" + playerNumber + "にとってブランクの数字" + (blankmods[blankindex] + 1) + "の組は" + blanklist4[blankindex].Count + "通り");
+        else Debug.Log("p" + playerNumber + "にとってziziであるブランクの数字" + (blankmods[blankindex] + 1) + "の組は" + blanklist3[blankindex].Count + "通り");
     }
 
     //ここまでブランクziziかく
 
 
-    private List<int> infoUsingBlank(List<int>[] rec) //ownrecordと違って過去の情報を保存しておく必要はないから毎度読み込むことにした、infoを更新してもいいかも
+    private List<int> infoUsingBlank(List<int>[] rec)
     {
         get();
-        List<int> infoub = info;
+        List<int> infoub = new List<int>(info);
         if (zizinumber != -1)　//もしかすると引くタイミング的に最新ではないかも
         {
             for (int j = 0; j < blankmods.Count; j++)
@@ -554,14 +530,17 @@ public class ComputerVer2 : MonoBehaviour
 
             foreach (int i in record.UniformExists)
             {
-                if (countN(rec, i) == 1 && i % 13 != zizinumber)
+                if (infoub[i] != -1 && countN(rec, i) == 1 && i % 13 != zizinumber)
                 {
-                    //Debug.Log("record利用で揃うカード特定");
-                    if (infoub[i] != -1) //見た場合に限定してる、見てなくてもペアの判断はできるが実際そのようなことは起こりづらい
+                    for (int j = 0; j < info.Count; j++)
                     {
-                        for (int j = 0; j < info.Count; j++)
+                        if (rec[i][j] == -1)
                         {
-                            if (rec[i][j] == -1) infoub[j] = infoub[i]; //同じ数字にしといた
+                            if (infoub[j] == -1) infoub[j] = infoub[i]; //同じ数字にしといた
+                            else
+                            {
+                                if (infoub[i] % 13 != infoub[j] % 13) Debug.Log("infousingblankの中で事件が起きている");
+                            }
                         }
                     }
                 }
@@ -571,7 +550,7 @@ public class ComputerVer2 : MonoBehaviour
     }
 
 
-    private List<int> success(int drawnPlayer)
+    private List<int> success(int drawnPlayer) //ここのエラーはなおっていないかも
     {
         get();
         List<int> suc = new List<int>();
@@ -591,12 +570,10 @@ public class ComputerVer2 : MonoBehaviour
                 }
             }
         }
-        //string debug = playerNumber + "サクセスした！"; ミス
-        //Debug.Log(debug);
-        //foreach (int b in suc) Debug.Log(b);
 
         return suc;
     }
+
 
     private List<int> nonsuccess(int drawnPlayer)
     {
@@ -621,6 +598,7 @@ public class ComputerVer2 : MonoBehaviour
         return nonsuc2;
     }
 
+
     private bool dangerousCard(int drawnPlayer, int cardUni) //自分の手札以外にそろうカードの候補がないカード
     {
         List<int> uniexists = new List<int>(record.UniformExists);
@@ -633,11 +611,13 @@ public class ComputerVer2 : MonoBehaviour
 
         foreach (int un in uniexists)
         {
-            if (record.record[cardUni][un] == -1) judge = false; //共存してないカードが１枚でもあればセーフ
+            int non = un + cardUni * 100;
+            if (record.record[cardUni][un] == -1 && !unsuccessful.Contains(non)) judge = false; //共存してないカードが１枚でもあればセーフ
         }
 
         return judge;
     }
+
 
     private void Blankzizikaku()
     {
@@ -669,21 +649,135 @@ public class ComputerVer2 : MonoBehaviour
     }
 
 
+    public bool ZiziTest(int uni, List<int> uniforms) //場に11枚以下のみ(13枚以上だとtrueを返してしまう)、過半数じじかく含む
+    {
+        List<int> uniexists9 = new List<int>(uniforms);
+        uniexists9.Remove(uni); //uni以外の残り10枚でペアが作れるか
+        if (uniexists9.Count == 0) return false;
+        int t9 = uniexists9[0]; //先頭と後で比較する
+        uniexists9.RemoveAt(0); //残り9枚
+        foreach (int u9 in uniexists9)
+        {
+            int non = t9 + u9 * 100;
+            if (record.record[t9][u9] == -1 && !unsuccessful.Contains(non))
+            {
+                if (uniexists9.Count == 1)
+                {
+                    //Debug.Log("場に残り3枚で背番号" + uni + "はziziかも");
+                    return false;
+                }
+                List<int> uniexists7 = new List<int>(uniexists9);
+                uniexists7.Remove(u9); //残り8枚
+                int t7 = uniexists7[0];
+                uniexists7.RemoveAt(0); //残り7枚
+                foreach (int u7 in uniexists7)
+                {
+                    non = t7 + u7 * 100;
+                    if (record.record[t7][u7] == -1 && !unsuccessful.Contains(non))
+                    {
+                        if (uniexists7.Count == 1)
+                        {
+                            //Debug.Log("場に残り5枚で背番号" + uni + "はziziかも");
+                            return false;
+                        }
+                        List<int> uniexists5 = new List<int>(uniexists7);
+                        uniexists5.Remove(u7); //残り6枚
+                        int t5 = uniexists5[0];
+                        uniexists5.RemoveAt(0); //残り5枚
+                        foreach (int u5 in uniexists5)
+                        {
+                            non = t5 + u5 * 100;
+                            if (record.record[t5][u5] == -1 && !unsuccessful.Contains(non))
+                            {
+                                if (uniexists5.Count == 1)
+                                {
+                                    //Debug.Log("場に残り7枚で背番号" + uni + "はziziかも");
+                                    return false;
+                                }
+                                List<int> uniexists3 = new List<int>(uniexists5);
+                                uniexists3.Remove(u5); //残り4枚
+                                int t3 = uniexists3[0];
+                                uniexists3.RemoveAt(0); //残り3枚
+                                foreach (int u3 in uniexists3)
+                                {
+                                    non = t3 + u3 * 100;
+                                    if (record.record[t3][u3] == -1 && !unsuccessful.Contains(non))
+                                    {
+                                        if (uniexists3.Count == 1)
+                                        {
+                                            //Debug.Log("場に残り9枚で背番号" + uni + "はziziかも");
+                                            return false;
+                                        }
+                                        List<int> uniexists1 = new List<int>(uniexists3);
+                                        uniexists1.Remove(u3); //残り2枚
+                                        int t1 = uniexists1[0];
+                                        uniexists1.RemoveAt(0); //残り1枚
+                                        foreach (int u1 in uniexists1)
+                                        {
+                                            non = t1 + u1 * 100;
+                                            if (record.record[t1][u1] == -1 && !unsuccessful.Contains(non))
+                                            {
+                                                if (uniexists1.Count == 1)
+                                                {
+                                                    //Debug.Log("場に残り11枚で背番号" + uni + "はziziかも");
+                                                    return false;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        Debug.Log("背番号" + uni + "は、ziziでは絶対ない");
+        return true;
+    }
+
+
     public int draw(int drawnPlayer)
     {
         get();
         //Blankzizikaku();
         Publiczizikaku(record.record);
-        int CardUniform = 100;
+
+        int cnt = 0;
+        int unikari = -1;
+        if (record.UniformExists.Count < 12)
+        {
+            foreach (int un in record.UniformExists)
+            {
+                bool kari = ZiziTest(un, record.UniformExists);
+                if (!kari)
+                {
+                    cnt++;
+                    unikari = un;
+                }
+            }
+            if (cnt == 0) Debug.Log("ziziかもがないのは重大なエラー");
+            if (cnt == 1) Debug.Log("ZiziTestで背番号" + unikari + "がziziかく");
+        }
+
+        if (ziziuniform != -1) Debug.Log("プレーヤー" + playerNumber + "にとってziziuniformは" + ziziuniform + "です");
 
         if (handUniforms[drawnPlayer].Count == 1) return handUniforms[drawnPlayer][0];
 
-        //if (handUniforms[drawnPlayer].Contains(zizikamo)) handUniforms[drawnPlayer].Remove(zizikamo);
+        int CardUniform = 100;
 
         List<int> suc = success(drawnPlayer);
-        List<int> nonsuc = nonsuccess(drawnPlayer);
 
-        if (suc.Count != 0) CardUniform = suc[0]; //とりあえず揃うカードは第一優先で引く
+        if (suc.Count != 0)
+        {
+            CardUniform = suc[0]; //とりあえず揃うカードは第一優先で引く
+            if (CardUniform == ziziuniform)
+            {
+                CardUniform = 100;
+                Debug.Log("揃うと思ったカードがziziだという重大なエラー");
+            }
+            else Debug.Log("揃うのでひきました");
+        }
         else
         {
             foreach (int un in handUniforms[drawnPlayer])
@@ -704,6 +798,8 @@ public class ComputerVer2 : MonoBehaviour
             }
         }
 
+        List<int> nonsuc = nonsuccess(drawnPlayer);
+
         if (CardUniform == 100)
         {
             int j = 0;
@@ -712,19 +808,29 @@ public class ComputerVer2 : MonoBehaviour
                 int index = Random.Range(0, handUniforms[drawnPlayer].Count);
                 CardUniform = handUniforms[drawnPlayer][index];
 
-                if (handUniforms[drawnPlayer].Count == 1) break; //１枚だったらそれ引くしかない、上にかいてあるけど安全のため
-
                 if (ziziuniform != CardUniform)　//ziziじゃない場合
                 {
                     if (!nonsuc.Contains(CardUniform) || nonsuc.Count == handUniforms[drawnPlayer].Count)　//揃わないカードはひかない、ただし全部揃わないなら引かざるを得ない
                     {
-                        if (!dangerousCard(drawnPlayer, CardUniform)) break;
+                        if (!dangerousCard(drawnPlayer, CardUniform))
+                        {
+                            break;
+                        }
                     }
                 }
 
                 j++;
 
-                if (j > 99) break; //上の条件だけでは無限ループに陥る可能性があるから付けといた
+                if (j > 99) //危険カードばかりだと上の条件だけでは無限ループに陥ることがある
+                {
+                    if (CardUniform == ziziuniform)
+                    {
+                        if (index == 0) CardUniform = handUniforms[drawnPlayer][1];
+                        else CardUniform = handUniforms[drawnPlayer][0];
+                        Debug.Log("ここに入ると重大なエラー");
+                    }
+                    break;
+                }
             }
         }
 
