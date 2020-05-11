@@ -1,27 +1,27 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics; //どこで使ってる？ComputerVer2Onlineにはない
 using UnityEngine;
 
-public class ComputerVer2 : MonoBehaviour
+public class ComputerVer2Online : MonoBehaviour
 {
-    Record record;
+    RecordOnline record;
     private List<int> info;
     private List<int>[] handUniforms;
     public int playerNumber;
     public int computerLevel;
-    public List<int> blankmods;　//それぞれのブランクの数字 - 1
+    public List<int> blankmods;               //ブランクの数字 - 1
     public bool zizikakunum = false;
     public bool zizikakuplace = false;
     public bool successflag = false;
     private int zizinumber = -1;
     private int ziziuniform = -1;
     private List<int> unsuccessful = new List<int>(); //recordとはあまり被らせないようにした
+    private bool CpuInitialized = false;
 
-
+   
     private void get()
     {
-        record = GameObject.Find("GameManager").GetComponent<Record>();
+        record = GameObject.Find("GameManager").GetComponent<RecordOnline>();
         info = record.info[playerNumber];
         handUniforms = record.GetHandUniform();
     }
@@ -234,7 +234,7 @@ public class ComputerVer2 : MonoBehaviour
                 else //#そろわず、移動したカードをpreviousMovedCardとして扱い移動する直前のhanduniformsをmotomotoとした
                 {
                     List<int> motomoto = handUniforms[previousTurnPlayer]; //初期化してなくて大丈夫？
-                    motomoto.Remove(previousMovedCard); 
+                    motomoto.Remove(previousMovedCard);
                     //UnityEngine.Debug.Log("そろわず");
                     if (!nonsuccessturn.Contains(rec[previousMovedCard][motomoto[0]]))
                     {
@@ -596,7 +596,7 @@ public class ComputerVer2 : MonoBehaviour
 
     private void Blankzizikaku()
     {
-        if (blankmods.Count == 0) return;  
+        if (blankmods.Count == 0) return;
         int debugcnt = 0; //デバッグ用
         for (int j = 0; j < blankmods.Count; j++)
         {
@@ -616,7 +616,7 @@ public class ComputerVer2 : MonoBehaviour
                             UnityEngine.Debug.Log("プレーヤー" + playerNumber + "はブランクじじかくでziziuniformが" + ziziuniform + "と決定");
                         }
                     }
-                    if (debugcnt==0) UnityEngine.Debug.Log("ここに入るとやばい");
+                    if (debugcnt == 0) UnityEngine.Debug.Log("ここに入るとやばい");
                 }
             }
             if (debugcnt > 1) UnityEngine.Debug.Log("zizi確してるけど場に３枚ある");  //変な挙動をしてるかも
@@ -838,7 +838,7 @@ public class ComputerVer2 : MonoBehaviour
 
                     if (!nonsuc.Contains(CardUniform)) //揃う可能性のあるカードをひく
                     {
-                        if (record.UniformExists.Count > 18) 
+                        if (record.UniformExists.Count > 18)
                         {
                             if (!dangerousCard(drawnPlayer, CardUniform))
                             {
@@ -909,30 +909,36 @@ public class ComputerVer2 : MonoBehaviour
     }
 
 
-
     // Start is called before the first frame update
     void Start()
     {
-        get();
-        List<int> gravenum = new List<int>();
-        foreach (int card in record.opensource()) gravenum.Add(card % 13);
-        for (int num = 0; num < 13; num++)
-        {
-            if (!gravenum.Contains(num)) blankmods.Add(num);
-        }
-        for (int i = 0; i < blankmods.Count; i++)
-        {
-            PairChecked.Add(false);
-            blanklist4.Add(new List<List<int>>());
-            blanklist3.Add(new List<List<int>>());
-            InitBlankChaser(record.record, i);
-        }
-        if (zizikakunum) UnityEngine.Debug.Log("プレーヤー" + playerNumber + "は初期じじかく" + (zizinumber + 1));
-    }
 
+    }
     // Update is called once per frame
     void Update()
     {
-
+        if (!CpuInitialized)
+        {
+            record = GameObject.Find("GameManager").GetComponent<RecordOnline>();
+            if (record.Initialized)
+            {
+                get();
+                List<int> gravenum = new List<int>();
+                foreach (int card in record.opensource()) gravenum.Add(card % 13);
+                for (int num = 0; num < 13; num++)
+                {
+                    if (!gravenum.Contains(num)) blankmods.Add(num);
+                }
+                for (int i = 0; i < blankmods.Count; i++)
+                {
+                    PairChecked.Add(false);
+                    blanklist4.Add(new List<List<int>>());
+                    blanklist3.Add(new List<List<int>>());
+                    InitBlankChaser(record.record, i);
+                }
+                CpuInitialized = true;
+                if (zizikakunum) Debug.Log("プレーヤー" + playerNumber + "は初期じじかく" + (zizinumber + 1));
+            }
+        }
     }
 }

@@ -15,6 +15,10 @@ public class HandsOnline : MonoBehaviour
     private List<int> grave;
     private int k = 0;
 
+    public List<int>[] Gethands()
+    {
+        return originals;
+    }
     public List<int> Gethand0()
     {
         return originals[0];

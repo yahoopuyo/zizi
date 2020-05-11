@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Click : MonoBehaviour , IPointerClickHandler, IPointerEnterHandler, IPointerExitH​​andler
+public class Click1 : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitH​​andler
 {
     private GameObject hand;
     private GameObject gameManager;
@@ -37,7 +37,7 @@ public class Click : MonoBehaviour , IPointerClickHandler, IPointerEnterHandler,
     {
         get();
 
-        if(drawnCard == cardIndex && preDrawnPlayer == 0) //前ひかれたカードだったら
+        if (drawnCard == cardIndex && preDrawnPlayer == 0) //前ひかれたカードだったら
         {
             cardModel.ToggleFace(true);
             Debug.Log("selected");
@@ -61,7 +61,7 @@ public class Click : MonoBehaviour , IPointerClickHandler, IPointerEnterHandler,
 
         if (drawnPlayer == hands.Cardownerreturn(cardIndex))
         {
-            var v = new Vector2(0,-0.4f);
+            var v = new Vector2(0, -0.4f);
             transform.Translate(v);
         }
     }
@@ -85,7 +85,7 @@ public class Click : MonoBehaviour , IPointerClickHandler, IPointerEnterHandler,
                 //turnManager.NextDrawnPlayer();
                 //turnManager.turnNext();
                 if (draw.moveFlag || draw.flashFlag) return;
-                draw.drawWithAnimation(drawnPlayer, cardIndex,turnPlayer);
+                draw.drawWithAnimation(drawnPlayer, cardIndex, turnPlayer);
             }
         }
     }

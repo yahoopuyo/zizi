@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,11 +11,10 @@ public class TurnManagerOnline : MonoBehaviour
     public int drawnPlayer;
     public int drawnCard;
     public int preDrawnPlayer;
-    InitCanvas init;
-    private List<int> Wins = new List<int>();
+    public List<int> Wins = new List<int>();
     public List<string> result = new List<string>();
     private GameObject hand;
-    private HandsOnline hands;
+    private HandsOnline hands;ScoreManagerOnline sm;
 
     private int CountWinners()
     {
@@ -108,13 +108,11 @@ public class TurnManagerOnline : MonoBehaviour
         }
         if (turnPlayer == drawnPlayer)
         {
-            result.Add("player" + turnPlayer + " losed");
-            init = GetComponent<InitCanvas>();
-            init.gameoverP.SetActive(true);
-            string Order;
-            Order = result[0] + "st\n\n" + result[1] + "nd\n\n" + result[2] + "rd\n\n" + result[3];
-            Text text = GameObject.Find("Results").GetComponent<Text>();
-            text.text = Order;
+            int zizi = hands.hands[turnPlayer][0];
+            UnityEngine.Debug.Log("zizi is " + zizi);
+            result.Add("player" + turnPlayer + " lost");
+            Wins.Add(turnPlayer);
+            sm.WriteResult(Wins, zizi);
         }
     }
     void Start()
@@ -124,6 +122,7 @@ public class TurnManagerOnline : MonoBehaviour
         drawnPlayer = 3;
         drawnCard = 100;
         preDrawnPlayer = 100;
+        sm = GetComponent<ScoreManagerOnline>();
     }
 
     void Update()

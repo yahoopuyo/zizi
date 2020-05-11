@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+//using System.Diagnostics.Eventing.Reader;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,11 +12,14 @@ public class ModeData : MonoBehaviour
     GameObject inst;
     private bool Easy;
     private bool Solo;
+    public bool isHost;
     public int computerLevel;
     public int player;
     public int numOfPlayer;
-    public bool isHost;
     public string roomName;
+    public List<int> score;
+    public List<int> zzkkscore;
+    public string[] playerInfo;
     // Start is called before the first frame update
 
     void Start()
@@ -29,6 +33,9 @@ public class ModeData : MonoBehaviour
         menu.SetActive(true);
         inst = GameObject.Find("InstructionPanel");
         inst.SetActive(false);
+        score = new List<int>() { 0,0,0,0 };
+        zzkkscore = new List<int>() { 0, 0, 0, 0 };
+        playerInfo = new string[4] { "player", "Com", "Com", "Com" }; //for solo play
     }
 
     // Update is called once per frame
@@ -74,5 +81,9 @@ public class ModeData : MonoBehaviour
     public bool IsEasy()
     {
         return Easy;
+    }
+    public bool IsHost()
+    {
+        return isHost;
     }
 }

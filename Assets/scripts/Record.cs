@@ -14,6 +14,8 @@ public class Record : MonoBehaviour
     GameObject Hand;
     Hands hands;
 
+    public int UniformExsits { get; internal set; }
+
     private void get()
     {
         Hand = GameObject.Find("Hand");
@@ -113,6 +115,8 @@ public class Record : MonoBehaviour
         int drawnUniform = Uniform.IndexOf(drawnCard);
         foreach (int card in hands.hands[tP]) tPUniforms.Add(Uniform.IndexOf(card));
         foreach (int num in tPUniforms) replaceRecord(drawnUniform, num, turn);
+        Debug.Log(drawnUniform + "はそろわなかった");
+        Debug.Log(UniformExists.Count + "枚あります");
     }
 
     public void updateRecordPaired(int turn,int drawnCard,int pairCard)
@@ -121,7 +125,9 @@ public class Record : MonoBehaviour
         int pairUniform = Uniform.IndexOf(pairCard);
         UniformExists.Remove(drawnUniform);
         UniformExists.Remove(pairUniform);
-        for(int i=0;i<RecordSize; i++)
+        Debug.Log("UniformExistsから" + drawnUniform + "と" + pairUniform + "が除かれた");
+        Debug.Log(UniformExists.Count + "枚あります");
+        for (int i=0;i<RecordSize; i++)
         {
             replaceRecord(i, drawnUniform, turn);
             replaceRecord(i, pairUniform, turn);

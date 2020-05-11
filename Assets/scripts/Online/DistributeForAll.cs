@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 
 
@@ -29,9 +30,9 @@ public class DistributeForAll : MonoBehaviour
 
     private int player;
     ModeData md;
+    ZiziKakuOnline zizikaku;
 
-
-    void distribute()
+    public void distribute()
     {
 
     //player0のoriginalsを表示
@@ -56,7 +57,6 @@ public class DistributeForAll : MonoBehaviour
             cardCopy.transform.position = temp;
             if (player == 0) cardModel.ToggleFace(true);
             else cardModel.ToggleFace(false);
-
             spriteRenderer.sortingOrder = cardCount;
 
             cardCount++;
@@ -241,6 +241,7 @@ public class DistributeForAll : MonoBehaviour
 
     private void initSources()
     {
+        
         if (sources == null) sources = new List<GameObject>();
         else
         {
@@ -278,6 +279,7 @@ public class DistributeForAll : MonoBehaviour
         {
             source.name = "Card" + source.GetComponent<CardModel>().cardIndex;
         }
+        zizikaku = GameObject.Find("GameManager").GetComponent<ZiziKakuOnline>();
     }
     public void Center()
     {
@@ -300,7 +302,15 @@ public class DistributeForAll : MonoBehaviour
         Center();
         foreach (GameObject source in sources)
         {
-            source.name = "Card" + source.GetComponent<CardModel>().cardIndex;
+            CardModel cm = source.GetComponent<CardModel>();
+            int index = cm.cardIndex;
+            source.name = "Card" + index;
+            if (zizikaku.InGuessList(index))
+            {
+                cm.ToggleZizikaku();
+                cm.ToggleFace(true);
+            }
+
         }
     }
 

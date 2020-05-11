@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics; //どこで使ってる？ComputerVer2Onlineにはない
+using System.Diagnostics;
 using UnityEngine;
 
-public class ComputerVer2 : MonoBehaviour
+public class ComputerVer3 : MonoBehaviour
 {
     Record record;
     private List<int> info;
@@ -234,7 +234,7 @@ public class ComputerVer2 : MonoBehaviour
                 else //#そろわず、移動したカードをpreviousMovedCardとして扱い移動する直前のhanduniformsをmotomotoとした
                 {
                     List<int> motomoto = handUniforms[previousTurnPlayer]; //初期化してなくて大丈夫？
-                    motomoto.Remove(previousMovedCard); 
+                    motomoto.Remove(previousMovedCard);
                     //UnityEngine.Debug.Log("そろわず");
                     if (!nonsuccessturn.Contains(rec[previousMovedCard][motomoto[0]]))
                     {
@@ -596,7 +596,7 @@ public class ComputerVer2 : MonoBehaviour
 
     private void Blankzizikaku()
     {
-        if (blankmods.Count == 0) return;  
+        if (blankmods.Count == 0) return;
         int debugcnt = 0; //デバッグ用
         for (int j = 0; j < blankmods.Count; j++)
         {
@@ -616,7 +616,7 @@ public class ComputerVer2 : MonoBehaviour
                             UnityEngine.Debug.Log("プレーヤー" + playerNumber + "はブランクじじかくでziziuniformが" + ziziuniform + "と決定");
                         }
                     }
-                    if (debugcnt==0) UnityEngine.Debug.Log("ここに入るとやばい");
+                    if (debugcnt == 0) UnityEngine.Debug.Log("ここに入るとやばい");
                 }
             }
             if (debugcnt > 1) UnityEngine.Debug.Log("zizi確してるけど場に３枚ある");  //変な挙動をしてるかも
@@ -776,7 +776,7 @@ public class ComputerVer2 : MonoBehaviour
         if (ziziuniform != -1)
         {
             UnityEngine.Debug.Log("プレーヤー" + playerNumber + "にとってziziuniformは" + ziziuniform + "です");
-            if (record.UniformExists.Count < 16 && ZiziTest(ziziuniform, record.UniformExists)) UnityEngine.Debug.Log("ziziuniformであるはずの背番号" + ziziuniform + "がZiziTestでziziでないことになっている");
+            if (ZiziTest(ziziuniform, record.UniformExists)) UnityEngine.Debug.Log("ziziuniformであるはずの背番号" + ziziuniform + "がZiziTestでziziでないことになっている");
         }
 
         if (handUniforms[drawnPlayer].Count == 1) return handUniforms[drawnPlayer][0];
@@ -838,7 +838,7 @@ public class ComputerVer2 : MonoBehaviour
 
                     if (!nonsuc.Contains(CardUniform)) //揃う可能性のあるカードをひく
                     {
-                        if (record.UniformExists.Count > 18) 
+                        if (record.UniformExists.Count > 18)
                         {
                             if (!dangerousCard(drawnPlayer, CardUniform))
                             {

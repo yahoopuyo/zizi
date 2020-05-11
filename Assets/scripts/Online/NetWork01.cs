@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
+using System.Threading;
 
 
 public class NetWork01 : MonoBehaviour
@@ -11,138 +13,191 @@ public class NetWork01 : MonoBehaviour
     [SerializeField] Transform spawnPoint;
     private GameObject hand;
     private bool In;
-    private bool Loaded;
     public int player;
     ModeData md;
-    int index;
-    //void Start()
-    //{
-    //    PhotonNetwork.logLevel = PhotonLogLevel.Full;//情報を全部ください
-    //    // Photonに接続する(引数でゲームのバージョンを指定できる)
-    //    PhotonNetwork.ConnectUsingSettings(null);
-    //}
 
-    // ロビーに入ると呼ばれる
-    //void OnJoinedLobby()
-    //{
-    //    Debug.Log("ロビーに入りました。");
-    //    RoomOptions ro = new RoomOptions() { IsVisible = true, MaxPlayers = 4 };//maxPlayerは人数の上限
-    //    // ルームに入室する
-    //    PhotonNetwork.JoinOrCreateRoom("myRoom", ro, TypedLobby.Default);
-    //}
+    Text roomhost;
+    RoomName push1;
+    RoomMake push2;
+    public int players;
+    private int preplayers;
+    Text numplayers;
+    Dropdown dd;
+    Text dlabel;
+    RoomInfo[] rooms;
+    Guest push3;
+    BackButton push4;
+    BackToMenu push5;
+    private bool bmenu;
 
-    //// ルームに入室すると呼ばれる
-    //void OnJoinedRoom()
-    //{
-    //hand = GameObject.Find("Hand");
-    //Debug.Log("ルームへ入室しました。");
-
-    //}
 
     void Start()
     {
-        // Photonに接続する(引数でゲームのバージョンを指定できる)
-        if (PhotonNetwork.connected) PhotonNetwork.Disconnect();
-        else PhotonNetwork.ConnectUsingSettings(null);
-        //In = false;
-        //Loaded = false;
+        PhotonNetwork.ConnectUsingSettings(null);
         md = GameObject.Find("ModeData").GetComponent<ModeData>();
-        md.roomName = "myroom"; //初めに指定できるようにする
+        roomhost = GameObject.Find("InputFieldText").GetComponent<Text>();
+        push1 = GameObject.Find("OkButton").GetComponent<RoomName>();
+        push2 = GameObject.Find("StartButton").GetComponent<RoomMake>();
+        numplayers = GameObject.Find("NumOfPlayers").GetComponent<Text>();
+        dd = GameObject.Find("RoomDropdown").GetComponent<Dropdown>();
+        dlabel = GameObject.Find("DropdownLabel").GetComponent<Text>();
+        push3 = GameObject.Find("RoomDropdown").GetComponent<Guest>();
+        push4 = GameObject.Find("BackButton").GetComponent<BackButton>();
+        push5 = GameObject.Find("BackToMenuButton").GetComponent<BackToMenu>();
+        //DontDestroyOnLoad(this);
     }
 
     // ロビーに入ると呼ばれる
     void OnJoinedLobby()
     {
         Debug.Log("ロビーに入りました。");
-        RoomOptions ro = new RoomOptions() { IsVisible = true, MaxPlayers = 4 };//maxPlayerは人数の上限
-        // ルームに入室する
-        PhotonNetwork.JoinOrCreateRoom("myRoom", ro, TypedLobby.Default);
-        //if (md.isHost) PhotonNetwork.JoinOrCreateRoom(md.roomName, ro, TypedLobby.Default);
-        //else PhotonNetwork.JoinRandomRoom();
-    } 
+    }
+
+    //ルームリストが更新されると呼ばれる
+    void OnReceivedRoomListUpdate()
+    {
+        //dd.optionsをリセット
+        dd.options = new List<Dropdown.OptionData>();
+        dd.options.Add(new Dropdown.OptionData { text = "Select Room" });
+        dlabel.text = "Select Room";
+
+        rooms = PhotonNetwork.GetRoomList();
+        if (rooms.Length == 0)
+        {
+            Debug.Log("Roomがありません");
+        }
+
+        else
+        {
+            for (int i = 0; i < rooms.Length; i++)
+            {
+                dd.options.Add(new Dropdown.OptionData { text = rooms[i].name });
+            }
+        }
+    }
 
     // ルームに入室すると呼ばれる
     void OnJoinedRoom()
     {
+        In = true;
         Debug.Log("ルームへ入室しました。");
-        //GameObject player = PhotonNetwork.Instantiate("Card", spawnPoint.position, spawnPoint.rotation, 0);
-        if (PhotonNetwork.playerList.Length == 1)
-        {
-            md.player = 0;
-        }
+    }
 
-        else if (PhotonNetwork.playerList.Length == 2) md.player = 1;
-        else if (PhotonNetwork.playerList.Length == 3) md.player = 2;
-        else md.player = 3;
-        Debug.Log("プレイヤー" + md.player);
+    //ルームの作成に失敗したら呼ばれる、ロビーに戻す
+    void OnPhotonCreateRoomFailed()
+    {
+        Debug.Log("ルームの作成に失敗しました。");
+        PhotonNetwork.Disconnect();
+    }
+
+    //ルームの入室に失敗したら呼ばれる、基本的には呼ばれないはず
+    void OnPhotonJoinRoomFailed()
+    {
+        Debug.Log("ルームの入室に失敗しました。");
+        PhotonNetwork.Disconnect();
+    }
+
+    //接続が切れたらよばれる
+    void OnDisconnectedFromPhoton()
+    {
+        Debug.Log("接続が切れました");
+        if (bmenu)
+        {
+            SceneManager.LoadScene("MainMenu");
+            //Destroy(this);
+        }
+        else SceneManager.LoadScene("photontest1");
     }
 
     void OnClickStart()
     {
-        
+
     }
 
     /*
-    [PunRPC]
+    [PunRPC] //ここはphoton_inに書くことになるかも、実験するためにはビルド必要
     void Load()
     {
-        md.numOfPlayer = PhotonNetwork.playerList.Length; //仮にこうしている
-        Debug.Log("you are player" + md.player);
-        //SceneManager.LoadScene("photon_in");
+        PhotonNetwork.Disconnect();
     }
 
-    void LoadGameScene()
+    void LoadScene()
     {
         PhotonView view = GetComponent<PhotonView>();
-        view.RPC("Load", PhotonTargets.All);
+        view.RPC("Load", PhotonTargets.Others);
+    }
+    */
+
+    IEnumerator photonIn()
+    {
+        yield return new WaitForSeconds(1.0f);  //1秒待機
+        SceneManager.LoadScene("photon_in");
     }
 
-    */
 
     void Update()
     {
-        connectionText.text = PhotonNetwork.connectionStateDetailed.ToString();
+        if (SceneManager.GetActiveScene().name == "photontest1") connectionText.text = PhotonNetwork.connectionStateDetailed.ToString();
 
-        //if(!In && PhotonNetwork.playerList.Length == md.numOfPlayer)
-        /*
-        if (!In && PhotonNetwork.playerList.Length == 2)
+        // ルーム内のプレーヤー数
+        players = PhotonNetwork.playerList.Length;
+        numplayers.text = "Players are  " + players + "/4";
+        if (players > preplayers && md.player == 0 && !md.isHost)
         {
-        //In = true;
-        numOfPlayer = PhotonNetwork.playerList.Length; //仮にこうしている
+            md.player = players - 1;
+            if (md.player > 0) PhotonNetwork.playerName = md.player.ToString();
         }
 
-        if(!Loaded && In)
+        if (push1.hostpush1) //ホストがルーム作った瞬間、入室
         {
-            Loaded = true;
-            SceneManager.LoadScene("photon_in");
+            push1.hostpush1 = false;
+            md.roomName = roomhost.text;
+            RoomOptions ro = new RoomOptions() { IsVisible = true, MaxPlayers = 4 };//maxPlayerは人数の上限                                                      
+            PhotonNetwork.CreateRoom(md.roomName, ro, TypedLobby.Default);
+            md.isHost = true;
+            PhotonNetwork.playerName = "0";
         }
-        */
 
-        if(md.player > 0)
+        if (push2.hostpush2 && In) //ホストが決定した
         {
-            SceneManager.LoadScene("photon_in");
+            push2.hostpush2 = false;
+            PhotonNetwork.room.IsOpen = false;
+            PhotonNetwork.room.IsVisible = false;
+            md.numOfPlayer = players;
+            md.player = 0;
+            StartCoroutine("photonIn");
         }
-        if(Input.GetKeyDown(KeyCode.Return))
-        {
-            //押した人がホストだったら
-            if (md.player == 0)
-            {
-                PhotonNetwork.room.IsOpen = false;
-                md.numOfPlayer = PhotonNetwork.playerList.Length;
-                Loaded = true;
-                SceneManager.LoadScene("photon_in");
-                
 
-            }
+        if (push3.guestpush) //ゲストがルームに入る瞬間、photon_inはまだ
+        {
+            push3.guestpush = false;
+            md.roomName = dlabel.text;;
+            PhotonNetwork.JoinRoom(md.roomName);
         }
+        
+        if (push4.backbutton) //入室後、戻る場合
+        {
+            push4.backbutton = false;
+            PhotonNetwork.Disconnect();
+        }
+
+        if (push5.backmenu) //BackToMenuが押された
+        {
+            push5.backmenu = false;
+            bmenu = true;
+            PhotonNetwork.Disconnect();
+        }
+
+        if (In && !md.isHost) //ゲストでかつ入室済み
+        {
+            // ゲストのphoton_in
+            if (!PhotonNetwork.room.IsVisible) SceneManager.LoadScene("photon_in");
+
+            //誰かの戻る動作をうけて、ゲストがphotontest1のリロード
+            if (players < preplayers) PhotonNetwork.Disconnect();
+        }
+
+        preplayers = players;
     }
-    // ルームの入室に失敗すると呼ばれる
-    //void OnPhotonRandomJoinFailed()
-    //{
-    //    Debug.Log("ルームの入室に失敗しました。");
-
-    //    // ルームがないと入室に失敗するため、その時は自分で作る
-    //    // 引数でルーム名を指定できる
-    //    PhotonNetwork.CreateRoom("myRoomName");
-    //}
 }
+

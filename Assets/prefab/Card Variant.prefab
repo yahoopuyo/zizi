@@ -19,10 +19,15 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2965134800190610359, guid: 2902fba118a6e486595554afe43324f0,
+    - target: {fileID: 618541754942336830, guid: 2902fba118a6e486595554afe43324f0,
         type: 3}
-      propertyPath: m_Name
-      value: Card Variant
+      propertyPath: viewIdField
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 618541754942336830, guid: 2902fba118a6e486595554afe43324f0,
+        type: 3}
+      propertyPath: instantiationId
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 2965134800190610357, guid: 2902fba118a6e486595554afe43324f0,
         type: 3}
@@ -79,15 +84,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 618541754942336830, guid: 2902fba118a6e486595554afe43324f0,
+    - target: {fileID: 2965134800190610359, guid: 2902fba118a6e486595554afe43324f0,
         type: 3}
-      propertyPath: viewIdField
-      value: 0
+      propertyPath: m_Name
+      value: Card Variant
       objectReference: {fileID: 0}
-    - target: {fileID: 618541754942336830, guid: 2902fba118a6e486595554afe43324f0,
+    - target: {fileID: 2965134800190610362, guid: 2902fba118a6e486595554afe43324f0,
         type: 3}
-      propertyPath: instantiationId
-      value: -1
+      propertyPath: debug
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6741805492931198416, guid: 2902fba118a6e486595554afe43324f0, type: 3}
