@@ -14,8 +14,8 @@ public class TurnManagerOnline : MonoBehaviour
     public List<int> Wins = new List<int>();
     public List<string> result = new List<string>();
     private GameObject hand;
-    private HandsOnline hands;
-    ScoreManagerOnline sm;
+    private HandsOnline hands;ScoreManagerOnline sm;
+
     private int CountWinners()
     {
         int winner = 0;
@@ -112,8 +112,7 @@ public class TurnManagerOnline : MonoBehaviour
             UnityEngine.Debug.Log("zizi is " + zizi);
             result.Add("player" + turnPlayer + " lost");
             Wins.Add(turnPlayer);
-            sm.WriteResult(Wins,zizi);
-            
+            sm.WriteResult(Wins, zizi);
         }
     }
     void Start()
@@ -124,7 +123,6 @@ public class TurnManagerOnline : MonoBehaviour
         drawnCard = 100;
         preDrawnPlayer = 100;
         sm = GetComponent<ScoreManagerOnline>();
-	    
     }
 
     void Update()

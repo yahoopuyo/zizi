@@ -14,6 +14,8 @@ public class Record : MonoBehaviour
     GameObject Hand;
     Hands hands;
 
+    public int UniformExsits { get; internal set; }
+
     private void get()
     {
         Hand = GameObject.Find("Hand");
