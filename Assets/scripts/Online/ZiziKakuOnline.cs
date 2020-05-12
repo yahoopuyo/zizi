@@ -61,7 +61,7 @@ public class ZiziKakuOnline : MonoBehaviour
     //じじかくボタン
     public void OnClicked()
     {
-        if (guessListIndex == null) return;
+        if (guessListIndex.Count == 0) return;
         zizikakued = true;
         string gListString = "";
         foreach (int card in guessListIndex)

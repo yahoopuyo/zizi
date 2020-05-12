@@ -67,6 +67,10 @@ public class ScoreManagerOnline : MonoBehaviour
         points = "\n\n" + playerInfo[0] + ": " + score[0] + " + " + zzkkscore[0] + " pt,     " + playerInfo[1] + ": " + score[1] + " + " + zzkkscore[1] + " pt"+ "\n" + playerInfo[2] +": "+ score[2] + " + " + zzkkscore[2] + " pt,     " + playerInfo[3] +": " + score[3] + " + " + zzkkscore[3] + " pt";
         Text text = GameObject.Find("Results").GetComponent<Text>();
         text.text = order + points;
+        for (int i = 0; i < 4; i++)
+        {
+            score[i] += zzkkscore[i];
+        }
     }
 
     // Update is called once per frame
