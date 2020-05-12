@@ -12,7 +12,7 @@ public class ScoreManagerOnline : MonoBehaviour
     List<int> score;
     List<int> zzkkscore;
     List<string> result = new List<string>();
-    public List<List<int>> zzkkList = new List<List<int>>();
+    public List<int>[] zzkkList = new List<int>[4];
     private List<int> zzkkrank = new List<int>() { 0, 0, 0, 0 };
 
     // Start is called before the first frame update
@@ -33,12 +33,12 @@ public class ScoreManagerOnline : MonoBehaviour
         string[] playerInfo = md.playerInfo;
         string order;
         string points;
-        /*
+        
         for (int i = 0; i < 4; i++)
         {
             //じじかくぼたんおさなかった場合の処置やけどそもそもzzkkList[3]とかがなかってもいいのかな？
             //無理そうならSendGuessList()でInsertやめてAddにしてもう一ループしてzzkkList再編する
-            if (zzkkList[i].Count == 0) zzkkList[i].Add(1000); 
+            if (zzkkList[i] == null) zzkkList[i] = new List<int> { 1000 };
             else
             {
                 if (!zzkkList[i].Contains(zizi)) zzkkList[i][0] = 1000;
@@ -56,7 +56,7 @@ public class ScoreManagerOnline : MonoBehaviour
             if (zzkkList[i][0] == 1000) zzkkscore[i] = 0; //じじかくボタン押さなかった場合もこっちに入る
             else zzkkscore[i] += zzkkscoreToOrder[zzkkrank[i]] / (zzkkList[i].Count - 1);
         }
-        */
+        
         for (int i=0; i < 4; i++)
         {
             score[wins[i]] += scoreToOrder[i];
