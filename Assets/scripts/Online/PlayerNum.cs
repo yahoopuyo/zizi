@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,6 +12,7 @@ public class PlayerNum : MonoBehaviour
     public int nextnextnextplayernum;
     private string[] playerInfo;
     ModeData md;
+    TurnManagerOnline tmo;
     Text text0;
     Text text1;
     Text text2;
@@ -23,7 +25,8 @@ public class PlayerNum : MonoBehaviour
         // playernum
 	    //playernum = 0;
 	    md = GameObject.Find("ModeData").GetComponent<ModeData>();
-	    playernum = md.player;
+        tmo = GameObject.Find("GameManager").GetComponent<TurnManagerOnline>();
+        playernum = md.player;
 	    nextplayernum = (playernum +1) % 4;
 	    nextnextplayernum = (playernum + 2) % 4;
 	    nextnextnextplayernum = (playernum + 3) % 4;
@@ -53,6 +56,24 @@ public class PlayerNum : MonoBehaviour
         text1.text = "Player" + playerInfo[nextplayernum];
         text2.text = "Player" + playerInfo[nextnextplayernum];
         text3.text = "Player" + playerInfo[nextnextnextplayernum];
+        text0.color = Color.black;
+        text1.color = Color.black;
+        text2.color = Color.black;
+        text3.color = Color.black;
+        switch (tmo.turnPlayer)
+        {
+            case 0:
+                text0.color = Color.red;
+                break;
+            case 1:
+                text1.color = Color.red;
+                break;
+            case 2:
+                text2.color = Color.red;
+                break;
+            case 3:
+                text3.color = Color.red;
+                break;
+        }
     }
-
 }
