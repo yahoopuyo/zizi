@@ -52,10 +52,14 @@ public class PlayerNum : MonoBehaviour
         nextplayernum = (playernum + 1) % 4;
         nextnextplayernum = (playernum + 2) % 4;
         nextnextnextplayernum = (playernum + 3) % 4;
-        text0.text = "Player" + playerInfo[playernum];
-        text1.text = "Player" + playerInfo[nextplayernum];
-        text2.text = "Player" + playerInfo[nextnextplayernum];
-        text3.text = "Player" + playerInfo[nextnextnextplayernum];
+        text0.text = playerInfo[playernum];
+        text1.text = playerInfo[nextplayernum];
+        text2.text = playerInfo[nextnextplayernum];
+        text3.text = playerInfo[nextnextnextplayernum];
+        if (text0.text != "Com") text0.fontSize = 70;
+        if (text1.text != "Com") text1.fontSize = 70;
+        if (text2.text != "Com") text2.fontSize = 70;
+        if (text3.text != "Com") text3.fontSize = 70;
         text0.color = Color.black;
         text1.color = Color.black;
         text2.color = Color.black;
