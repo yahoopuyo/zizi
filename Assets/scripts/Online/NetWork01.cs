@@ -29,7 +29,7 @@ public class NetWork01 : MonoBehaviour
     BackButton push4;
     BackToMenu push5;
     private bool bmenu;
-
+    private string[] suit;
 
     void Start()
     {
@@ -45,6 +45,7 @@ public class NetWork01 : MonoBehaviour
         push4 = GameObject.Find("BackButton").GetComponent<BackButton>();
         push5 = GameObject.Find("BackToMenuButton").GetComponent<BackToMenu>();
         //DontDestroyOnLoad(this);
+        suit = new string[4] { "♠", "♥", "♣", "♦" };
     }
 
     // ロビーに入ると呼ばれる
@@ -145,7 +146,7 @@ public class NetWork01 : MonoBehaviour
         if (players > preplayers && md.player == 0 && !md.isHost)
         {
             md.player = players - 1;
-            if (md.player > 0) PhotonNetwork.playerName = md.player.ToString();
+            if (md.player > 0) PhotonNetwork.playerName = suit[md.player];
         }
 
         if (push1.hostpush1) //ホストがルーム作った瞬間、入室
@@ -155,7 +156,7 @@ public class NetWork01 : MonoBehaviour
             RoomOptions ro = new RoomOptions() { IsVisible = true, MaxPlayers = 4 };//maxPlayerは人数の上限                                                      
             PhotonNetwork.CreateRoom(md.roomName, ro, TypedLobby.Default);
             md.isHost = true;
-            PhotonNetwork.playerName = "0";
+            PhotonNetwork.playerName = suit[0];
         }
 
         if (push2.hostpush2 && In) //ホストが決定した
