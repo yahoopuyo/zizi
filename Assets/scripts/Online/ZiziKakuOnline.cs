@@ -1,21 +1,30 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 
 public class ZiziKakuOnline : MonoBehaviour
 {
     //private List<GameObject> guessListCard;
     private List<int> guessListIndex;
+    public List<int> debugList;
 
     ScoreManagerOnline sm;
     TurnManagerOnline tm;
     ModeData md;
 
     [PunRPC]
-    void SendGuessList()
+    void SendGuessList(int turn, int playernum, string guessListString)
     {
-        guessListIndex.Insert(0, tm.turn + 100); //先頭にturn+100を挿入（100はziziと被らせないため)
-        sm.zzkkList.Insert(md.player, guessListIndex);
+        List<int> guessList = new List<int>();
+        guessList.Add(turn + 100); //先頭にturn+100を挿入（100はziziと被らせないため)
+        for (int i=0; i<(guessListString.Length / 2); i++)
+        {
+            int index = int.Parse(guessListString.Substring(2 * i, 2));
+            guessList.Add(index);
+        }
+        debugList = new List<int>(guessList);
+        sm.zzkkList[playernum] = guessList;
     }
 
     private bool zizikakued;
@@ -52,10 +61,18 @@ public class ZiziKakuOnline : MonoBehaviour
     //じじかくボタン
     public void OnClicked()
     {
+        if (guessListIndex == null) return;
         zizikakued = true;
-        guessListIndex.Clear();
+        string gListString = "";
+        foreach (int card in guessListIndex)
+        {
+            if (card < 10) gListString += "0" + card.ToString();
+            else gListString += card.ToString(); 
+        }
         PhotonView view = GetComponent<PhotonView>(); //GameObject.Find("GameManager")してないのが気になる
-        //view.RPC("SendGuessList", PhotonTargets.All);
+        view.RPC("SendGuessList", PhotonTargets.All, tm.turn, md.player, gListString);
+        guessListIndex.Clear();
+        GameObject.Find("ZizikakuButton").SetActive(false);
     }
 
 
