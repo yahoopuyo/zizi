@@ -69,12 +69,22 @@ public class ZiziKakuOnline : MonoBehaviour
             if (card < 10) gListString += "0" + card.ToString();
             else gListString += card.ToString(); 
         }
-        PhotonView view = GetComponent<PhotonView>(); //GameObject.Find("GameManager")してないのが気になる
+        PhotonView view = GetComponent<PhotonView>();
         view.RPC("SendGuessList", PhotonTargets.All, tm.turn, md.player, gListString);
         guessListIndex.Clear();
         GameObject.Find("ZizikakuButton").SetActive(false);
     }
 
+    //comじじかく
+    public void ComZizikaku(int card, int com)
+    {
+        if (!md.IsHost() || md.playerInfo[com] != "Com") return;
+        string comgListString = "";
+        if (card < 10) comgListString += "0" + card.ToString();
+        else comgListString += card.ToString();
+        PhotonView view = GetComponent<PhotonView>();
+        view.RPC("SendGuessList", PhotonTargets.All, tm.turn, com, comgListString);
+    }
 
     // Start is called before the first frame update
     void Start()

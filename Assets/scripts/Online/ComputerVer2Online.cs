@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 
 public class ComputerVer2Online : MonoBehaviour
@@ -13,6 +14,7 @@ public class ComputerVer2Online : MonoBehaviour
     public bool zizikakunum = false;
     public bool zizikakuplace = false;
     public bool successflag = false;
+    private bool firsttime = true;
     private int zizinumber = -1;
     private int ziziuniform = -1;
     private List<int> unsuccessful = new List<int>(); //recordとはあまり被らせないようにした
@@ -46,6 +48,12 @@ public class ComputerVer2Online : MonoBehaviour
         ownrecord();
         Publiczizikaku(record.record);
         Blankzizikaku();
+
+        if (ziziuniform != -1 && firsttime)
+        {
+            firsttime = false;
+            GameObject.Find("GameManager").GetComponent<ZiziKakuOnline>().ComZizikaku(info[ziziuniform], playerNumber);
+        }
     }
 
 
