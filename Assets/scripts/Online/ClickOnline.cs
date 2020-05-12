@@ -42,10 +42,15 @@ public class ClickOnline : Photon.MonoBehaviour, IPointerClickHandler, IPointerE
     {
         get();
 
-        if (drawnCard == cardIndex && preDrawnPlayer == player && drawnCard != hands.GetGrave()[-1] && drawnCard != hands.GetGrave()[-2]) //前ひかれたカードだったら
+        if (drawnCard == cardIndex && preDrawnPlayer == player) //前ひかれたカードだったら
         {
-            cardModel.ToggleFace(true);
-            Debug.Log("selected");
+            List<int> grave = hands.GetGrave();
+            int l = grave.Count;
+            if (drawnCard != hands.GetGrave()[l - 1] && drawnCard != hands.GetGrave()[l - 2]) //真ん中のカードじゃなかったら
+            {
+                cardModel.ToggleFace(true);
+                Debug.Log("selected");
+            }
         }
         if (drawnPlayer == hands.Cardownerreturn(cardIndex))
         {
@@ -59,8 +64,13 @@ public class ClickOnline : Photon.MonoBehaviour, IPointerClickHandler, IPointerE
         get();
         if (drawnCard == cardIndex && preDrawnPlayer == player) //前ひかれたカードだったら
         {
-            cardModel.ToggleFace(false);
-            Debug.Log("selected");
+            List<int> grave = hands.GetGrave();
+            int l = grave.Count;
+            if (drawnCard != hands.GetGrave()[l-1] && drawnCard != hands.GetGrave()[l-2]) //真ん中のカードじゃなかったら
+            {
+                cardModel.ToggleFace(false);
+                Debug.Log("selected");
+            }
         }
         if (drawnPlayer == hands.Cardownerreturn(cardIndex))
         {
