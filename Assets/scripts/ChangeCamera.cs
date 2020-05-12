@@ -6,6 +6,7 @@ public class ChangeCamera : MonoBehaviour
 {
     [SerializeField] private GameObject mainCamera;
     [SerializeField] private GameObject sourceCamera;
+    [SerializeField] private GameObject canvas4;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,6 +20,7 @@ public class ChangeCamera : MonoBehaviour
         {
             mainCamera.SetActive(!mainCamera.activeSelf);
             sourceCamera.SetActive(!sourceCamera.activeSelf);
+            canvas4.SetActive(!canvas4.activeSelf);
         }
     }
         

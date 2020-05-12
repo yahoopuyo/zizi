@@ -60,20 +60,26 @@ public class PlayerNum : MonoBehaviour
         text1.color = Color.black;
         text2.color = Color.black;
         text3.color = Color.black;
+        int tmp = tmo.turnPlayer;
+        if (tmp == playernum) text0.color = Color.red;
+        if (tmp == nextplayernum) text1.color = Color.red;
+        if (tmp == nextnextplayernum) text2.color = Color.red;
+        if (tmp == nextnextnextplayernum) text3.color = Color.red;
+        /*
         switch (tmo.turnPlayer)
         {
-            case 0:
+            case playernum:
                 text0.color = Color.red;
                 break;
-            case 1:
+            case nextplayernum:
                 text1.color = Color.red;
                 break;
-            case 2:
+            case nextnextplayernum:
                 text2.color = Color.red;
                 break;
-            case 3:
+            case nextnextnextplayernum:
                 text3.color = Color.red;
                 break;
-        }
+        }*/
     }
 }

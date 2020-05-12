@@ -112,7 +112,7 @@ public class TurnManager : MonoBehaviour
         {
             int zizi = hands.hands[turnPlayer][0];
             UnityEngine.Debug.Log("zizi is " + (zizi%13 + 1));
-            result.Add("player" + turnPlayer + " losed");
+            result.Add("player" + turnPlayer + " lost");
             init = GetComponent<InitCanvas>();
             init.gameoverP.SetActive(true);
             string Order;

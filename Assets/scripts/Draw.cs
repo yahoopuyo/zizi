@@ -179,7 +179,11 @@ public class Draw : MonoBehaviour
                 if (tP != 0)
                 {
                     if (moveFlag || flashFlag) return;  //待機処理中にもう一回押された時に無効化
-                    int drawnUniform = record.Uniform[coms[tP - 1].draw(dP)];
+                    int drawnUniform;
+                    if (level == 1) drawnUniform = cpu1(dP);
+                    else if (level == 2) drawnUniform = cpu2(dP);
+                    else drawnUniform = record.Uniform[coms[tP - 1].draw(dP)];
+                    
                     drawWithAnimation(dP, drawnUniform, tP);
                 }
             }

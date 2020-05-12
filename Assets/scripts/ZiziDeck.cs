@@ -93,6 +93,7 @@ public class ZiziDeck : UnityEngine.MonoBehaviour
         //if (numOfPlayer == 2 && md.player == 1) md.player = 2;//仮の処理
         md.playerInfo = playerInfo;
         md.player = Array.IndexOf(playerInfo, PhotonNetwork.playerName);
+        md.UpdateScore();
     }
     
     void Start()

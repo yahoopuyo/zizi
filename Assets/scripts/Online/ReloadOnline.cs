@@ -22,6 +22,7 @@ public class ReloadOnline : MonoBehaviour
     void Reload()
     {
         Scene loadScene = SceneManager.GetActiveScene();
+        md.OnReloadGame();
         // Sceneの読み直し
         SceneManager.LoadScene(loadScene.name);
     }
@@ -29,6 +30,7 @@ public class ReloadOnline : MonoBehaviour
     void RestartGame()
     {
         PhotonView view = GetComponent<PhotonView>();
+        md.OnReloadGame();
         view.RPC("Reload", PhotonTargets.Others);
     }
     public void ReloadForAll()

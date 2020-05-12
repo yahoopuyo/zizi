@@ -3,6 +3,8 @@ using System.Collections.Generic;
 //using System.Diagnostics.Eventing.Reader;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System;
+using System.Diagnostics;
 
 public class ModeData : MonoBehaviour
 {
@@ -18,8 +20,10 @@ public class ModeData : MonoBehaviour
     public int numOfPlayer;
     public string roomName;
     public List<int> score;
-    public List<int> zzkkscore;
     public string[] playerInfo;
+    public string[] prePlayerInfo;
+    public List<int> comIndex = new List<int>();
+    public List<int> preScore;
     // Start is called before the first frame update
 
     void Start()
@@ -34,8 +38,8 @@ public class ModeData : MonoBehaviour
         inst = GameObject.Find("InstructionPanel");
         inst.SetActive(false);
         score = new List<int>() { 0,0,0,0 };
-        zzkkscore = new List<int>() { 0, 0, 0, 0 };
         playerInfo = new string[4] { "player", "Com", "Com", "Com" }; //for solo play
+        prePlayerInfo = new string[4]; 
     }
 
     // Update is called once per frame
@@ -43,7 +47,40 @@ public class ModeData : MonoBehaviour
     {
 
     }
+    
+    public void OnReloadGame()
+    {
+        Array.Copy(playerInfo,prePlayerInfo,4);
+    }
+    public void UpdateScore()
+    {
+        UnityEngine.Debug.Log("update score called");
+        if (prePlayerInfo[0] == null) return; //1回目なら特にすることなし
+        preScore = new List<int>(score);
+        score = new List<int> { -1, -1, -1, -1 };
+        comIndex = new List<int> { 0, 1, 2, 3 };
 
+        for (int i = 0; i < 4; i++)
+        {
+            string playeri = playerInfo[i];
+            if (playeri != "Com")//playerだけ
+            {
+                int tmp = Array.IndexOf(prePlayerInfo,playeri);
+                UnityEngine.Debug.Log("preplayerinfo.playeri = " + tmp);
+                comIndex.Remove(tmp);
+                score[i] = preScore[tmp];
+            }
+        }
+        int tmp2 = 0;
+        for (int i = 0; i < 4; i++)
+        {
+            if(score[i] == -1)
+            {
+                score[i] = preScore[comIndex[tmp2]];
+                tmp2++;
+            }
+        }
+    }
     public void OnClickNormal()
     {
         Easy = false;

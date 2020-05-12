@@ -20,8 +20,7 @@ public class ScoreManagerOnline : MonoBehaviour
     {
         tm = GetComponent<TurnManagerOnline>();
         md = GameObject.Find("ModeData").GetComponent<ModeData>();
-        score = md.score;
-        zzkkscore = md.zzkkscore;
+        
     }
 
     public void WriteResult(List<int> wins, int zizi)
@@ -30,7 +29,10 @@ public class ScoreManagerOnline : MonoBehaviour
         List<int> zzkkscoreToOrder = new List<int>() { 120, 90, 60, 20};
         init = GetComponent<InitCanvas>();
         init.gameoverP.SetActive(true);
+        score = md.score;
+        zzkkscore = new List<int> { 0, 0, 0, 0 };
         string[] playerInfo = md.playerInfo;
+        string[] prePlayerInfo = md.prePlayerInfo;
         string order;
         string points;
         

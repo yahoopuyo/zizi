@@ -15,6 +15,7 @@ public class TurnManagerOnline : MonoBehaviour
     public List<string> result = new List<string>();
     private GameObject hand;
     private HandsOnline hands;ScoreManagerOnline sm;
+    private bool gameOver;
 
     private int CountWinners()
     {
@@ -108,11 +109,16 @@ public class TurnManagerOnline : MonoBehaviour
         }
         if (turnPlayer == drawnPlayer)
         {
-            int zizi = hands.hands[turnPlayer][0];
-            UnityEngine.Debug.Log("zizi is " + zizi);
-            result.Add("player" + turnPlayer + " lost");
-            Wins.Add(turnPlayer);
-            sm.WriteResult(Wins, zizi);
+            if (!gameOver)  //何回も押されたとき用
+            {
+                gameOver = true;
+                int zizi = hands.hands[turnPlayer][0];
+                UnityEngine.Debug.Log("zizi is " + zizi);
+                result.Add("player" + turnPlayer + " lost");
+                Wins.Add(turnPlayer);
+                sm.WriteResult(Wins, zizi);
+            }
+            
         }
     }
     void Start()
@@ -123,6 +129,7 @@ public class TurnManagerOnline : MonoBehaviour
         drawnCard = 100;
         preDrawnPlayer = 100;
         sm = GetComponent<ScoreManagerOnline>();
+        gameOver = false;
     }
 
     void Update()
