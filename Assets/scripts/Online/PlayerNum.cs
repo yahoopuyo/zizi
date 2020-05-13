@@ -17,6 +17,7 @@ public class PlayerNum : MonoBehaviour
     Text text1;
     Text text2;
     Text text3;
+    public int playerFontSize;
     	
 
     // Start is called before the first frame update
@@ -34,7 +35,7 @@ public class PlayerNum : MonoBehaviour
 	    text1 = GameObject.Find("nextPlayerNum").GetComponent<Text>();
 	    text2 = GameObject.Find("nextnextPlayerNum").GetComponent<Text>();
 	    text3 = GameObject.Find("nextnextnextPlayerNum").GetComponent<Text>();
-        
+        playerFontSize = 50;
 
         /*
         text0.text = "Player" + playernum.ToString();
@@ -56,10 +57,10 @@ public class PlayerNum : MonoBehaviour
         text1.text = playerInfo[nextplayernum];
         text2.text = playerInfo[nextnextplayernum];
         text3.text = playerInfo[nextnextnextplayernum];
-        if (text0.text != "Com") text0.fontSize = 70;
-        if (text1.text != "Com") text1.fontSize = 70;
-        if (text2.text != "Com") text2.fontSize = 70;
-        if (text3.text != "Com") text3.fontSize = 70;
+        if (text0.text != "Com") text0.fontSize = playerFontSize;
+        if (text1.text != "Com") text1.fontSize = playerFontSize;
+        if (text2.text != "Com") text2.fontSize = playerFontSize;
+        if (text3.text != "Com") text3.fontSize = playerFontSize;
         text0.color = Color.black;
         text1.color = Color.black;
         text2.color = Color.black;
