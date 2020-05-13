@@ -15,7 +15,7 @@ public class TurnManagerOnline : MonoBehaviour
     public List<string> result = new List<string>();
     private GameObject hand;
     private HandsOnline hands;ScoreManagerOnline sm;
-    private bool gameOver;
+    public bool gameOver;
 
     private int CountWinners()
     {
