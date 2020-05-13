@@ -73,6 +73,8 @@ public class ScoreManagerOnline : MonoBehaviour
         {
             score[i] += zzkkscore[i];
         }
+
+        if (!md.IsHost()) GameObject.Find("RestartButton").SetActive(false);
     }
 
     // Update is called once per frame

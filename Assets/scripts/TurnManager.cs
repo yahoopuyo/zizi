@@ -103,7 +103,8 @@ public class TurnManager : MonoBehaviour
             {
                 if (hands.hands[pl].Count == 0 && !Wins.Contains(pl))
                 {
-                    result.Add("player" + pl + " was " + CountWinners());
+                    if (pl == 0) result.Add("You were ");
+                    else result.Add("Player" + pl + " was ");
                     Wins.Add(pl);
                 }
             }
@@ -112,11 +113,12 @@ public class TurnManager : MonoBehaviour
         {
             int zizi = hands.hands[turnPlayer][0];
             UnityEngine.Debug.Log("zizi is " + (zizi%13 + 1));
-            result.Add("player" + turnPlayer + " lost");
+            if (turnPlayer == 0) result.Add("You were lost");
+            else result.Add("Player" + turnPlayer + " lost");
             init = GetComponent<InitCanvas>();
             init.gameoverP.SetActive(true);
             string Order;
-            Order = result[0] + "st\n\n" + result[1] + "nd\n\n" + result[2] + "rd\n\n" + result[3];
+            Order = result[0] + "1st\n\n" + result[1] + "2nd\n\n" + result[2] + "3rd\n\n" + result[3];
             Text text = GameObject.Find("Results").GetComponent<Text>();
             text.text = Order;
         }
