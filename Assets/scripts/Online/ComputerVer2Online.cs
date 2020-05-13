@@ -52,7 +52,7 @@ public class ComputerVer2Online : MonoBehaviour
         if (ziziuniform != -1 && firsttime)
         {
             firsttime = false;
-            GameObject.Find("GameManager").GetComponent<ZiziKakuOnline>().ComZizikaku(info[ziziuniform], playerNumber);
+            GameObject.Find("GameManager").GetComponent<ZiziKakuOnline>().ComZizikaku(record.Uniform[ziziuniform], playerNumber);
         }
     }
 

@@ -8,6 +8,7 @@ public class ZiziKakuOnline : MonoBehaviour
     //private List<GameObject> guessListCard;
     private List<int> guessListIndex;
     public List<int> debugList;
+    public string comgListString;
 
     ScoreManagerOnline sm;
     TurnManagerOnline tm;
@@ -79,7 +80,8 @@ public class ZiziKakuOnline : MonoBehaviour
     public void ComZizikaku(int card, int com)
     {
         if (!md.IsHost() || md.playerInfo[com] != "Com") return;
-        string comgListString = "";
+        if (tm.gameOver) return; //ゲーム終了後はじじかくできない
+        comgListString = "";
         if (card < 10) comgListString += "0" + card.ToString();
         else comgListString += card.ToString();
         PhotonView view = GetComponent<PhotonView>();

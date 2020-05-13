@@ -26,7 +26,7 @@ public class ScoreManagerOnline : MonoBehaviour
     public void WriteResult(List<int> wins, int zizi)
     {
         List<int> scoreToOrder = new List<int>() { 120, 70, 60, 0};
-        List<int> zzkkscoreToOrder = new List<int>() { 120, 90, 60, 20};
+        List<int> zzkkscoreToOrder = new List<int>() { 120, 90, 60, 30};
         init = GetComponent<InitCanvas>();
         init.gameoverP.SetActive(true);
         score = md.score;
