@@ -190,7 +190,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Choose Computer Level
+  m_Text: 'Choose Computer Level
+
+    (from 1'
 --- !u!222 &133091056
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -238,7 +240,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 634, y: 396}
+  m_SizeDelta: {x: 700, y: 396}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &147552245
 MonoBehaviour:
@@ -523,7 +525,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -69}
+  m_AnchoredPosition: {x: 0, y: -88}
   m_SizeDelta: {x: 160, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &313555988
@@ -990,7 +992,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: cpu level ...
+  m_Text: cpu level ... 3
 --- !u!222 &814329124
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1028,12 +1030,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2804f05ea3ea542558ea7572963e6ef1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  computerLevel: 0
+  isHost: 0
+  computerLevel: 3
   player: 0
   numOfPlayer: 2
-  isHost: 0
   roomName: 
   score: 
+  playerInfo: []
+  prePlayerInfo: []
+  comIndex: 
+  preScore: 
 --- !u!4 &851138682
 Transform:
   m_ObjectHideFlags: 0
@@ -2993,8 +2999,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.000012398}
-  m_SizeDelta: {x: 507.8, y: 201.7}
+  m_AnchoredPosition: {x: 24.263, y: -0.000015259}
+  m_SizeDelta: {x: 651.47455, y: 201.70001}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2029138297
 MonoBehaviour:
@@ -3017,10 +3023,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 29
+    m_FontSize: 28
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 2
+    m_MinSize: 0
     m_MaxSize: 45
     m_Alignment: 0
     m_AlignByGeometry: 0
@@ -3028,9 +3034,16 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'choose from 1-5
+  m_Text: '~Choose from 1-5~
 
-    1...CPU would draw cards randomly
+    CPU would draw cards ....
+
+    1........randomly
+
+    2........from
+    originals and drawns in equal propotion
+
+    3~5...using special zizi-method
 
 '
 --- !u!222 &2029138298
