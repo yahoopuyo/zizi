@@ -1412,7 +1412,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'what is easy mode...?
+  m_Text: 'What is easy mode...?
 
 
     Each player will have a unique image for the
@@ -3038,9 +3038,9 @@ MonoBehaviour:
 
     CPU would draw cards ....
 
-    1........randomly
+    1.......randomly
 
-    2........from
+    2.......from
     originals and drawns in equal proportion
 
     3~5...using zizi AI'
