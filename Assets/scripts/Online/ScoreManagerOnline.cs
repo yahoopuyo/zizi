@@ -8,12 +8,13 @@ public class ScoreManagerOnline : MonoBehaviour
 {
     ModeData md;
     TurnManagerOnline tm;
-    InitCanvas init;
     List<int> score;
     List<int> zzkkscore;
     List<string> result = new List<string>();
     public List<int>[] zzkkList = new List<int>[4];
     private List<int> zzkkrank = new List<int>() { 0, 0, 0, 0 };
+    [SerializeField] private GameObject gameoverP;
+    [SerializeField] private GameObject canvas4;
 
     // Start is called before the first frame update
     void Start()
@@ -27,8 +28,8 @@ public class ScoreManagerOnline : MonoBehaviour
     {
         List<int> scoreToOrder = new List<int>() { 120, 70, 60, 0};
         List<int> zzkkscoreToOrder = new List<int>() { 120, 90, 60, 30};
-        init = GetComponent<InitCanvas>();
-        init.gameoverP.SetActive(true);
+        canvas4.SetActive(false);
+        gameoverP.SetActive(true);
         score = md.score;
         zzkkscore = new List<int> { 0, 0, 0, 0 };
         string[] playerInfo = md.playerInfo;
