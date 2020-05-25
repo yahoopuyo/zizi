@@ -590,6 +590,8 @@ public class ComputerVer2 : MonoBehaviour
             if (record.record[cardUni][un] == -1 && !unsuccessful.Contains(non)) judge = false; //共存してないカードが１枚でもあればセーフ
         }
 
+        if (judge) UnityEngine.Debug.Log("プレーヤー" + playerNumber + "にとって背番号" + cardUni + "は危険カード"); 
+        else UnityEngine.Debug.Log("プレーヤー" + playerNumber + "にとって背番号" + cardUni + "はノー危険カード");
         return judge;
     }
 
