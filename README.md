@@ -15,4 +15,4 @@ kanazawanaoaki
 yoshiaabe
 
 
-#後でどこかに詳しい遊び方や戦略の紹介などを書く
+https://note.com/yahoopuyo/n/n391a6e69e1dd
